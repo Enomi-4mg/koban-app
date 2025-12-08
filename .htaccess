@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ▼▼▼ 追加: 重要なディレクトリへの直接アクセスを禁止 ▼▼▼
+    RewriteRule ^(src|views|vendor|SQL)/ - [F,L]
+    RewriteRule ^composer\.(json|lock)$ - [F,L]
+    # ▲▲▲ 追加ここまで ▲▲▲
+    # ファイルやディレクトリが存在しなければ index.php に転送
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

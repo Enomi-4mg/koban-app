@@ -1,0 +1,5 @@
+<FilesMatch "\.(sqlite|csv|log|bak|sql)$">
+    Require all denied
+</FilesMatch>
+
+Qptions -Indexes

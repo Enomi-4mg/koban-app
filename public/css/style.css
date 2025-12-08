@@ -1,0 +1,158 @@
+/* オリジナルの雰囲気を再現 */
+body {
+    background-color: #010000;
+    color: #1eff1a;
+    font-family: sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1,
+h2,
+h3 {
+    color: #fbfffc;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* フォームやメニューを囲むボックス */
+.box {
+    background-color: #1a1a1a;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    text-align: left;
+}
+
+/* 入力フォームデザイン */
+input[type=text],
+input[type=password],
+input[type=tel],
+input[type=date],
+select {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+/* ボタンデザイン */
+input[type=submit],
+button,
+.btn {
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #1eff1a;
+    color: #000;
+}
+
+.btn-warning {
+    background-color: #ffff00;
+    color: #000;
+}
+
+.btn-danger {
+    background-color: #ff4444;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+.btn-back {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 5px 10px;
+}
+
+a {
+    color: #888;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* テーブルデザイン（元ファイルのデザインを復元） */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #b0ffd4;
+    margin-top: 10px;
+}
+
+th {
+    background-color: #1a1a1aff;
+    color: #fff;
+    padding: 8px;
+    border: 1px solid #b0ffd4;
+    text-align: center;
+}
+
+td {
+    border: 1px solid #b0ffd4;
+    /* 元のボーダー色 */
+    padding: 8px;
+    color: #1eff1a;
+    background-color: #010000;
+}
+
+tr:hover td {
+    background-color: #111;
+}
+
+/* ページネーション */
+.pagination a {
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+.pagination .current {
+    background: #1eff1a;
+    color: #000;
+    font-weight: bold;
+}
+
+.pagination .other {
+    background: #333;
+    color: #fff;
+}
+
+/* レイアウト調整用 */
+.flex-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.right-align {
+    text-align: right;
+}

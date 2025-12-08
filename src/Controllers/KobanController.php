@@ -1,0 +1,400 @@
+<?php
+
+namespace App\Controllers;
+
+// 必要なクラス（部品）を読み込む宣言
+use App\Models\Koban;       // データベース操作担当
+use App\Utils\View;         // 画面表示担当 (さっき作ったやつ)
+use App\Utils\Validator;    // 入力チェック担当
+
+class KobanController
+{
+
+    /**
+     * 一覧画面を表示する (旧 opendata.php の役割)
+     */
+    public function index()
+    {
+        // 1. モデルの呼び出し
+        // 「交番データ」を扱うためのクラスをインスタンス化（実体化）します
+        $kobanModel = new Koban();
+
+        $log_detail = "トップ表示";
+
+        // ▼▼▼ ログ用詳細情報の構築 ▼▼▼
+        $conditions = [];
+        if (!empty($_GET['keyword'])) {
+            $conditions[] = "KW: " . $_GET['keyword'];
+        }
+        if (!empty($_GET['search_type'])) {
+            $conditions[] = "種別: " . $_GET['search_type'];
+        }
+        if (!empty($_GET['search_pref'])) {
+            $conditions[] = "県: " . $_GET['search_pref'];
+        }
+        if (!empty($_GET['sort'])) {
+            // ソート順も記録しておくと分析に役立ちます
+            $conditions[] = "順: " . $_GET['sort'];
+        }
+
+        // 条件がなければ「トップ表示」、あれば連結して記録
+        $log_detail = empty($conditions) ? "トップ表示" : "検索実行 [" . implode(", ", $conditions) . "]";
+
+        // ログ保存
+        logAction($_SESSION['login_id'] ?? 'guest', 'アクセス', $log_detail);
+        // ▲▲▲ 構築終了 ▲▲▲
+
+        $message = $_SESSION['message'] ?? '';
+        unset($_SESSION['message']);
+
+        // 2. データの取得
+        // $_GET にはURLのパラメータが入っています (例: ?keyword=新宿&page=2)
+        // モデルの search メソッドに「検索条件」を渡して、結果をもらいます
+        $limit = 100;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $offset = ($page - 1) * $limit;
+
+        $data = $kobanModel->search($_GET, $limit, $offset, $_GET['sort'] ?? 'id_asc');
+        $total_count = $kobanModel->count($_GET);
+        $total_pages = ceil($total_count / $limit);
+
+        // 3. ビューの表示
+        // 'home' は views/home.php を指します
+        // 第2引数の配列が、home.php 内で変数として使えるようになります
+        return View::render('home', [
+            'all_data'    => $data,
+            'total_count' => $total_count,
+            'page'        => $page,
+            'total_pages' => $total_pages,
+            'message'     => $message ?? '', // メッセージ表示用
+            'pref_list'   => ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
+        ]);
+    }
+
+    /**
+     * 新規作成フォームを表示する (旧 koban_form.php の初期表示)
+     */
+    public function create()
+    {
+        // 権限チェック (functions.phpの関数)
+        if (!hasPermission('data')) {
+            die('権限がありません');
+        }
+
+        $phone_parts = ['', '', ''];
+        $postal_parts = ['', ''];
+
+        // フォームを表示。新規なのでデータは空っぽです。
+        return View::render('koban/form', [
+            'page_title' => '新規データ登録',
+            'edit_data'  => [],
+            'message'    => '',
+            'phone_parts' => $phone_parts,   // ビューへ渡す
+            'postal_parts' => $postal_parts, // ビューへ渡す
+        ]);
+    }
+
+    /**
+     * 編集フォームを表示する
+     */
+    public function edit()
+    {
+        // 1. 権限チェックとID取得 (変更なし)
+        if (!hasPermission('data')) {
+            die('権限がありません');
+        }
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die('IDが指定されていません');
+        }
+
+        $kobanModel = new Koban();
+        $data = $kobanModel->findById($id);
+
+        if (!$data) {
+            die('データが見つかりません');
+        }
+
+        // ▼▼▼ 修正: 「無し」データを空欄に変換するロジックを追加 ▼▼▼
+        $keys_to_clean = ['phone_number', 'postal_code', 'group_code'];
+        foreach ($keys_to_clean as $key) {
+            if (isset($data[$key]) && $data[$key] === '無し') {
+                $data[$key] = '';
+            }
+        }
+        // ▲▲▲ 変換ロジックここまで ▲▲▲
+
+        // 2. フォーム初期値の計算ロジック
+        // phone_number と postal_code が空文字列になったため、以下のロジックが正しく動作します
+
+        // 電話番号の分割
+        $phone_parts = explode('-', $data['phone_number'] ?? '') + ['', '', ''];
+
+        // 郵便番号の分割
+        $p = $data['postal_code'] ?? '';
+        $postal_parts = (strpos($p, '-') !== false) ? explode('-', $p) : [substr($p, 0, 3), substr($p, 3)];
+
+        // 3. View にデータを渡して表示 (変更なし)
+        return View::render('koban/form', [
+            'page_title' => 'データ編集 (ID: ' . $data['id'] . ')',
+            'edit_data'  => $data, // 変換済みの$dataを渡す
+            'message'    => '',
+            'phone_parts' => $phone_parts,
+            'postal_parts' => $postal_parts,
+        ]);
+    }
+
+    /**
+     * データの保存処理を行う (新規・更新 共通)
+     */
+    public function store()
+    {
+        // CSRFトークンチェック (セキュリティ対策)
+        verifyCsrfToken();
+
+        if (!hasPermission('data')) {
+            die('権限がありません');
+        }
+
+        // 1. 入力値のチェック (Validatorクラスを利用)
+        $validator = new Validator();
+
+        // データの整形（バリデーション前に一部実行）
+        $raw_phone_parts = [$_POST['phone_part1'] ?? '', $_POST['phone_part2'] ?? '', $_POST['phone_part3'] ?? ''];
+        $raw_postal = ($_POST['postal_part1'] ?? '') . ($_POST['postal_part2'] ?? '');
+
+        if (!$validator->validateKoban($_POST)) {
+            // エラーがあった場合、フォーム画面に戻す
+            $errors = $validator->getErrors();
+
+            // ★修正: エラー時も電話番号・郵便番号のパーツを渡すことで入力値を保持する
+            return View::render('koban/form', [
+                'page_title' => '入力エラー',
+                'edit_data'  => $_POST,
+                'message'    => implode('<br>', $errors),
+                // 電話番号パーツはフォームからの入力をそのまま返す
+                'phone_parts' => $raw_phone_parts,
+                // 郵便番号パーツはフォームからの入力をそのまま返す
+                'postal_parts' => [$_POST['postal_part1'] ?? '', $_POST['postal_part2'] ?? '']
+            ]);
+        }
+
+        // 2. データの整形
+        $kobanModel = new Koban();
+
+        $group_code = $_POST['new_group_code'] ?? '';
+        $group_code = empty($group_code) ? '無し' : $group_code;
+
+        // ▼▼▼ 電話番号の結合と「無し」判定 ▼▼▼
+        $phone = implode('-', array_filter($raw_phone_parts, fn($v) => $v !== ''));
+        $phone = empty($phone) ? '無し' : $phone;
+
+        // ▼▼▼ 郵便番号の結合と「無し」判定 ▼▼▼
+        $postal = empty($raw_postal) ? '無し' : $raw_postal;
+
+
+        // ▼▼▼ 住所結合処理（元のkoban_form.phpにあったロジックを移植） ▼▼▼
+        // 全角数字の半角化、丁目/番地などをハイフンに置換
+        $addr3 = str_replace(['丁目', '番地', '番', '号'], '-', mb_convert_kana($_POST['new_addr3'] ?? '', 'n', 'UTF-8'));
+        // 連続するハイフンを一つにまとめ、末尾のハイフンを削除
+        $addr3 = rtrim(preg_replace('/-+/', '-', $addr3), '-');
+
+
+        // データベース保存用データ
+        $saveData = [
+            'koban_fullname' => $_POST['new_name'],
+            'type'           => $_POST['new_type'],
+            'phone_number'   => $phone,         // ★「無し」判定後の値
+            'group_code'     => $group_code,
+            'postal_code'    => $postal,        // ★「無し」判定後の値
+            'pref'           => $_POST['new_pref'],
+            'addr3'          => $addr3          // ★整形後の値
+        ];
+
+        // 3. DBへの保存
+        if (!empty($_POST['update_id'])) {
+            // IDがあるなら更新
+            $kobanModel->update($_POST['update_id'], $saveData);
+            $_SESSION['message'] = "ID: {$_POST['update_id']} を更新しました。";
+            logAction($_SESSION['login_id'], 'データ更新', "ID: {$_POST['update_id']} を更新");
+        } else {
+            // IDがないなら新規作成
+            $kobanModel->create($saveData);
+            $_SESSION['message'] = "新規データを登録しました！";
+            logAction($_SESSION['login_id'], 'データ登録', "新規: {$_POST['new_name']} を追加");
+        }
+
+        // 4. 一覧画面へリダイレクト (index.phpへ戻る)
+        header("Location: /");
+        exit;
+    }
+
+    /**
+     * 削除処理
+     */
+    public function delete()
+    {
+        verifyCsrfToken();
+        if (!hasPermission('data')) {
+            die('権限がありません');
+        }
+
+        $id = $_POST['delete_id'] ?? null;
+        if ($id) {
+            $kobanModel = new Koban();
+            $kobanModel->delete($id);
+            $_SESSION['message'] = "ID: {$id} を削除しました。";
+            logAction($_SESSION['login_id'], 'データ削除', "ID: {$id} を削除しました。");
+        }
+
+        header("Location: /");
+        exit;
+    }
+
+    /**
+     * CSV一括インポート処理
+     */
+    public function importCsv()
+    {
+        verifyCsrfToken();
+        // データ編集権限がなければ終了
+        if (!isset($_SESSION['logged_in']) || !hasPermission('data')) {
+            $_SESSION['message'] = "データ編集の権限がありません。";
+            header("Location: /koban/create");
+            exit;
+        }
+
+        $kobanModel = new Koban();
+
+        // 処理の本体 (旧koban_form.phpのインポート部分)
+        if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] == 0) {
+            try {
+                $handle = fopen($_FILES['csv_file']['tmp_name'], "r");
+                if ($handle) {
+                    $head = fgets($handle);
+                    // 文字コード変換
+                    if (mb_detect_encoding($head, ['UTF-8', 'SJIS-win'], true) !== 'UTF-8') {
+                        rewind($handle);
+                        stream_filter_append($handle, 'convert.iconv.cp932/utf-8');
+                    } else {
+                        rewind($handle);
+                    }
+
+                    fgetcsv($handle); // ヘッダスキップ
+                    $rows = [];
+                    while (($d = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                        if (!isset($d[0]) || !is_numeric($d[0])) continue;
+                        $rows[] = $d;
+                    }
+                    fclose($handle);
+
+                    // Modelで一括登録
+                    $kobanModel->bulkInsert($rows);
+
+                    $count = count($rows);
+                    $_SESSION['message'] = "$count 件インポートしました。";
+                    logAction($_SESSION['login_id'], 'CSVインポート', "$count 件登録");
+                }
+            } catch (\Exception $e) {
+                $_SESSION['message'] = "インポートエラー: " . $e->getMessage();
+            }
+        } else {
+            $_SESSION['message'] = "ファイルがアップロードされていません。";
+        }
+
+        // 処理完了後、フォーム画面に戻る
+        header("Location: /koban/create");
+        exit;
+    }
+
+
+    /**
+     * CSVエクスポート処理
+     */
+    public function export()
+    {
+        // タイムアウト対策
+        set_time_limit(0);
+
+        // 出力バッファのクリア（余計な文字が含まれないようにする）
+        if (ob_get_level()) ob_end_clean();
+
+        try {
+            $kobanModel = new Koban();
+
+            // ログ用文字列の生成
+            $log_detail = "CSVエクスポート: 全件";
+            if (!empty($_GET['keyword'])) {
+                $log_detail = "CSVエクスポート (検索: " . h($_GET['keyword']) . ")";
+            }
+
+            // ▼▼▼ ログ用詳細情報の構築（indexと同じロジック） ▼▼▼
+            $conditions = [];
+            if (!empty($_GET['keyword'])) {
+                $conditions[] = "KW: " . $_GET['keyword'];
+            }
+            if (!empty($_GET['search_type'])) {
+                $conditions[] = "種別: " . $_GET['search_type'];
+            }
+            if (!empty($_GET['search_pref'])) {
+                $conditions[] = "県: " . $_GET['search_pref'];
+            }
+
+            $log_detail = empty($conditions) ? "CSV出力: 全件" : "CSV出力 [" . implode(", ", $conditions) . "]";
+
+            // ログ保存
+            logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', $log_detail);
+            // ▲▲▲ 構築終了 ▲▲▲
+
+            // データの取得 (ジェネレータ)
+            $sort = $_GET['sort'] ?? 'id_asc';
+            $rows = $kobanModel->exportAll($_GET, $sort);
+
+            // ファイル名設定
+            $filename = "koban_all_" . date('Ymd_His') . ".csv";
+
+            // HTTPヘッダー出力 (ダウンロードさせるための設定)
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
+            // 出力ストリームを開く
+            $output = fopen('php://output', 'w');
+
+            // BOM付きUTF-8にする (Excel対策)
+            fwrite($output, "\xEF\xBB\xBF");
+
+            // ヘッダー行
+            fputcsv($output, ['id', '交番名', '種別', '電話番号', '団体コード', '郵便番号', '都道府県', '住所']);
+
+            // データ行の出力
+            foreach ($rows as $row) {
+                $line_data = array_map(function ($value) {
+                    // ExcelでのCSVインジェクション対策（先頭が記号の場合にクォートする）
+                    return (is_string($value) && preg_match('/^[\=\+\-\@\t\r\%]/', $value)) ? "'" . $value : $value;
+                }, [
+                    $row['id'],
+                    $row['koban_fullname'],
+                    $row['type'],
+                    $row['phone_number'],
+                    $row['group_code'],
+                    $row['postal_code'],
+                    $row['pref'],
+                    $row['addr3']
+                ]);
+                fputcsv($output, $line_data);
+            }
+
+            fclose($output);
+            exit; // 処理終了（ビューは表示しない）
+
+        } catch (\Exception $e) {
+            // エラー時はトップに戻すか、エラー表示
+            error_log($e->getMessage());
+            header("Location: /");
+            exit;
+        }
+    }
+}

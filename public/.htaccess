@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 実在するファイル（画像、CSS、JSなど）へのアクセスはそのまま通す
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # それ以外はすべて index.php に転送する
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
