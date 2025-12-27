@@ -1,14 +1,17 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\AdminUser;
 use App\Models\AuditLog;
 use App\Utils\View;
 
-class AdminController {
+class AdminController
+{
 
     // 共通の権限チェックメソッド
-    private function requirePermission($type) {
+    private function requirePermission($type)
+    {
         if (!isset($_SESSION['logged_in']) || !hasPermission($type)) {
             // 権限がない場合はトップへ強制送還（あるいは403画面）
             $_SESSION['message'] = "権限がありません。";
@@ -20,7 +23,8 @@ class AdminController {
     /**
      * 操作ログ一覧画面 (旧 view_logs.php)
      */
-    public function logs() {
+    public function logs()
+    {
         $this->requirePermission('log');
 
         $logModel = new AuditLog();
@@ -46,10 +50,11 @@ class AdminController {
     /**
      * ログCSVダウンロード（logsメソッドから呼ばれる）
      */
-    private function downloadLogsCsv($logModel) {
+    private function downloadLogsCsv($logModel)
+    {
         $logs = $logModel->search($_GET, 10000);
         $filename = "audit_log_" . date('Ymd_His') . ".csv";
-        
+
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         $output = fopen('php://output', 'w');
@@ -58,8 +63,13 @@ class AdminController {
 
         foreach ($logs as $row) {
             fputcsv($output, [
-                $row['id'], $row['user_id'], $row['action_time'], $row['action_type'],
-                $row['details'], $row['ip_address'], $row['user_agent'] ?? ''
+                $row['id'],
+                $row['user_id'],
+                $row['action_time'],
+                $row['action_type'],
+                $row['details'],
+                $row['ip_address'],
+                $row['user_agent'] ?? ''
             ]);
         }
         fclose($output);
@@ -70,7 +80,8 @@ class AdminController {
      * ログAPI (旧 api_get_logs.php)
      * JavaScriptから非同期で呼ばれるJSON返却用メソッド
      */
-    public function apiLogs() {
+    public function apiLogs()
+    {
         // APIでもしっかり権限チェック
         if (!isset($_SESSION['logged_in']) || !hasPermission('log')) {
             header('Content-Type: application/json');
@@ -83,7 +94,7 @@ class AdminController {
         $newLogs = $logModel->getNewLogs($last_id, $_GET);
 
         // XSS対策をしてJSONで返す
-        $clean_logs = array_map(function($log) {
+        $clean_logs = array_map(function ($log) {
             return [
                 'id' => h($log['id']),
                 'action_time' => h($log['action_time']),
@@ -103,7 +114,8 @@ class AdminController {
     /**
      * 自分のパスワード変更画面 (旧 change_password.php)
      */
-    public function changePassword() {
+    public function changePassword()
+    {
         if (!isset($_SESSION['logged_in'])) {
             header("Location: /");
             exit;
@@ -114,19 +126,20 @@ class AdminController {
     /**
      * パスワード変更処理 (POST)
      */
-    public function updatePassword() {
+    public function updatePassword()
+    {
         verifyCsrfToken();
         if (!isset($_SESSION['logged_in'])) header("Location: /");
 
         $adminModel = new AdminUser();
         $user_id = $_SESSION['login_id'];
-        
+
         try {
             $user = $adminModel->findById($user_id);
             if ($user && password_verify($_POST['current_pass'], $user['password_hash'])) {
                 $new_hash = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
                 $adminModel->updatePassword($user_id, $new_hash);
-                
+
                 $_SESSION['message'] = "パスワードを変更しました！";
                 logAction($user_id, 'パスワード変更', '成功');
             } else {
@@ -145,9 +158,10 @@ class AdminController {
     /**
      * 管理者一覧・登録・削除画面 (旧 register_admin.php)
      */
-    public function admins() {
+    public function admins()
+    {
         $this->requirePermission('admin');
-        
+
         $adminModel = new AdminUser();
         $message = $_SESSION['message'] ?? '';
         unset($_SESSION['message']); // 一度表示したら消す
@@ -163,7 +177,8 @@ class AdminController {
     /**
      * 管理者保存・削除処理 (POST)
      */
-    public function storeAdmin() {
+    public function storeAdmin()
+    {
         $this->requirePermission('admin');
         verifyCsrfToken();
 
@@ -179,7 +194,7 @@ class AdminController {
                 logAction($_SESSION['login_id'], '管理者削除', "対象: {$_POST['delete_admin_id']}");
             }
         }
-        
+
         // 新規登録処理
         if (isset($_POST['new_admin_id'])) {
             if ($adminModel->exists($_POST['new_admin_id'])) {
@@ -201,9 +216,48 @@ class AdminController {
     }
 
     /**
+     * 管理者一覧をCSVエクスポートする
+     */
+    public function exportAdmins()
+    {
+        // アカウント管理権限があるかチェック
+        $this->requirePermission('admin');
+
+        $adminModel = new \App\Models\AdminUser();
+        $admins = $adminModel->findAll(); // 既存の全取得メソッドを利用
+
+        $filename = "admin_users_" . date('Ymd_His') . ".csv";
+
+        // 出力バッファのクリア
+        if (ob_get_level()) ob_end_clean();
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+        fwrite($output, "\xEF\xBB\xBF"); // Excel用BOM
+
+        // ヘッダー（パスワードハッシュも移行に必要なので含めます）
+        fputcsv($output, ['login_id', 'password_hash', 'role', 'perm_data', 'perm_admin', 'perm_log']);
+
+        foreach ($admins as $row) {
+            fputcsv($output, [
+                $row['login_id'],
+                $row['password_hash'], // 移行時にそのまま使えるようにハッシュを出力
+                $row['role'] ?? 1,
+                $row['perm_data'],
+                $row['perm_admin'],
+                $row['perm_log']
+            ]);
+        }
+        fclose($output);
+        exit;
+    }
+    /**
      * パスワード強制リセット画面 (旧 reset_admin_pass.php)
      */
-    public function resetPasswordForm() {
+    public function resetPasswordForm()
+    {
         $this->requirePermission('admin');
         return View::render('admin/reset_password', [
             'target_id' => $_GET['id'] ?? '',
@@ -214,10 +268,11 @@ class AdminController {
     /**
      * パスワード強制リセット処理 (POST)
      */
-    public function resetPasswordExec() {
+    public function resetPasswordExec()
+    {
         $this->requirePermission('admin');
         verifyCsrfToken();
-        
+
         $adminModel = new AdminUser();
         $target = $_POST['reset_target_id'];
 

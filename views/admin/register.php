@@ -37,9 +37,14 @@
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <h3 style="color: #fff; margin: 0;">現在の管理者一覧</h3>
-            <a href="/admin/password/reset" style="background: #333; color: #ffff00; text-decoration: none; padding: 5px 10px; border: 1px solid #ffff00; border-radius: 4px; font-size: 12px;">
-                🔑 パスワードリセット画面へ
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="/admin/users/export" class="btn btn-warning" style="font-size: 12px; text-decoration: none;">
+                    📥 管理者データをCSV保存
+                </a>
+                <a href="/admin/password/reset" style="background: #333; color: #ffff00; text-decoration: none; padding: 5px 10px; border: 1px solid #ffff00; border-radius: 4px; font-size: 12px;">
+                    🔑 パスワードリセット画面へ
+                </a>
+            </div>
         </div>
 
         <table border="1" style="width: 100%; border-collapse: collapse; border-color: #555;">

@@ -65,7 +65,8 @@ $routes = [
         '/admin/api/logs'        => [AdminController::class, 'apiLogs'],         // ログAPI (JS用)
         '/admin/password/change' => [AdminController::class, 'changePassword'],  // PW変更画面
         '/admin/users'           => [AdminController::class, 'admins'],          // 管理者一覧
-        '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'] // PW強制リセット
+        '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
+        '/admin/users/export' => [AdminController::class, 'exportAdmins'],
     ],
     'POST' => [
         '/koban/store'  => [KobanController::class, 'store'],
