@@ -259,9 +259,10 @@ class KobanController
     public function importCsv()
     {
         verifyCsrfToken();
-        // データ編集権限がなければ終了
-        if (!isset($_SESSION['logged_in']) || !hasPermission('data')) {
-            $_SESSION['message'] = "データ編集の権限がありません。";
+        // 権限チェック：'data' ではなく 'admin'（管理者管理ロール）に変更
+        if (!isset($_SESSION['logged_in']) || !hasPermission('admin')) {
+            $_SESSION['message'] = "エラー：CSVインポートには管理者管理権限が必要です。";
+            logAction($_SESSION['login_id'] ?? 'guest', '権限拒否', 'CSVインポート試行（権限不足）');
             header("Location: /koban/create");
             exit;
         }
@@ -295,10 +296,11 @@ class KobanController
 
                     $count = count($rows);
                     $_SESSION['message'] = "$count 件インポートしました。";
-                    logAction($_SESSION['login_id'], 'CSVインポート', "$count 件登録");
+                    logAction($_SESSION['login_id'], 'CSVインポート', "ファイル名: {$_FILES['csv_file']['name']} / 処理件数: {$count}件");
                 }
             } catch (\Exception $e) {
                 $_SESSION['message'] = "インポートエラー: " . $e->getMessage();
+                logAction($_SESSION['login_id'], 'CSVインポート失敗', $e->getMessage());
             }
         } else {
             $_SESSION['message'] = "ファイルがアップロードされていません。";

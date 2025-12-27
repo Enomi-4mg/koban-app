@@ -126,32 +126,41 @@ class Koban
 
             // ★修正後 (PostgreSQL / SQLite 両対応の書き方)
             // idが重複した際に更新（UPSERT）する構文に変更します
-            $sql = "INSERT INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) 
-                    VALUES (?,?,?,?,?,?,?,?) 
-                    ON CONFLICT (id) DO UPDATE SET 
-                    koban_fullname=EXCLUDED.koban_fullname, type=EXCLUDED.type, phone_number=EXCLUDED.phone_number, 
-                    group_code=EXCLUDED.group_code, postal_code=EXCLUDED.postal_code, pref=EXCLUDED.pref, addr3=EXCLUDED.addr3";
+            $sql = "INSERT INTO koban (id, pref, type, koban_fullname, phone_number, postal_code, group_code, addr3) 
+                VALUES (?,?,?,?,?,?,?,?) 
+                ON CONFLICT (id) DO UPDATE SET 
+                pref=EXCLUDED.pref, type=EXCLUDED.type, koban_fullname=EXCLUDED.koban_fullname, 
+                phone_number=EXCLUDED.phone_number, postal_code=EXCLUDED.postal_code, 
+                group_code=EXCLUDED.group_code, addr3=EXCLUDED.addr3";
+
             $stmt = $db->prepare($sql);
             foreach ($rows as $row) {
-                // 配列の要素数が足りない場合は空文字で埋める
-                $stmt->execute(array_pad($row, 8, ''));
-                // 「無し」や空文字の場合は、PostgreSQLが受け入れ可能な null に置き換える
-                if ($params[4] === '無し' || $params[4] === '') {
-                    $params[4] = null;
+                $params = array_pad($row, 8, ''); // 8列分を確保
+
+                // 1. IDが数値でないヘッダー行などはスキップ
+                if (!is_numeric($params[0])) continue;
+
+                // 2. 画像の順序に基づき、数値型カラム group_code (インデックス6) をクレンジング
+                if (!isset($params[6]) || !preg_match('/^[0-9]+$/', (string)$params[6])) {
+                    $params[6] = null; // 数値以外（「無し」や空文字）ならNULL
                 }
+
+                // 3. 文字列カラムの「無し」をNULLに変換（phone_number:4, postal_code:5）
+                foreach ([4, 5] as $idx) {
+                    if ($params[$idx] === '無し' || $params[$idx] === '' || $params[$idx] === '-') {
+                        $params[$idx] = null;
+                    }
+                }
+
+                $stmt->execute($params);
             }
 
-            foreach ([3, 5] as $idx) {
-                if ($params[$idx] === '無し' || $params[$idx] === '') {
-                    $params[$idx] = null;
-                }
-            }
-            
             Cache::clearByTag('koban_list');
             $db->commit();
             return true;
         } catch (\Exception $e) {
             $db->rollBack();
+            error_log("CSV Import Error: " . $e->getMessage());
             throw $e;
         }
     }
