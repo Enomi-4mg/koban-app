@@ -58,9 +58,8 @@ function hasPermission($type)
 // ログ記録 (Databaseクラスを使う形に少し修正)
 function logAction($userId, $actionType, $details)
 {
-    // 引数から $db を消し、内部で取得するように変更すると使いやすくなります
     try {
-        $db = Database::connect(); // さきほど作ったクラスを利用
+        $db = Database::connect();
         $sql = "INSERT INTO audit_logs (user_id, action_type, details, ip_address, user_agent, action_time) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         $stmt->execute([
@@ -72,7 +71,8 @@ function logAction($userId, $actionType, $details)
             date('Y-m-d H:i:s')
         ]);
     } catch (Exception $e) {
-        // ログ記録失敗はメイン処理を止めないように握りつぶすことが多い
+        // 【修正】エラーをログに出力するように変更
+        error_log("【LOG ERROR】" . $e->getMessage());
     }
 }
 
@@ -126,4 +126,3 @@ function buildSearchQuery($getParams)
         'log_detail' => empty($log_parts) ? "全データ" : implode(' ', $log_parts)
     ];
 }
-?>
