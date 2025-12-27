@@ -309,92 +309,64 @@ class KobanController
     }
 
 
-    /**
-     * CSVエクスポート処理
-     */
-    public function export()
-    {
-        // タイムアウト対策
-        set_time_limit(0);
+   /**
+ * 交番データを移行用カスタムCSVとしてエクスポートする
+ */
+public function export()
+{
+    // タイムアウト対策
+    set_time_limit(0);
+    if (ob_get_level()) ob_end_clean();
 
-        // 出力バッファのクリア（余計な文字が含まれないようにする）
-        if (ob_get_level()) ob_end_clean();
+    try {
+        $kobanModel = new \App\Models\Koban();
+        
+        // ログ記録
+        logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', '移行用カスタム形式で出力');
 
-        try {
-            $kobanModel = new Koban();
+        // 全件取得 (ジェネレータを使用)
+        $rows = $kobanModel->exportAll($_GET, $_GET['sort'] ?? 'id_asc');
 
-            // ログ用文字列の生成
-            $log_detail = "CSVエクスポート: 全件";
-            if (!empty($_GET['keyword'])) {
-                $log_detail = "CSVエクスポート (検索: " . h($_GET['keyword']) . ")";
-            }
+        $filename = "koban_migration_" . date('Ymd_His') . ".csv";
 
-            // ▼▼▼ ログ用詳細情報の構築（indexと同じロジック） ▼▼▼
-            $conditions = [];
-            if (!empty($_GET['keyword'])) {
-                $conditions[] = "KW: " . $_GET['keyword'];
-            }
-            if (!empty($_GET['search_type'])) {
-                $conditions[] = "種別: " . $_GET['search_type'];
-            }
-            if (!empty($_GET['search_pref'])) {
-                $conditions[] = "県: " . $_GET['search_pref'];
-            }
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
+        $output = fopen('php://output', 'w');
+        fwrite($output, "\xEF\xBB\xBF"); // Excel対応用BOM
 
-            $log_detail = empty($conditions) ? "CSV出力: 全件" : "CSV出力 [" . implode(", ", $conditions) . "]";
+        // 指定された順序とカラム名でヘッダーを出力 (使用していないカラムは除外)
+        fputcsv($output, [
+            'id', 
+            'pref', 
+            'type', 
+            'koban_fullname', 
+            'phone_number', 
+            'postal_code', 
+            'group_code', 
+            'addr3'
+        ]);
 
-            // ログ保存
-            logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', $log_detail);
-            // ▲▲▲ 構築終了 ▲▲▲
-
-            // データの取得 (ジェネレータ)
-            $sort = $_GET['sort'] ?? 'id_asc';
-            $rows = $kobanModel->exportAll($_GET, $sort);
-
-            // ファイル名設定
-            $filename = "koban_all_" . date('Ymd_His') . ".csv";
-
-            // HTTPヘッダー出力 (ダウンロードさせるための設定)
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-
-            // 出力ストリームを開く
-            $output = fopen('php://output', 'w');
-
-            // BOM付きUTF-8にする (Excel対策)
-            fwrite($output, "\xEF\xBB\xBF");
-
-            // ヘッダー行
-            fputcsv($output, ['id', '交番名', '種別', '電話番号', '団体コード', '郵便番号', '都道府県', '住所']);
-
-            // データ行の出力
-            foreach ($rows as $row) {
-                $line_data = array_map(function ($value) {
-                    // ExcelでのCSVインジェクション対策（先頭が記号の場合にクォートする）
-                    return (is_string($value) && preg_match('/^[\=\+\-\@\t\r\%]/', $value)) ? "'" . $value : $value;
-                }, [
-                    $row['id'],
-                    $row['koban_fullname'],
-                    $row['type'],
-                    $row['phone_number'],
-                    $row['group_code'],
-                    $row['postal_code'],
-                    $row['pref'],
-                    $row['addr3']
-                ]);
-                fputcsv($output, $line_data);
-            }
-
-            fclose($output);
-            exit; // 処理終了（ビューは表示しない）
-
-        } catch (\Exception $e) {
-            // エラー時はトップに戻すか、エラー表示
-            error_log($e->getMessage());
-            header("Location: /");
-            exit;
+        foreach ($rows as $row) {
+            // データベースのカラム名とCSVのヘッダーを正確にマッピング
+            fputcsv($output, [
+                $row['id'],
+                $row['pref'],
+                $row['type'],
+                $row['koban_fullname'],
+                $row['phone_number'],
+                $row['postal_code'],
+                $row['group_code'],
+                $row['addr3']
+            ]);
         }
+
+        fclose($output);
+        exit;
+
+    } catch (\Exception $e) {
+        error_log($e->getMessage());
+        header("Location: /");
+        exit;
     }
-}
+}}
