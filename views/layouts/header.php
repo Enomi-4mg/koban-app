@@ -10,5 +10,3 @@
 
 <body>
     <h1><?php echo h($page_title ?? 'R6 交番・駐在所検索データベース'); ?></h1>
-
-    <h1><?php echo h($page_title ?? '【開発中】Koban DB v2'); ?></h1>
