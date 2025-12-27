@@ -1,0 +1,14 @@
+# データベースファイル（PostgreSQLへ移行済みのため不要）
+/SQL/opendata.sqlite
+/SQL/log_archives/
+
+# 環境変数（認証情報が含まれるため絶対に公開しない）
+.env
+
+# PHP依存パッケージ（サーバー側で composer install するため不要）
+/vendor/
+
+# OSやエディタのキャッシュファイル
+.DS_Store
+/node_modules/
+.vscode/
