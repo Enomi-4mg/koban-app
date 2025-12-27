@@ -62,17 +62,20 @@ function logAction($userId, $actionType, $details)
         $db = Database::connect();
         $sql = "INSERT INTO audit_logs (user_id, action_type, details, ip_address, user_agent, action_time) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
-        $stmt->execute([
+        // エラーが発生しやすい箇所の可視化
+        if (!$stmt->execute([
             $userId,
             $actionType,
             $details,
             $_SERVER['REMOTE_ADDR'] ?? '',
             $_SERVER['HTTP_USER_AGENT'] ?? '',
             date('Y-m-d H:i:s')
-        ]);
+        ])) {
+            error_log("【DB ERROR】Execute failed: " . implode(" ", $stmt->errorInfo()));
+        }
     } catch (Exception $e) {
-        // 【修正】エラーをログに出力するように変更
-        error_log("【LOG ERROR】" . $e->getMessage());
+        // Renderのログに詳細を表示させる
+        error_log("【LOG CRITICAL ERROR】" . $e->getMessage());
     }
 }
 
