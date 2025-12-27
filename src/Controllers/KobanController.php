@@ -184,14 +184,15 @@ class KobanController
         $kobanModel = new Koban();
 
         $group_code = $_POST['new_group_code'] ?? '';
-        $group_code = empty($group_code) ? '無し' : $group_code;
+        // 【修正】数値型カラムには '無し' ではなく null を入れる
+        $group_code = (empty($group_code) || $group_code === '無し') ? null : $group_code;
 
-        // ▼▼▼ 電話番号の結合と「無し」判定 ▼▼▼
+        // 電話番号や郵便番号が文字列型(VARCHAR/TEXT)なら '無し' でも通りますが、
+        // 念のため統一して null または空文字を検討してください
         $phone = implode('-', array_filter($raw_phone_parts, fn($v) => $v !== ''));
-        $phone = empty($phone) ? '無し' : $phone;
+        $phone = empty($phone) ? null : $phone; // nullを推奨
 
-        // ▼▼▼ 郵便番号の結合と「無し」判定 ▼▼▼
-        $postal = empty($raw_postal) ? '無し' : $raw_postal;
+        $postal = empty($raw_postal) ? null : $raw_postal; // nullを推奨
 
 
         // ▼▼▼ 住所結合処理（元のkoban_form.phpにあったロジックを移植） ▼▼▼
@@ -309,64 +310,64 @@ class KobanController
     }
 
 
-   /**
- * 交番データを移行用カスタムCSVとしてエクスポートする
- */
-public function export()
-{
-    // タイムアウト対策
-    set_time_limit(0);
-    if (ob_get_level()) ob_end_clean();
+    /**
+     * 交番データを移行用カスタムCSVとしてエクスポートする
+     */
+    public function export()
+    {
+        // タイムアウト対策
+        set_time_limit(0);
+        if (ob_get_level()) ob_end_clean();
 
-    try {
-        $kobanModel = new \App\Models\Koban();
-        
-        // ログ記録
-        logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', '移行用カスタム形式で出力');
+        try {
+            $kobanModel = new \App\Models\Koban();
 
-        // 全件取得 (ジェネレータを使用)
-        $rows = $kobanModel->exportAll($_GET, $_GET['sort'] ?? 'id_asc');
+            // ログ記録
+            logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', '移行用カスタム形式で出力');
 
-        $filename = "koban_migration_" . date('Ymd_His') . ".csv";
+            // 全件取得 (ジェネレータを使用)
+            $rows = $kobanModel->exportAll($_GET, $_GET['sort'] ?? 'id_asc');
 
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        
-        $output = fopen('php://output', 'w');
-        fwrite($output, "\xEF\xBB\xBF"); // Excel対応用BOM
+            $filename = "koban_migration_" . date('Ymd_His') . ".csv";
 
-        // 指定された順序とカラム名でヘッダーを出力 (使用していないカラムは除外)
-        fputcsv($output, [
-            'id', 
-            'pref', 
-            'type', 
-            'koban_fullname', 
-            'phone_number', 
-            'postal_code', 
-            'group_code', 
-            'addr3'
-        ]);
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        foreach ($rows as $row) {
-            // データベースのカラム名とCSVのヘッダーを正確にマッピング
+            $output = fopen('php://output', 'w');
+            fwrite($output, "\xEF\xBB\xBF"); // Excel対応用BOM
+
+            // 指定された順序とカラム名でヘッダーを出力 (使用していないカラムは除外)
             fputcsv($output, [
-                $row['id'],
-                $row['pref'],
-                $row['type'],
-                $row['koban_fullname'],
-                $row['phone_number'],
-                $row['postal_code'],
-                $row['group_code'],
-                $row['addr3']
+                'id',
+                'pref',
+                'type',
+                'koban_fullname',
+                'phone_number',
+                'postal_code',
+                'group_code',
+                'addr3'
             ]);
+
+            foreach ($rows as $row) {
+                // データベースのカラム名とCSVのヘッダーを正確にマッピング
+                fputcsv($output, [
+                    $row['id'],
+                    $row['pref'],
+                    $row['type'],
+                    $row['koban_fullname'],
+                    $row['phone_number'],
+                    $row['postal_code'],
+                    $row['group_code'],
+                    $row['addr3']
+                ]);
+            }
+
+            fclose($output);
+            exit;
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            header("Location: /");
+            exit;
         }
-
-        fclose($output);
-        exit;
-
-    } catch (\Exception $e) {
-        error_log($e->getMessage());
-        header("Location: /");
-        exit;
     }
-}}
+}

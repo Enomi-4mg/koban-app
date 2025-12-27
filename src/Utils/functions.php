@@ -59,22 +59,26 @@ function hasPermission($type)
 function logAction($userId, $actionType, $details)
 {
     try {
-        $db = Database::connect();
+        $db = \App\Utils\Database::connect();
         $sql = "INSERT INTO audit_logs (user_id, action_type, details, ip_address, user_agent, action_time) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
-        // エラーが発生しやすい箇所の可視化
-        if (!$stmt->execute([
+
+        $success = $stmt->execute([
             $userId,
             $actionType,
             $details,
             $_SERVER['REMOTE_ADDR'] ?? '',
             $_SERVER['HTTP_USER_AGENT'] ?? '',
             date('Y-m-d H:i:s')
-        ])) {
-            error_log("【DB ERROR】Execute failed: " . implode(" ", $stmt->errorInfo()));
+        ]);
+
+        if (!$success) {
+            // SQLの実行に失敗した場合、エラー内容を Render のログへ出力
+            $errorInfo = $stmt->errorInfo();
+            error_log("【DB ERROR】Log save failed: " . $errorInfo[2]);
         }
-    } catch (Exception $e) {
-        // Renderのログに詳細を表示させる
+    } catch (\Exception $e) {
+        // 接続エラーなどの致命的エラーを記録
         error_log("【LOG CRITICAL ERROR】" . $e->getMessage());
     }
 }

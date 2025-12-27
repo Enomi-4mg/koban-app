@@ -84,7 +84,7 @@ require __DIR__ . '/layouts/header.php';
 
     <div style="text-align: left; margin-bottom: 5px; font-size: 18px;">
         <?php if ($total_count > 0): ?>
-            検索結果： <span style="font-weight: bold; font-size: 24px; color: #1eff1a;"><?php echo $total_count; ?></span> 件
+            検索結果： <span style="font-weight: bold; font-size: 24px; color: #1eff1a;"><strong><?php echo number_format($total_count); ?></strong></span> 件
         <?php else: ?>
             <span style="color: #ff4444;">条件に一致するデータは見つかりませんでした。</span>
         <?php endif; ?>
