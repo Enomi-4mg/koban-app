@@ -81,6 +81,9 @@ class KobanController
             die('権限がありません');
         }
 
+        $message = $_SESSION['message'] ?? '';
+        unset($_SESSION['message']);
+
         $phone_parts = ['', '', ''];
         $postal_parts = ['', ''];
 
@@ -88,7 +91,7 @@ class KobanController
         return View::render('koban/form', [
             'page_title' => '新規データ登録',
             'edit_data'  => [],
-            'message'    => '',
+            'message'    => $message,
             'phone_parts' => $phone_parts,   // ビューへ渡す
             'postal_parts' => $postal_parts, // ビューへ渡す
         ]);
@@ -116,6 +119,11 @@ class KobanController
             die('データが見つかりません');
         }
 
+        // セッションからメッセージを取得して消去（インポートエラー等の表示用）
+        $message = $_SESSION['message'] ?? '';
+        unset($_SESSION['message']);
+
+
         // ▼▼▼ 修正: 「無し」データを空欄に変換するロジックを追加 ▼▼▼
         $keys_to_clean = ['phone_number', 'postal_code', 'group_code'];
         foreach ($keys_to_clean as $key) {
@@ -139,7 +147,7 @@ class KobanController
         return View::render('koban/form', [
             'page_title' => 'データ編集 (ID: ' . $data['id'] . ')',
             'edit_data'  => $data, // 変換済みの$dataを渡す
-            'message'    => '',
+            'message'    => $message,
             'phone_parts' => $phone_parts,
             'postal_parts' => $postal_parts,
         ]);
@@ -295,7 +303,7 @@ class KobanController
                     $kobanModel->bulkInsert($rows);
 
                     $count = count($rows);
-                    $_SESSION['message'] = "$count 件インポートしました。";
+                    $_SESSION['message'] = "インポート完了：{$count}件のデータを処理しました。";
                     logAction($_SESSION['login_id'], 'CSVインポート', "ファイル名: {$_FILES['csv_file']['name']} / 処理件数: {$count}件");
                 }
             } catch (\Exception $e) {
