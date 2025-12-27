@@ -57,7 +57,7 @@ class AuthController
                 exit;
             } else {
                 // ログイン失敗
-                logAction($login_id ?: 'unknown', 'ログイン失敗', 'パスワード違いなど');
+                logAction($login_id ?: 'unknown', 'ログイン失敗', "試行ID: {$login_id} (パスワード不一致または存在しないID)");
 
                 // エラーメッセージをセッションに入れてトップへ戻す
                 $_SESSION['message'] = "IDまたはパスワードが違います。";

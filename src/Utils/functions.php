@@ -55,6 +55,22 @@ function hasPermission($type)
     return !empty($_SESSION['permissions'][$type]);
 }
 
+/**
+ * 接続元の真のIPアドレスを取得する
+ */
+function getRemoteIp() {
+    // Renderやプロキシ環境では X-Forwarded-For を優先する
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // カンマ区切りで複数入ることがあるので最初の1つを取得
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ips[0]);
+    }
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
 // ログ記録 (Databaseクラスを使う形に少し修正)
 function logAction($userId, $actionType, $details)
 {
@@ -67,7 +83,7 @@ function logAction($userId, $actionType, $details)
             $userId,
             $actionType,
             $details,
-            $_SERVER['REMOTE_ADDR'] ?? '',
+            getRemoteIp(),
             $_SERVER['HTTP_USER_AGENT'] ?? '',
             date('Y-m-d H:i:s')
         ]);
