@@ -33,16 +33,17 @@ function verifyCsrfToken()
     }
 }
 
-function sendSecurityHeaders() {
+function sendSecurityHeaders()
+{
     // クリックジャッキング対策（iframeでの表示を禁止）
     header('X-Frame-Options: DENY');
-    
+
     // XSSフィルター機能の強制有効化（古いブラウザ向け）
     header('X-XSS-Protection: 1; mode=block');
-    
+
     // コンテンツタイプのスニッフィング防止（画像に見せかけたスクリプト実行などを防ぐ）
     header('X-Content-Type-Options: nosniff');
-    
+
     // 可能な限りHTTPSを強制（本番環境のみ推奨）
     // header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 }
@@ -75,35 +76,46 @@ function logAction($userId, $actionType, $details)
     }
 }
 
-// 検索クエリ構築ヘルパー（元のcommon.phpからロジックを移動）
+/**
+ * 検索クエリ構築ヘルパー
+ */
 function buildSearchQuery($getParams)
 {
     $where_clauses = [];
     $params = [];
     $log_parts = [];
 
-    $keyword = $getParams['keyword'] ?? '';
-    $type = $getParams['search_type'] ?? '';
-    $pref = $getParams['search_pref'] ?? '';
+    // --- 1. 専用ID検索 (追加) ---
+    // 完全一致で検索するため、高速かつPostgreSQLでも安全です
+    if (!empty($getParams['search_id'])) {
+        $where_clauses[] = "id = ?";
+        $params[] = (int)$getParams['search_id'];
+        $log_parts[] = "ID: " . $getParams['search_id'];
+    }
 
-    if ($keyword !== "") {
+    // --- 2. 都道府県・種別 (既存) ---
+    if (!empty($getParams['search_pref'])) {
+        $where_clauses[] = "pref = ?";
+        $params[] = $getParams['search_pref'];
+        $log_parts[] = "県: " . $getParams['search_pref'];
+    }
+    if (!empty($getParams['search_type'])) {
+        $where_clauses[] = "type = ?";
+        $params[] = $getParams['search_type'];
+        $log_parts[] = "種別: " . $getParams['search_type'];
+    }
+
+    // --- 3. キーワード検索 (修正) ---
+    if (!empty($getParams['keyword'])) {
+        $keyword = $getParams['keyword'];
         $keywords = preg_split('/[\s]+/', mb_convert_kana($keyword, 's', 'UTF-8'));
         foreach ($keywords as $word) {
             if ($word === "") continue;
-            $where_clauses[] = "(pref LIKE ? OR id LIKE ? OR koban_fullname LIKE ? OR addr3 LIKE ?)";
+            // PostgreSQL対応: id を CAST(id AS TEXT) に変更して LIKE を通るようにする
+            $where_clauses[] = "(pref LIKE ? OR CAST(id AS TEXT) LIKE ? OR koban_fullname LIKE ? OR addr3 LIKE ?)";
             $params = array_merge($params, array_fill(0, 4, "%" . $word . "%"));
         }
         $log_parts[] = "KW: $keyword";
-    }
-    if ($type !== "") {
-        $where_clauses[] = "type = ?";
-        $params[] = $type;
-        $log_parts[] = "種別: $type";
-    }
-    if ($pref !== "") {
-        $where_clauses[] = "pref = ?";
-        $params[] = $pref;
-        $log_parts[] = "県: $pref";
     }
 
     $where_sql = !empty($where_clauses) ? "WHERE " . implode(' AND ', $where_clauses) : "";
@@ -114,3 +126,4 @@ function buildSearchQuery($getParams)
         'log_detail' => empty($log_parts) ? "全データ" : implode(' ', $log_parts)
     ];
 }
+?>

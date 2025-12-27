@@ -48,6 +48,9 @@ require __DIR__ . '/layouts/header.php';
         <h2 style="margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 5px; font-size: 20px;">条件検索</h2>
         <form action="" method="get">
             <div class="flex-row" style="justify-content: center;">
+                <input type="number" name="search_id" placeholder="ID"
+                    value="<?php echo h($_GET['search_id'] ?? ''); ?>"
+                    style="width: 80px; background: #fff; color: #000;" min="1">
                 <select name="search_pref">
                     <option value="">都道府県 (すべて)</option>
                     <?php foreach ($pref_list as $p) echo "<option value='{$p}' " . (($_GET['search_pref'] ?? '') == $p ? 'selected' : '') . ">{$p}</option>"; ?>
