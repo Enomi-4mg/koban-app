@@ -1,31 +1,39 @@
 <?php
 namespace App\Utils;
 use PDO;
-use PDOException;
 
 class Database {
+    private static $instance = null;
+
     public static function connect(): PDO {
-        // Renderの環境変数から接続情報を取得
+        if (self::$instance !== null) {
+            return self::$instance;
+        }
+
         $dbUrl = $_ENV['DATABASE_URL'] ?? null;
 
         if ($dbUrl) {
-            // PostgreSQL接続 (Render本番環境)
             $dbopts = parse_url($dbUrl);
             $dsn = sprintf("pgsql:host=%s;port=%d;dbname=%s", 
                 $dbopts["host"], $dbopts["port"], ltrim($dbopts["path"], "/"));
-            $user = $dbopts["user"];
-            $pass = $dbopts["pass"];
-            return new PDO($dsn, $user, $pass, [
+            
+            self::$instance = new PDO($dsn, $dbopts["user"], $dbopts["pass"], [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                // ▼ 重要：永続接続を有効にする
+                PDO::ATTR_PERSISTENT => true,
+                // トランザクションモードのプーラーと相性の良いタイムアウト設定
+                PDO::ATTR_TIMEOUT => 5,
             ]);
         } else {
-            // SQLite接続 (ローカル開発環境)
+            // SQLite (開発用)
             $dbPath = __DIR__ . '/../../SQL/opendata.sqlite';
-            return new PDO("sqlite:" . $dbPath, null, null, [
+            self::$instance = new PDO("sqlite:" . $dbPath, null, null, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
         }
+
+        return self::$instance;
     }
 }
 ?>
