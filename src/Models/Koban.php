@@ -58,7 +58,8 @@ class Koban
     }
 
     // ★追加: 新規登録
-    public function create($data) {
+    public function create($data)
+    {
         $db = Database::connect();
         $sql = "INSERT INTO koban (koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
@@ -74,7 +75,8 @@ class Koban
     }
 
     // ★追加: 更新
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         $db = Database::connect();
         $sql = "UPDATE koban SET koban_fullname=?, type=?, phone_number=?, group_code=?, postal_code=?, pref=?, addr3=? WHERE id=?";
         $stmt = $db->prepare($sql);
@@ -91,11 +93,22 @@ class Koban
     }
 
     // ★追加: CSV一括登録（トランザクション対応）
-    public function bulkInsert($rows) {
+    public function bulkInsert($rows)
+    {
         $db = Database::connect();
         try {
             $db->beginTransaction();
-            $stmt = $db->prepare("INSERT OR REPLACE INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?,?,?,?,?,?,?,?)");
+            // ★修正前 (SQLite専用)
+            // $stmt = $db->prepare("INSERT OR REPLACE INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?,?,?,?,?,?,?,?)");
+
+            // ★修正後 (PostgreSQL / SQLite 両対応の書き方)
+            // idが重複した際に更新（UPSERT）する構文に変更します
+            $sql = "INSERT INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) 
+                    VALUES (?,?,?,?,?,?,?,?) 
+                    ON CONFLICT (id) DO UPDATE SET 
+                    koban_fullname=EXCLUDED.koban_fullname, type=EXCLUDED.type, phone_number=EXCLUDED.phone_number, 
+                    group_code=EXCLUDED.group_code, postal_code=EXCLUDED.postal_code, pref=EXCLUDED.pref, addr3=EXCLUDED.addr3";
+            $stmt = $db->prepare($sql);
             foreach ($rows as $row) {
                 // 配列の要素数が足りない場合は空文字で埋める
                 $stmt->execute(array_pad($row, 8, ''));
@@ -109,13 +122,14 @@ class Koban
     }
 
     // ★追加: CSV出力用に全件を1行ずつ返す (ジェネレータ)
-    public function exportAll($params, $sort) {
+    public function exportAll($params, $sort)
+    {
         $db = Database::connect();
-        
+
         // functions.php の buildSearchQuery を利用
         $searchData = buildSearchQuery($params);
         $sql = "SELECT * FROM koban " . $searchData['sql'];
-        
+
         // ソート順
         $sort_sql = match ($sort) {
             'id_desc' => "ORDER BY id DESC",
