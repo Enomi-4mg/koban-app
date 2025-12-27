@@ -220,38 +220,44 @@ class AdminController
      */
     public function exportAdmins()
     {
-        // アカウント管理権限があるかチェック
+        // 「admin」権限（アカウント管理）があるかチェックします
         $this->requirePermission('admin');
 
-        $adminModel = new \App\Models\AdminUser();
-        $admins = $adminModel->findAll(); // 既存の全取得メソッドを利用
+        // Supabase移行に必要なすべてのカラムを直接取得します
+        $db = \App\Utils\Database::connect(); //
+        $sql = "SELECT login_id, password_hash, role, failure_count, locked_until, perm_data, perm_admin, perm_log FROM admin_users";
+        $stmt = $db->query($sql);
+        $admins = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        $filename = "admin_users_" . date('Ymd_His') . ".csv";
+        $filename = "admin_users_migration_" . date('Ymd_His') . ".csv";
 
-        // 出力バッファのクリア
+        // 出力バッファをクリアし、余計な文字が混入するのを防ぎます
         if (ob_get_level()) ob_end_clean();
 
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
         $output = fopen('php://output', 'w');
-        fwrite($output, "\xEF\xBB\xBF"); // Excel用BOM
+        // Excelで開いても文字化けしないようBOMを付与します
+        fwrite($output, "\xEF\xBB\xBF");
 
-        // ヘッダー（パスワードハッシュも移行に必要なので含めます）
-        fputcsv($output, ['login_id', 'password_hash', 'role', 'perm_data', 'perm_admin', 'perm_log']);
+        // 指定されたヘッダーを出力します
+        fputcsv($output, ['login_id', 'password_hash', 'role', 'failure_count', 'locked_until', 'perm_data', 'perm_admin', 'perm_log']);
 
         foreach ($admins as $row) {
             fputcsv($output, [
                 $row['login_id'],
-                $row['password_hash'], // 移行時にそのまま使えるようにハッシュを出力
+                $row['password_hash'],
                 $row['role'] ?? 1,
-                $row['perm_data'],
-                $row['perm_admin'],
-                $row['perm_log']
+                $row['failure_count'] ?? 0,
+                $row['locked_until'] ?? '',
+                $row['perm_data'] ?? 0,
+                $row['perm_admin'] ?? 0,
+                $row['perm_log'] ?? 0
             ]);
         }
         fclose($output);
-        exit;
+        exit; // ビューを表示せずに終了します
     }
     /**
      * パスワード強制リセット画面 (旧 reset_admin_pass.php)
