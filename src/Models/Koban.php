@@ -11,10 +11,9 @@ class Koban
     // 検索・一覧取得メソッド
     public function search($params, $limit, $offset, $sort)
     {
-        // 1. 検索条件からユニークなキャッシュキーを作成
         $cacheKey = "koban_search_" . json_encode($params) . "_{$limit}_{$offset}_{$sort}";
 
-        // 2. キャッシュがあればそれを返す
+        // 'koban_list' というタグを付けて保存
         $cached = Cache::get($cacheKey);
         if ($cached !== null) return $cached;
 
@@ -37,7 +36,7 @@ class Koban
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // 結果をキャッシュに保存
-        Cache::set($cacheKey, $result);
+        Cache::set($cacheKey, $result, 'koban_list');
         return $result;
     }
 
@@ -60,7 +59,7 @@ class Koban
     // 削除メソッド
     public function delete($id)
     {
-        Cache::clear();
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $stmt = $db->prepare("DELETE FROM koban WHERE id = ?");
         return $stmt->execute([$id]);
@@ -78,7 +77,7 @@ class Koban
     // ★追加: 新規登録
     public function create($data)
     {
-        Cache::clear();
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $sql = "INSERT INTO koban (koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
@@ -96,7 +95,7 @@ class Koban
     // ★追加: 更新
     public function update($id, $data)
     {
-        Cache::clear();
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $sql = "UPDATE koban SET koban_fullname=?, type=?, phone_number=?, group_code=?, postal_code=?, pref=?, addr3=? WHERE id=?";
         $stmt = $db->prepare($sql);
@@ -133,8 +132,8 @@ class Koban
                 // 配列の要素数が足りない場合は空文字で埋める
                 $stmt->execute(array_pad($row, 8, ''));
             }
+            Cache::clearByTag('koban_list');
             $db->commit();
-            Cache::clear();
             return true;
         } catch (\Exception $e) {
             $db->rollBack();
