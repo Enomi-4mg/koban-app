@@ -6,7 +6,8 @@ use PDOException;
 class Database {
     public static function connect(): PDO {
         // Renderの環境変数から接続情報を取得
-        $dbUrl = $_ENV['DATABASE_URL'] ?? null;
+        // $dbUrl = $_ENV['DATABASE_URL'] ?? null;
+        $dbUrl = false;
 
         if ($dbUrl) {
             // PostgreSQL接続 (Render本番環境)
