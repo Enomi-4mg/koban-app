@@ -24,10 +24,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-# 8. 権限の設定 (www-dataユーザーがファイルを読み書きできるようにする)
-# 全体を読み取り可能にし、書き込みが必要なディレクトリに権限を付与します
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# 8. 権限の設定
+# キャッシュディレクトリを作成し、所有者を www-data に変更
+RUN mkdir -p /var/www/html/storage/cache \
+    && chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage
 
 # 9. 依存関係のインストール
 RUN composer install --no-dev --optimize-autoloader

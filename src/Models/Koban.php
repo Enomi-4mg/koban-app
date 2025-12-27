@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Utils\Database;
+use App\Utils\Cache;
 use PDO;
 
 class Koban
@@ -10,6 +11,12 @@ class Koban
     // 検索・一覧取得メソッド
     public function search($params, $limit, $offset, $sort)
     {
+        $cacheKey = "koban_search_" . json_encode($params) . "_{$limit}_{$offset}_{$sort}";
+
+        // 'koban_list' というタグを付けて保存
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) return $cached;
+
         $db = Database::connect();
 
         // 検索条件の構築 (functions.phpの関数を利用)
@@ -26,23 +33,33 @@ class Koban
 
         $stmt = $db->prepare($sql);
         $stmt->execute($searchData['params']);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 結果をキャッシュに保存
+        Cache::set($cacheKey, $result, 'koban_list');
+        return $result;
     }
 
     // 総件数を取得するメソッド（ページネーション用）
     public function count($params)
     {
+        $cacheKey = "koban_count_" . json_encode($params);
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) return $cached;
+
         $db = Database::connect();
         $searchData = buildSearchQuery($params);
 
         $stmt = $db->prepare("SELECT COUNT(*) FROM koban " . $searchData['sql']);
-        $stmt->execute($searchData['params']);
-        return $stmt->fetchColumn();
+        $result = $stmt->execute($searchData['params']);
+        Cache::set($cacheKey, $result);
+        return $result;
     }
 
     // 削除メソッド
     public function delete($id)
     {
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $stmt = $db->prepare("DELETE FROM koban WHERE id = ?");
         return $stmt->execute([$id]);
@@ -60,6 +77,7 @@ class Koban
     // ★追加: 新規登録
     public function create($data)
     {
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $sql = "INSERT INTO koban (koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
@@ -77,6 +95,7 @@ class Koban
     // ★追加: 更新
     public function update($id, $data)
     {
+        Cache::clearByTag('koban_list');
         $db = Database::connect();
         $sql = "UPDATE koban SET koban_fullname=?, type=?, phone_number=?, group_code=?, postal_code=?, pref=?, addr3=? WHERE id=?";
         $stmt = $db->prepare($sql);
@@ -113,6 +132,7 @@ class Koban
                 // 配列の要素数が足りない場合は空文字で埋める
                 $stmt->execute(array_pad($row, 8, ''));
             }
+            Cache::clearByTag('koban_list');
             $db->commit();
             return true;
         } catch (\Exception $e) {
