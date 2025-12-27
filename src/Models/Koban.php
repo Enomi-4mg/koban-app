@@ -135,7 +135,18 @@ class Koban
             foreach ($rows as $row) {
                 // 配列の要素数が足りない場合は空文字で埋める
                 $stmt->execute(array_pad($row, 8, ''));
+                // 「無し」や空文字の場合は、PostgreSQLが受け入れ可能な null に置き換える
+                if ($params[4] === '無し' || $params[4] === '') {
+                    $params[4] = null;
+                }
             }
+
+            foreach ([3, 5] as $idx) {
+                if ($params[$idx] === '無し' || $params[$idx] === '') {
+                    $params[$idx] = null;
+                }
+            }
+            
             Cache::clearByTag('koban_list');
             $db->commit();
             return true;
