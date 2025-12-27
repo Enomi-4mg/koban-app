@@ -51,7 +51,7 @@ class Koban
         $searchData = buildSearchQuery($params);
 
         $stmt = $db->prepare("SELECT COUNT(*) FROM koban " . $searchData['sql']);
-        $result = $stmt->execute($searchData['params']);
+        $result = (int)$stmt->fetchColumn();
         Cache::set($cacheKey, $result);
         return $result;
     }
