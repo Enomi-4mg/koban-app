@@ -62,6 +62,8 @@ $routes = [
         '/koban/edit'   => [KobanController::class, 'edit'],
         '/admin/login'  => [AuthController::class, 'showLoginForm'],
         '/koban/export' => [KobanController::class, 'export'],
+        '/auth/login'   => [AuthController::class, 'showLoginForm'], // 追加
+        '/register' => [App\Controllers\AuthController::class, 'showRegisterForm'],
 
         // ▼▼▼ 管理者用ルート (追加) ▼▼▼
         '/admin/logs'            => [AdminController::class, 'logs'],            // ログ一覧
@@ -79,6 +81,7 @@ $routes = [
         '/auth/login'   => [AuthController::class, 'login'],
         '/auth/logout'  => [AuthController::class, 'logout'],
         '/koban/import' => [KobanController::class, 'importCsv'],
+        '/register' => [App\Controllers\AuthController::class, 'register'],
 
         // ▼▼▼ 管理者用ルート (追加) ▼▼▼
         '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行

@@ -3,7 +3,24 @@ require __DIR__ . '/layouts/header.php';
 ?>
 
 <div class="container">
-
+    <div class="box">
+        <?php if (!isset($_SESSION['logged_in'])): ?>
+            <div style="text-align: right; display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
+                <span style="color: #666; font-size: 0.8em; font-family: monospace;">GUEST_ACCESS_ONLY >></span>
+                <a href="/auth/login" class="btn btn-secondary" style="border-color: #1eff1a; color: #1eff1a;">ログイン</a>
+                <a href="/register" class="btn btn-primary">サインアップ</a>
+            </div>
+        <?php else: ?>
+            <div style="text-align: right;">
+                <span style="color: #1eff1a;">SYSTEM_USER: <?php echo h($_SESSION['login_id']); ?></span> |
+                <a href="/admin/password/change" style="color: #fff;">[PW変更]</a> |
+                <form action="/auth/logout" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                    <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>
             <form method="post" action="/auth/login" style="text-align: right;">
@@ -13,6 +30,9 @@ require __DIR__ . '/layouts/header.php';
                 <input type="password" name="login_pass" placeholder="PASS" size="10">
                 <input type="submit" value="ログイン" class="btn-primary">
             </form>
+            <div style="text-align: right; margin-top: 10px;">
+                <a href="/register" style="color: #1eff1a; font-size: 13px; text-decoration: underline;">新規アカウント作成はこちら</a>
+            </div>
         <?php else: ?>
             <div style="border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 10px; text-align: right;">
                 <span style="color: #1eff1aff;">ログイン中: <?php echo h($_SESSION['login_id']); ?></span> |

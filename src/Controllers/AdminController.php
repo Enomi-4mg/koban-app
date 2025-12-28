@@ -295,6 +295,38 @@ class AdminController
         }
         exit;
     }
+
+    /**
+     * 申請の承認または却下
+     */
+    public function handleRequest()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        $targetId = $_POST['target_admin_id'];
+        $action = $_POST['request_action']; // 'approve' or 'reject'
+
+        $db = \App\Utils\Database::connect();
+
+        if ($action === 'approve') {
+            // 承認：データ管理権限(perm_data)を付与してステータスをクリア
+            $stmt = $db->prepare("UPDATE admin_users SET perm_data = 1, request_status = NULL WHERE login_id = ?");
+            $stmt->execute([$targetId]);
+            logAction($_SESSION['login_id'], '申請承認', "対象: $targetId");
+            $_SESSION['message'] = "ユーザー $targetId の権限を承認しました。";
+        } else {
+            // 却下：ステータスを rejected に変更
+            $stmt = $db->prepare("UPDATE admin_users SET request_status = 'rejected' WHERE login_id = ?");
+            $stmt->execute([$targetId]);
+            logAction($_SESSION['login_id'], '申請却下', "対象: $targetId");
+            $_SESSION['message'] = "ユーザー $targetId の申請を却下しました。";
+        }
+
+        header("Location: /admin/users");
+        exit;
+    }
+
     /**
      * 管理者一覧をCSVエクスポートする
      */

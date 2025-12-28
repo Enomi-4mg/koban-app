@@ -29,6 +29,14 @@
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
+                        <td style="padding: 12px 10px;">
+                            <?php echo h($admin['login_id']); ?>
+                            <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
+                                <span style="background: #ffff00; color: #000; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; font-weight: bold;">
+                                    PENDING REQUEST
+                                </span>
+                            <?php endif; ?>
+                        </td>
                         <td style="padding: 10px; text-align: center;">
                             <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail"
                                 style="text-decoration: none; padding: 4px 12px; font-size: 0.85em; display: inline-block;">詳細</a>

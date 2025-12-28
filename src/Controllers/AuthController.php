@@ -104,4 +104,110 @@ class AuthController
         header("Location: /");
         exit;
     }
+
+    /**
+     * 新規登録画面の表示
+     */
+    public function showRegisterForm()
+    {
+        // ログイン済みの場合はトップへ
+        if (isset($_SESSION['logged_in'])) {
+            header("Location: /");
+            exit;
+        }
+
+        return \App\Utils\View::render('auth/register', [
+            'page_title' => 'SIGN UP - 新規アカウント作成',
+            'message' => getFlashMessage()
+        ]);
+    }
+
+    /**
+     * 登録処理の実行
+     */
+    public function register()
+    {
+        verifyCsrfToken();
+
+        $login_id = $_POST['login_id'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // 1. バリデーション (Validatorクラスの再利用)
+        list($idValid, $idMsg) = \App\Utils\Validator::validateLoginId($login_id);
+        if (!$idValid) {
+            $_SESSION['message'] = $idMsg;
+            header("Location: /register");
+            exit;
+        }
+
+        list($pwValid, $pwMsg) = \App\Utils\Validator::validatePassword($password);
+        if (!$pwValid) {
+            $_SESSION['message'] = $pwMsg;
+            header("Location: /register");
+            exit;
+        }
+
+        $adminModel = new \App\Models\AdminUser();
+
+        // 2. ID重複チェック
+        if ($adminModel->exists($login_id)) {
+            $_SESSION['message'] = "このIDは既に使用されています。";
+            header("Location: /register");
+            exit;
+        }
+
+        // 3. 保存 (一般ユーザーは全権限 0 で登録)
+        $perms = [
+            'data'  => 0,
+            'admin' => 0,
+            'log'   => 0
+        ];
+
+        if ($adminModel->create($login_id, $password, $perms)) {
+            logAction($login_id, '自己登録', "新規アカウント作成（一般ユーザー）");
+            $_SESSION['message'] = "アカウントを作成しました。ログインしてください。";
+            header("Location: /"); // トップページのログインフォームへ
+        } else {
+            $_SESSION['message'] = "登録中にエラーが発生しました。";
+            header("Location: /register");
+        }
+        exit;
+    }
+
+    /**
+     * ログイン専用画面の表示
+     */
+    public function showLoginForm()
+    {
+        if (isset($_SESSION['logged_in'])) {
+            header("Location: /");
+            exit;
+        }
+
+        return \App\Utils\View::render('auth/login', [
+            'page_title' => 'ACCESS GRANTED - ログイン',
+            'message' => getFlashMessage() // functions.php の関数
+        ]);
+    }
+
+    /**
+     * 権限昇格の申請を実行
+     */
+    public function submitRequest()
+    {
+        verifyCsrfToken();
+        if (!isset($_SESSION['logged_in'])) header("Location: /");
+
+        $userId = $_SESSION['login_id'];
+        $message = $_POST['request_reason'] ?? '';
+
+        $db = \App\Utils\Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET request_status = 'pending', request_message = ?, requested_at = ? WHERE login_id = ?");
+        $stmt->execute([$message, date('Y-m-d H:i:s'), $userId]);
+
+        logAction($userId, '権限申請', "理由: $message");
+        $_SESSION['message'] = "権限昇格を申請しました。管理者の承認をお待ちください。";
+        header("Location: /");
+        exit;
+    }
 }
