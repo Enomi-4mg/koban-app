@@ -8,7 +8,7 @@ require __DIR__ . '/layouts/header.php';
             <div style="display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
                 <div style="text-align: left; margin-right: auto;">
                     <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
-                    <p style="margin: 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。</p>
+                    <p style="margin: 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
                 </div>
                 <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
                 <a href="/auth/login" class="btn btn-secondary" style="min-width: 100px; text-align: center;">ログイン</a>

@@ -1,4 +1,46 @@
-/* オリジナルの雰囲気を再現 */
+:root {
+    /* カラーパレット */
+    --cyber-green: #1eff1a;
+    --cyber-green-dim: rgba(30, 255, 26, 0.2);
+    --cyber-green-glow: rgba(30, 255, 26, 0.5);
+    --cyber-bg: #010000;
+    --cyber-box-bg: #1a1a1a;
+    --cyber-red: #ff4444;
+    --cyber-yellow: #ffff00;
+    --cyber-blue: #00ccff;
+    --cyber-gray: #333;
+    --cyber-text-dim: #888;
+    
+    /* 共通設定 */
+    --cyber-border: 1px solid var(--cyber-gray);
+    --cyber-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    --cyber-glow-shadow: 0 0 10px var(--cyber-green-glow);
+    --transition-speed: 0.3s;
+}
+
+/* 変数を使用した既存セレクタの更新例 */
+body {
+    background-color: var(--cyber-bg);
+    color: var(--cyber-green);
+    transition: background-color var(--transition-speed);
+}
+
+.box {
+    background-color: var(--cyber-box-bg);
+    border: var(--cyber-border);
+    box-shadow: var(--cyber-shadow);
+}
+
+.btn-primary {
+    background-color: var(--cyber-green);
+    color: #000;
+    transition: box-shadow var(--transition-speed);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--cyber-glow-shadow);
+}
+
 body {
     background-color: #010000;
     color: #1eff1a;

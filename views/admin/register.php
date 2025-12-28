@@ -17,6 +17,7 @@
                     <th style="width: 60px;">管理</th>
                     <th style="width: 60px;">ログ</th>
                     <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
+                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
                 </tr>
             </thead>
             <tbody>
