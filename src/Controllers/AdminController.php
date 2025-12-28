@@ -12,8 +12,8 @@ class AdminController
     // 共通の権限チェックメソッド
     private function requirePermission($type)
     {
+        // 文字列の代わりに定数を受け取るようにし、セッションを確認
         if (!isset($_SESSION['logged_in']) || !hasPermission($type)) {
-            // 権限がない場合はトップへ強制送還（あるいは403画面）
             $_SESSION['message'] = "権限がありません。";
             header("Location: /");
             exit;
@@ -25,7 +25,7 @@ class AdminController
      */
     public function logs()
     {
-        $this->requirePermission('log');
+        $this->requirePermission(PERM_LOG);
 
         $logModel = new AuditLog();
 
@@ -83,7 +83,7 @@ class AdminController
     public function apiLogs()
     {
         // APIでもしっかり権限チェック
-        if (!isset($_SESSION['logged_in']) || !hasPermission('log')) {
+        if (!isset($_SESSION['logged_in']) || !hasPermission(PERM_LOG)) {
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Forbidden']);
             exit;
@@ -160,7 +160,7 @@ class AdminController
      */
     public function admins()
     {
-        $this->requirePermission('admin');
+        $this->requirePermission(PERM_ADMIN);
 
         $adminModel = new AdminUser();
         $message = $_SESSION['message'] ?? '';
@@ -179,7 +179,7 @@ class AdminController
      */
     public function storeAdmin()
     {
-        $this->requirePermission('admin');
+        $this->requirePermission(PERM_ADMIN);
         verifyCsrfToken();
 
         $adminModel = new AdminUser();
@@ -221,7 +221,7 @@ class AdminController
     public function exportAdmins()
     {
         // 「admin」権限（アカウント管理）があるかチェックします
-        $this->requirePermission('admin');
+        $this->requirePermission(PERM_ADMIN);
 
         // Supabase移行に必要なすべてのカラムを直接取得します
         $db = \App\Utils\Database::connect(); //
@@ -264,7 +264,7 @@ class AdminController
      */
     public function resetPasswordForm()
     {
-        $this->requirePermission('admin');
+        $this->requirePermission(PERM_ADMIN);
         return View::render('admin/reset_password', [
             'target_id' => $_GET['id'] ?? '',
             'message' => $_SESSION['message'] ?? ''
@@ -276,7 +276,7 @@ class AdminController
      */
     public function resetPasswordExec()
     {
-        $this->requirePermission('admin');
+        $this->requirePermission(PERM_ADMIN);
         verifyCsrfToken();
 
         $adminModel = new AdminUser();
@@ -292,6 +292,56 @@ class AdminController
         }
 
         header("Location: /admin/password/reset"); // 画面更新
+        exit;
+    }
+
+    /**
+     * 管理者詳細・権限編集画面の表示
+     */
+    public function editAdmin()
+    {
+        $this->requirePermission(PERM_ADMIN);
+
+        $login_id = $_GET['id'] ?? '';
+        $adminModel = new AdminUser();
+        $targetAdmin = $adminModel->findById($login_id); //
+
+        if (!$targetAdmin) {
+            $_SESSION['message'] = "エラー：対象の管理者が見つかりません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        return View::render('admin/edit_admin', [
+            'admin' => $targetAdmin,
+            'message' => $_SESSION['message'] ?? ''
+        ]);
+    }
+
+    /**
+     * 管理者権限の更新実行 (POST)
+     */
+    public function updateAdminPerms()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken(); //
+
+        $login_id = $_POST['target_admin_id'] ?? '';
+        $perms = [
+            'data'  => isset($_POST['perm_data']) ? 1 : 0,
+            'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+            'log'   => isset($_POST['perm_log']) ? 1 : 0
+        ];
+
+        $adminModel = new AdminUser();
+        if ($adminModel->updatePermissions($login_id, $perms)) {
+            $_SESSION['message'] = "管理者「{$login_id}」の権限を更新しました。";
+            logAction($_SESSION['login_id'], '権限変更', "対象: {$login_id} / Data:{$perms['data']}, Admin:{$perms['admin']}, Log:{$perms['log']}"); //
+        } else {
+            $_SESSION['message'] = "エラー：更新に失敗しました。";
+        }
+
+        header("Location: /admin/users");
         exit;
     }
 }

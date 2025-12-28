@@ -74,7 +74,11 @@
                     <td style="padding: 8px; text-align: center;">
                         <?php if ($admin['login_id'] !== $_SESSION['login_id']): ?>
                             <div style="display: flex; gap: 5px; justify-content: center;">
-                                <a href="/admin/password/reset?id=<?php echo h($admin['login_id']); ?>" style="background: #ffff00; color: #000; text-decoration: none; padding: 3px 8px; font-size: 11px; border-radius: 3px;">PW変更</a>
+                                <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>"
+                                    style="background: #00ccff; color: #000; text-decoration: none; padding: 3px 8px; font-size: 11px; border-radius: 3px; font-weight: bold;">
+                                    詳細
+                                </a>
+
                                 <form method="post" action="/admin/users/store" onsubmit="return confirm('本当に「<?php echo h($admin['login_id']); ?>」を削除しますか？');">
                                     <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
                                     <input type="hidden" name="delete_admin_id" value="<?php echo h($admin['login_id']); ?>">

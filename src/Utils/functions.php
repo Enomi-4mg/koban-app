@@ -1,6 +1,16 @@
 <?php
-// 名前空間は定義せず、グローバル関数として扱います
+// 権限管理用の定数定義
+const PERM_DATA  = 'data';
+const PERM_ADMIN = 'admin';
+const PERM_LOG   = 'log';
 
+/**
+ * 権限チェックヘルパー (定数対応版)
+ * @param string|array $types チェックしたい権限(定数)またはその配列
+ * @return bool
+ */
+
+// 名前空間は定義せず、グローバル関数として扱います
 use App\Utils\Database;
 
 define('PAGE_LIMIT', 100);
@@ -49,10 +59,19 @@ function sendSecurityHeaders()
 }
 
 // 権限チェックヘルパー
-function hasPermission($type)
+function hasPermission($types)
 {
     if (!isset($_SESSION['permissions'])) return false;
-    return !empty($_SESSION['permissions'][$type]);
+
+    // 配列でない場合は配列に変換してループ処理
+    $types = (array)$types;
+    foreach ($types as $type) {
+        // セッション内に該当する権限フラグが1であればtrueを返す
+        if (!empty($_SESSION['permissions'][$type])) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**

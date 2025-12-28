@@ -76,18 +76,34 @@ class AdminUser
         return $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ★追加: 管理者削除
+    // 管理者削除
     public function delete($login_id) {
         $db = Database::connect();
         $stmt = $db->prepare("DELETE FROM admin_users WHERE login_id = ?");
         return $stmt->execute([$login_id]);
     }
     
-    // ★追加: ID重複チェック用
+    // ID重複チェック用
     public function exists($login_id) {
         $db = Database::connect();
         $stmt = $db->prepare("SELECT COUNT(*) FROM admin_users WHERE login_id = ?");
         $stmt->execute([$login_id]);
         return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * 特定の管理者の権限フラグのみを更新する
+     */
+    public function updatePermissions($login_id, $perms)
+    {
+        $db = Database::connect();
+        $sql = "UPDATE admin_users SET perm_data = ?, perm_admin = ?, perm_log = ? WHERE login_id = ?";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $perms['data'],
+            $perms['admin'],
+            $perms['log'],
+            $login_id
+        ]);
     }
 }

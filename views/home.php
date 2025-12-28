@@ -20,11 +20,11 @@ require __DIR__ . '/layouts/header.php';
             <div style="border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 10px; text-align: right;">
                 <span style="color: #1eff1aff;">ログイン中: <?php echo h($_SESSION['login_id']); ?></span> |
 
-                <?php if (hasPermission('log')): ?>
+                <?php if (hasPermission(PERM_LOG)): ?>
                     <a href="/admin/logs" style="color: #00ccff;">[操作ログ監査]</a> |
                 <?php endif; ?>
 
-                <?php if (hasPermission('admin')): ?>
+                <?php if (hasPermission(PERM_ADMIN)): ?>
                     <a href="/admin/users" style="color: #ffff00;">[管理者登録]</a> |
                 <?php endif; ?>
 
@@ -35,7 +35,7 @@ require __DIR__ . '/layouts/header.php';
             </div>
 
             <div style="text-align: left;">
-                <?php if (hasPermission('data')): ?>
+                <?php if (hasPermission(PERM_DATA)): ?>
                     <a href="/koban/create" class="btn-primary btn" style="padding: 10px 20px;">＋ 新規データ追加 / CSV登録</a>
                 <?php else: ?>
                     <span style="color: #888;">※データ編集権限がありません</span>

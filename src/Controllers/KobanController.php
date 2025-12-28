@@ -77,7 +77,7 @@ class KobanController
     public function create()
     {
         // 権限チェック (functions.phpの関数)
-        if (!hasPermission('data')) {
+        if (!hasPermission(PERM_DATA)) {
             die('権限がありません');
         }
 
@@ -103,7 +103,7 @@ class KobanController
     public function edit()
     {
         // 1. 権限チェックとID取得 (変更なし)
-        if (!hasPermission('data')) {
+        if (!hasPermission(PERM_DATA)) {
             die('権限がありません');
         }
 
@@ -161,7 +161,7 @@ class KobanController
         // CSRFトークンチェック (セキュリティ対策)
         verifyCsrfToken();
 
-        if (!hasPermission('data')) {
+        if (!hasPermission(PERM_DATA)) {
             die('権限がありません');
         }
 
@@ -245,7 +245,7 @@ class KobanController
     public function delete()
     {
         verifyCsrfToken();
-        if (!hasPermission('data')) {
+        if (!hasPermission(PERM_DATA)) {
             die('権限がありません');
         }
 
@@ -268,7 +268,7 @@ class KobanController
     {
         verifyCsrfToken();
         // 権限チェック：'data' ではなく 'admin'（管理者管理ロール）に変更
-        if (!isset($_SESSION['logged_in']) || !hasPermission('admin')) {
+        if (!isset($_SESSION['logged_in']) || !hasPermission(PERM_ADMIN)) {
             $_SESSION['message'] = "エラー：CSVインポートには管理者管理権限が必要です。";
             logAction($_SESSION['login_id'] ?? 'guest', '権限拒否', 'CSVインポート試行（権限不足）');
             header("Location: /koban/create");
