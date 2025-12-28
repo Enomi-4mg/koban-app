@@ -156,34 +156,23 @@ class AdminController
     }
 
     /**
-     * 管理者一覧・登録・削除画面 (旧 register_admin.php)
+     * 管理者一覧 (フォームを除去)
      */
     public function admins()
     {
         $this->requirePermission(PERM_ADMIN);
-
         $adminModel = new AdminUser();
-
         $all_admins = $adminModel->findAll();
 
-        // ▼▼▼ 追加：特権アカウントの隠蔽ロジック ▼▼▼
-        $current_user = $_SESSION['login_id'];
-
-        $filtered_list = array_filter($all_admins, function ($admin) use ($current_user) {
-            // 1. 自分が特権アカウントなら、すべて（自分を含む）を表示
-            if (isProtectedAdmin($current_user)) {
-                return true;
-            }
-            // 2. 自分以外が閲覧している場合、特権アカウント（SUPER_ADMIN_ID）を除外
-            return !isProtectedAdmin($admin['login_id']);
+        // 特権アカウントの隠蔽
+        $filtered = array_filter($all_admins, function ($a) {
+            return isCurrentSuperAdmin() || !isProtectedAdmin($a['login_id']);
         });
-        // ▲▲▲ 追加ここまで ▲▲▲
 
-        return View::render('admin/register', [
-            'admin_list' => $filtered_list,
+        return View::render('admin/register', [ // ファイル名は既存のまま一覧として使用
+            'admin_list' => $filtered
         ]);
     }
-
     /**
      * 管理者保存・削除処理 (POST)
      */
@@ -382,6 +371,41 @@ class AdminController
         }
 
         header("Location: /admin/password/reset"); // 画面更新
+        exit;
+    }
+
+    /**
+     * パスワードリセット実行
+     */
+    public function resetPassword()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "ACCESS_DENIED: SuperAdmin authority required.";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        $targetId = $_POST['target_admin_id'] ?? '';
+        $newPass = $_POST['new_password'] ?? '';
+
+        if (strlen($newPass) < 8) {
+            $_SESSION['message'] = "ERROR: Password must be at least 8 chars.";
+            header("Location: /admin/users/edit?id=" . urlencode($targetId));
+            exit;
+        }
+
+        $adminModel = new AdminUser();
+        $hash = password_hash($newPass, PASSWORD_DEFAULT);
+
+        if ($adminModel->updatePassword($targetId, $hash)) {
+            logAction($_SESSION['login_id'], 'PW_RESET', "Target: $targetId");
+            $_SESSION['message'] = "SUCCESS: Password updated for $targetId";
+        }
+
+        header("Location: /admin/users");
         exit;
     }
 

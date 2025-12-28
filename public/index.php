@@ -67,11 +67,11 @@ $routes = [
         '/admin/logs'            => [AdminController::class, 'logs'],            // ログ一覧
         '/admin/api/logs'        => [AdminController::class, 'apiLogs'],         // ログAPI (JS用)
         '/admin/password/change' => [AdminController::class, 'changePassword'],  // PW変更画面
-        '/admin/users'           => [AdminController::class, 'admins'],          // 管理者一覧
         '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
         '/admin/users/export' => [AdminController::class, 'exportAdmins'],
-        '/admin/users/edit' => [AdminController::class, 'editAdmin'],
-        '/admin/users/create' => [AdminController::class, 'showRegisterForm'], // 登録画面
+        '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
+        '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
+        '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
     ],
     'POST' => [
         '/koban/store'  => [KobanController::class, 'store'],
@@ -84,8 +84,10 @@ $routes = [
         '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行
         '/admin/users/store'     => [AdminController::class, 'storeAdmin'],      // 管理者登録・削除
         '/admin/password/reset'  => [AdminController::class, 'resetPasswordExec'], // PW強制リセット実行
-        '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'],
-        '/admin/users/register' => [AdminController::class, 'registerUser'],  // 登録実行
+        '/admin/users/register'  => [AdminController::class, 'registerUser'],    // 新規登録実行
+        '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'], // 権限更新
+        '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
+        '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
     ]
 ];
 
