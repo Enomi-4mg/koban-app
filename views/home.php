@@ -5,15 +5,14 @@ require __DIR__ . '/layouts/header.php';
 <div class="container">
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="text-align: left;">
-                    <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
-                    <p style="margin: 5px 0 0 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 10px 0;">
+                <div style="text-align: center;">
+                    <span style="color: #1eff1a; font-weight: bold; letter-spacing: 1px;">GUEST MODE</span>
+                    <p style="margin: 5px 0 0 0; color: #888; font-size: 0.85em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
                 </div>
-                <div style="text-align: right; display: flex; gap: 15px; align-items: center;">
-                    <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
-                    <a href="/auth/login" class="btn btn-secondary" style="min-width: 80px;">ログイン</a>
-                    <a href="/register" class="btn btn-primary" style="min-width: 100px;">サインアップ</a>
+                <div style="display: flex; gap: 20px; justify-content: center; align-items: center; width: 100%;">
+                    <a href="/auth/login" class="btn btn-secondary" style="min-width: 120px; padding: 10px 20px;">ログイン</a>
+                    <a href="/register" class="btn btn-primary" style="min-width: 120px; padding: 10px 20px;">サインアップ</a>
                 </div>
             </div>
 
