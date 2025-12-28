@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\AdminUser;
 use App\Models\AuditLog;
 use App\Utils\View;
+use App\Utils\Validator;
 
 class AdminController
 {
@@ -246,18 +247,23 @@ class AdminController
      */
     public function registerUser()
     {
-        verifyCsrfToken(); // CSRF対策
-
-        if (!isCurrentSuperAdmin()) {
-            die("Unauthorized");
-        }
+        verifyCsrfToken();
 
         $login_id = $_POST['new_id'] ?? '';
         $password = $_POST['new_pass'] ?? '';
 
-        // バリデーション (Validator.phpを拡張して使うのが理想的です)
-        if (strlen($login_id) < 4 || strlen($password) < 8) {
-            $_SESSION['message'] = "エラー：IDは4文字以上、パスワードは8文字以上必要です。";
+        // IDの形式チェック
+        list($idValid, $idMsg) = Validator::validateLoginId($login_id);
+        if (!$idValid) {
+            $_SESSION['message'] = $idMsg;
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        // パスワードの強度チェック
+        list($pwValid, $pwMsg) = Validator::validatePassword($password);
+        if (!$pwValid) {
+            $_SESSION['message'] = $pwMsg;
             header("Location: /admin/users/create");
             exit;
         }
