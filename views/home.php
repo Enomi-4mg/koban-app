@@ -5,20 +5,17 @@ require __DIR__ . '/layouts/header.php';
 <div class="container">
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 10px 0;">
-                <div style="text-align: center;">
-                    <span style="color: #1eff1a; font-weight: bold; letter-spacing: 1px;">GUEST MODE</span>
-                    <p style="margin: 5px 0 0 0; color: #888; font-size: 0.85em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
+            <div style="display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
+                <div style="text-align: left; margin-right: auto;">
+                    <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
+                    <p style="margin: 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。</p>
                 </div>
-                <div style="display: flex; gap: 20px; justify-content: center; align-items: center; width: 100%;">
-                    <a href="/auth/login" class="btn btn-secondary" style="min-width: 120px; padding: 10px 20px;">ログイン</a>
-                    <a href="/register" class="btn btn-primary" style="min-width: 120px; padding: 10px 20px;">サインアップ</a>
-                </div>
+                <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
+                <a href="/auth/login" class="btn btn-secondary" style="min-width: 100px; text-align: center;">ログイン</a>
+                <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
             </div>
-
         <?php else: ?>
             <div style="display: flex; flex-direction: column; gap: 15px;">
-
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
                     <div style="text-align: left;">
                         <span style="color: #1eff1a; font-family: monospace; font-size: 1.1em;">
@@ -29,31 +26,23 @@ require __DIR__ . '/layouts/header.php';
                         <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
                         <form action="/auth/logout" method="post" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer; font-family: sans-serif;">LOGOUT</button>
+                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
                         </form>
                     </div>
                 </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <?php if (hasPermission(PERM_DATA)): ?>
+                        <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px;">＋ 新規データ追加</a>
+                    <?php else: ?>
+                        <span style="color: #888; font-size: 0.9em;">※閲覧専用モード</span>
+                    <?php endif; ?>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <div style="text-align: left;">
-                        <?php if (hasPermission(PERM_DATA)): ?>
-                            <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px; box-shadow: 0 0 10px rgba(30, 255, 26, 0.2);">
-                                ＋ 新規データ追加 / CSV登録
-                            </a>
-                        <?php else: ?>
-                            <span style="color: #888; font-size: 0.9em; border: 1px dotted #444; padding: 8px;">
-                                ※閲覧専用モード（編集権限なし）
-                            </span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div style="text-align: right; display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 10px;">
                         <?php if (hasPermission(PERM_LOG)): ?>
-                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff; font-size: 0.85em;">[操作ログ監査]</a>
+                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff;">[ログ監査]</a>
                         <?php endif; ?>
-
                         <?php if (hasPermission(PERM_ADMIN)): ?>
-                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00; font-size: 0.85em;">[管理者管理]</a>
+                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00;">[管理者管理]</a>
                         <?php endif; ?>
                     </div>
                 </div>
