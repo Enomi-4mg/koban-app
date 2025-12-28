@@ -196,6 +196,11 @@ class AdminController
 
         // 削除処理
         if (isset($_POST['delete_admin_id'])) {
+            if (!isCurrentSuperAdmin()) {
+                $_SESSION['message'] = "エラー：管理者の削除権限は最高管理者に限定されています。";
+                header("Location: /admin/users");
+                exit;
+            }
             $target = $_POST['delete_admin_id'];
 
             // 特権アカウントの削除をブロック
@@ -279,6 +284,11 @@ class AdminController
      */
     public function resetPasswordForm()
     {
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "エラー：この操作には最高管理者権限が必要です。";
+            header("Location: /admin/users");
+            exit;
+        }
         $this->requirePermission(PERM_ADMIN);
         return View::render('admin/reset_password', [
             'target_id' => $_GET['id'] ?? '',

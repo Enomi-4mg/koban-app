@@ -66,21 +66,14 @@
                         <?php echo $admin['last_act_time'] ? date('m/d H:i', strtotime($admin['last_act_time'])) : "-"; ?>
                     </td>
                     <td style="padding: 8px; text-align: center;">
-                        <?php if ($admin['login_id'] !== $_SESSION['login_id']): ?>
-                            <div style="display: flex; gap: 5px; justify-content: center;">
-                                <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>"
-                                    style="background: #00ccff; color: #000; text-decoration: none; padding: 3px 8px; font-size: 11px; border-radius: 3px; font-weight: bold;">
-                                    詳細
-                                </a>
-
-                                <form method="post" action="/admin/users/store" onsubmit="return confirm('本当に「<?php echo h($admin['login_id']); ?>」を削除しますか？');">
-                                    <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                                    <input type="hidden" name="delete_admin_id" value="<?php echo h($admin['login_id']); ?>">
-                                    <input type="submit" value="削除" style="background: #ff4444; color: #fff; border: none; cursor: pointer; border-radius: 3px; padding: 3px 8px; font-size: 11px;">
-                                </form>
-                            </div>
+                        <?php if (isCurrentSuperAdmin() && $admin['login_id'] !== $_SESSION['login_id']): ?>
+                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail">詳細</a>
+                            <form method="post" action="/admin/users/store" style="display:inline;">
+                            </form>
+                        <?php elseif ($admin['login_id'] === $_SESSION['login_id']): ?>
+                            <span style="color: #888;">(自分)</span>
                         <?php else: ?>
-                            <span style="color: #888; font-size: 12px;">(自分)</span>
+                            <span style="color: #555;">権限なし</span>
                         <?php endif; ?>
                     </td>
                 </tr>

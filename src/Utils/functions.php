@@ -83,7 +83,12 @@ define('SUPER_ADMIN_ID', 'admin');
 function isProtectedAdmin($loginId) {
     return $loginId === SUPER_ADMIN_ID;
 }
-
+/**
+ * 現在ログインしているユーザーが最高管理者（Super Admin）か判定
+ */
+function isCurrentSuperAdmin() {
+    return isset($_SESSION['login_id']) && $_SESSION['login_id'] === SUPER_ADMIN_ID;
+}
 /**
  * 接続元の真のIPアドレスを取得する
  */
