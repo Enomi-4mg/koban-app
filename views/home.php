@@ -12,7 +12,7 @@ require __DIR__ . '/layouts/header.php';
                 </div>
                 <div style="text-align: right; display: flex; gap: 15px; align-items: center;">
                     <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
-                    <a href="/auth/login" class="btn btn-secondary" style="border-color: #1eff1a; color: #1eff1a; min-width: 80px;">ログイン</a>
+                    <a href="/auth/login" class="btn btn-secondary" style="min-width: 80px;">ログイン</a>
                     <a href="/register" class="btn btn-primary" style="min-width: 100px;">サインアップ</a>
                 </div>
             </div>
@@ -38,7 +38,7 @@ require __DIR__ . '/layouts/header.php';
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div style="text-align: left;">
                         <?php if (hasPermission(PERM_DATA)): ?>
-                            <a href="/koban/create" class="btn-primary btn" style="padding: 10px 25px; box-shadow: 0 0 10px rgba(30, 255, 26, 0.2);">
+                            <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px; box-shadow: 0 0 10px rgba(30, 255, 26, 0.2);">
                                 ＋ 新規データ追加 / CSV登録
                             </a>
                         <?php else: ?>
