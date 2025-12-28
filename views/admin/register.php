@@ -1,80 +1,61 @@
 <?php require __DIR__ . '/../layouts/header.php'; ?>
+<div class="container" style="max-width: 900px; margin-top: 20px;">
 
-<div style="width: 850px; margin: 30px auto; background-color: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 10px; color: #1eff1a; font-family: sans-serif;">
-    <h2 style="text-align: center;">管理者権限 管理パネル</h2>
-
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 15px; margin-bottom: 20px;">
-        <h3 style="color: #fff; margin: 0;">現在の管理者一覧</h3>
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 2px solid #1eff1a; padding-bottom: 10px;">
+        <h2 style="color: #1eff1a; margin: 0;">&gt; ADMIN_USER_MANAGEMENT</h2>
 
         <div style="display: flex; gap: 10px;">
             <?php if (isCurrentSuperAdmin()): ?>
-                <a href="/admin/users/create" class="btn-primary" style="text-decoration: none; padding: 8px 15px; font-size: 14px; border-radius: 4px; display: inline-block;">
-                    ＋ 新規管理者を登録
+                <a href="/admin/users/create" class="btn-primary" style="text-decoration: none; background: #1eff1a; color: #000; padding: 5px 15px; font-weight: bold;">
+                    + NEW_ENTRY
                 </a>
             <?php endif; ?>
-            <a href="/admin/users/export" class="btn btn-warning" style="font-size: 12px; text-decoration: none;">
-                📥 CSV保存
+            <a href="/admin/users/export" class="btn-detail" style="text-decoration: none; border: 1px solid #1eff1a; color: #1eff1a; padding: 5px 15px; font-size: 0.8em;">
+                CSV_EXPORT
             </a>
         </div>
     </div>
 
-    <table border="1" style="width: 100%; border-collapse: collapse; border-color: #555;">
-    </table>
-
-    <br><a href="/" style="color: #888;">メイン画面に戻る</a>
-</div>
-
-<div>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h3 style="color: #fff; margin: 0;">現在の管理者一覧</h3>
-        <div style="display: flex; gap: 10px;">
-            <a href="/admin/users/export" class="btn btn-warning" style="font-size: 12px; text-decoration: none;">
-                📥 管理者データをCSV保存
-            </a>
-            <a href="/admin/password/reset" style="background: #333; color: #ffff00; text-decoration: none; padding: 5px 10px; border: 1px solid #ffff00; border-radius: 4px; font-size: 12px;">
-                🔑 パスワードリセット画面へ
-            </a>
-        </div>
+    <div class="box" style="padding: 10px; border: 1px solid #333;">
+        <table style="width: 100%; border-collapse: collapse; color: #1eff1a;">
+            <thead>
+                <tr style="border-bottom: 1px solid #555; text-align: left;">
+                    <th style="padding: 10px;">ID</th>
+                    <th style="padding: 10px; text-align: center;">PERM_DATA</th>
+                    <th style="padding: 10px; text-align: center;">PERM_ADMIN</th>
+                    <th style="padding: 10px; text-align: center;">PERM_LOG</th>
+                    <th style="padding: 10px; text-align: right;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($admin_list as $admin): ?>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 10px;">
+                            <?php echo h($admin['login_id']); ?>
+                            <?php if ($admin['login_id'] === $_SESSION['login_id']) echo ' <span style="color:#888;">(YOU)</span>'; ?>
+                        </td>
+                        <td style="text-align: center; color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#444'; ?>;">
+                            <?php echo $admin['perm_data'] ? 'ENABLED' : '--------'; ?>
+                        </td>
+                        <td style="text-align: center; color: <?php echo $admin['perm_admin'] ? '#1eff1a' : '#444'; ?>;">
+                            <?php echo $admin['perm_admin'] ? 'ENABLED' : '--------'; ?>
+                        </td>
+                        <td style="text-align: center; color: <?php echo $admin['perm_log'] ? '#1eff1a' : '#444'; ?>;">
+                            <?php echo $admin['perm_log'] ? 'ENABLED' : '--------'; ?>
+                        </td>
+                        <td style="padding: 10px; text-align: right;">
+                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>"
+                                style="color: #000; background: #1eff1a; padding: 2px 8px; text-decoration: none; font-size: 0.9em; font-weight: bold;">
+                                EDIT_DETAIL
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 
-    <table border="1" style="width: 100%; border-collapse: collapse; border-color: #555;">
-        <tr style="background: #333; color: #fff;">
-            <th>ID</th>
-            <th>データ</th>
-            <th>アカウント</th>
-            <th>ログ</th>
-            <th>最終更新</th>
-            <th>操作</th>
-        </tr>
-        <?php foreach ($admin_list as $admin): ?>
-            <tr>
-                <td style="padding: 8px; font-weight: bold;"><?php echo h($admin['login_id']); ?></td>
-                <td style="text-align: center;">
-                    <?php echo ($admin['perm_data'] == 1) ? "<span style='color:#ffff00;'>●</span>" : "<span style='color:#333;'>-</span>"; ?>
-                </td>
-                <td style="text-align: center;">
-                    <?php echo ($admin['perm_admin'] == 1) ? "<span style='color:#00ccff;'>●</span>" : "<span style='color:#333;'>-</span>"; ?>
-                </td>
-                <td style="text-align: center;">
-                    <?php echo ($admin['perm_log'] == 1) ? "<span style='color:#ff88ff;'>●</span>" : "<span style='color:#333;'>-</span>"; ?>
-                </td>
-                <td style="padding: 8px; text-align: center; color: #ccc; font-size: 14px;">
-                    <?php echo $admin['last_act_time'] ? date('m/d H:i', strtotime($admin['last_act_time'])) : "-"; ?>
-                </td>
-                <td style="padding: 8px; text-align: center;">
-                    <?php if (isCurrentSuperAdmin() && $admin['login_id'] !== $_SESSION['login_id']): ?>
-                        <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail">詳細</a>
-                        <form method="post" action="/admin/users/store" style="display:inline;">
-                        </form>
-                    <?php elseif ($admin['login_id'] === $_SESSION['login_id']): ?>
-                        <span style="color: #888;">(自分)</span>
-                    <?php else: ?>
-                        <span style="color: #555;">権限なし</span>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-</div>
-<br><a href="/" style="color: #888;">メイン画面に戻る</a>
+    <div style="margin-top: 20px;">
+        <a href="/" style="color: #888; text-decoration: none;">&lt; RETURN_TO_DASHBOARD</a>
+    </div>
 </div>
