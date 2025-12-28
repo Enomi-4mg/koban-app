@@ -29,7 +29,10 @@ sendSecurityHeaders();
 // 4. ルーティング処理 (修正版)
 $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
-
+// ▼▼▼ 追加：HEADリクエストをGETとして処理（404対策） ▼▼▼
+if ($method === 'HEAD') {
+    $method = 'GET';
+}
 // スクリプトが置かれているディレクトリを取得 (例: /public)
 $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
 
