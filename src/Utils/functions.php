@@ -74,6 +74,16 @@ function hasPermission($types)
     return false;
 }
 
+// 保護対象の管理者IDを定義（環境変数から読み込むのが理想的）
+define('SUPER_ADMIN_ID', 'admin'); 
+
+/**
+ * 対象IDが保護された特権アカウントか判定
+ */
+function isProtectedAdmin($loginId) {
+    return $loginId === SUPER_ADMIN_ID;
+}
+
 /**
  * 接続元の真のIPアドレスを取得する
  */
@@ -88,6 +98,18 @@ function getRemoteIp() {
         return $_SERVER['HTTP_CLIENT_IP'];
     }
     return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
+/**
+ * セッションから一度だけ表示するメッセージを取得
+ */
+function getFlashMessage() {
+    if (isset($_SESSION['message'])) {
+        $msg = $_SESSION['message'];
+        unset($_SESSION['message']);
+        return $msg;
+    }
+    return null;
 }
 
 // ログ記録 (Databaseクラスを使う形に少し修正)

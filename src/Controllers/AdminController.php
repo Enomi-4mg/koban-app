@@ -166,10 +166,23 @@ class AdminController
         $message = $_SESSION['message'] ?? '';
         unset($_SESSION['message']); // 一度表示したら消す
 
-        $admin_list = $adminModel->findAll();
+        $all_admins = $adminModel->findAll();
+
+        // ▼▼▼ 追加：特権アカウントの隠蔽ロジック ▼▼▼
+        $current_user = $_SESSION['login_id'];
+
+        $filtered_list = array_filter($all_admins, function ($admin) use ($current_user) {
+            // 1. 自分が特権アカウントなら、すべて（自分を含む）を表示
+            if (isProtectedAdmin($current_user)) {
+                return true;
+            }
+            // 2. 自分以外が閲覧している場合、特権アカウント（SUPER_ADMIN_ID）を除外
+            return !isProtectedAdmin($admin['login_id']);
+        });
+        // ▲▲▲ 追加ここまで ▲▲▲
 
         return View::render('admin/register', [
-            'admin_list' => $admin_list,
+            'admin_list' => $filtered_list,
             'message' => $message
         ]);
     }
@@ -186,7 +199,12 @@ class AdminController
 
         // 削除処理
         if (isset($_POST['delete_admin_id'])) {
-            if ($_POST['delete_admin_id'] === $_SESSION['login_id']) {
+            $target = $_POST['delete_admin_id'];
+
+            // 特権アカウントの削除をブロック
+            if (isProtectedAdmin($target)) {
+                $_SESSION['message'] = "エラー：システム管理者は削除できません。";
+            } elseif ($_POST['delete_admin_id'] === $_SESSION['login_id']) {
                 $_SESSION['message'] = "エラー：自分自身は削除できません。";
             } else {
                 $adminModel->delete($_POST['delete_admin_id']);
@@ -324,9 +342,16 @@ class AdminController
     public function updateAdminPerms()
     {
         $this->requirePermission(PERM_ADMIN);
-        verifyCsrfToken(); //
-
+        verifyCsrfToken();
         $login_id = $_POST['target_admin_id'] ?? '';
+
+        // 特権アカウントの権限変更をブロック
+        if (isProtectedAdmin($login_id)) {
+            $_SESSION['message'] = "エラー：システム管理者の権限は変更できません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
         $perms = [
             'data'  => isset($_POST['perm_data']) ? 1 : 0,
             'admin' => isset($_POST['perm_admin']) ? 1 : 0,

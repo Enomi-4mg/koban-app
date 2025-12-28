@@ -17,6 +17,15 @@
                 <span style="color: #ffff00; font-weight: bold;">データ管理 (閲覧・編集・CSV操作)</span>
             </label>
 
+            <?php if (isProtectedAdmin($admin['login_id'])): ?>
+                <p style="color: #ff4444; font-size: 12px; margin-top: 10px;">
+                    ※システム管理者の権限はセキュリティ保護のため固定されています。
+                </p>
+                <input type="hidden" name="perm_data" value="1">
+                <input type="hidden" name="perm_admin" value="1">
+                <input type="hidden" name="perm_log" value="1">
+            <?php endif; ?>
+
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                 <input type="checkbox" name="perm_admin" value="1" <?php echo $admin['perm_admin'] ? 'checked' : ''; ?>>
                 <span style="color: #00ccff; font-weight: bold;">アカウント管理 (管理者登録・削除・権限変更)</span>
