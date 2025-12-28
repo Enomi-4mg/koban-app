@@ -234,7 +234,72 @@ class AdminController
         header("Location: /admin/users");
         exit;
     }
+    /**
+     * 新規ユーザー登録画面の表示
+     */
+    public function showRegisterForm()
+    {
+        // ログインチェックと最高管理者権限の確認
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "エラー：ユーザー登録は最高管理者のみ許可されています。";
+            header("Location: /admin/users");
+            exit;
+        }
 
+        return View::render('admin/user_registration', [
+            'page_title' => '新規管理者登録',
+            'message' => getFlashMessage()
+        ]);
+    }
+
+    /**
+     * ユーザー登録処理の実行
+     */
+    public function registerUser()
+    {
+        verifyCsrfToken(); // CSRF対策
+
+        if (!isCurrentSuperAdmin()) {
+            die("Unauthorized");
+        }
+
+        $login_id = $_POST['new_id'] ?? '';
+        $password = $_POST['new_pass'] ?? '';
+
+        // バリデーション (Validator.phpを拡張して使うのが理想的です)
+        if (strlen($login_id) < 4 || strlen($password) < 8) {
+            $_SESSION['message'] = "エラー：IDは4文字以上、パスワードは8文字以上必要です。";
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        $adminModel = new \App\Models\AdminUser();
+
+        // 重複チェック
+        if ($adminModel->exists($login_id)) {
+            $_SESSION['message'] = "エラー：そのIDは既に使用されています。";
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        // 権限設定の取得
+        $perms = [
+            'data'  => isset($_POST['perm_data']) ? 1 : 0,
+            'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+            'log'   => isset($_POST['perm_log']) ? 1 : 0
+        ];
+
+        // 保存実行
+        if ($adminModel->create($login_id, $password, $perms)) {
+            logAction($_SESSION['login_id'], '管理者登録', "新規ユーザー: $login_id");
+            $_SESSION['message'] = "管理者「{$login_id}」を正常に登録しました。";
+            header("Location: /admin/users");
+        } else {
+            $_SESSION['message'] = "エラー：登録に失敗しました。";
+            header("Location: /admin/users/create");
+        }
+        exit;
+    }
     /**
      * 管理者一覧をCSVエクスポートする
      */

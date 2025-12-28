@@ -71,6 +71,7 @@ $routes = [
         '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
         '/admin/users/export' => [AdminController::class, 'exportAdmins'],
         '/admin/users/edit' => [AdminController::class, 'editAdmin'],
+        '/admin/users/create' => [AdminController::class, 'showRegisterForm'], // 登録画面
     ],
     'POST' => [
         '/koban/store'  => [KobanController::class, 'store'],
@@ -84,6 +85,7 @@ $routes = [
         '/admin/users/store'     => [AdminController::class, 'storeAdmin'],      // 管理者登録・削除
         '/admin/password/reset'  => [AdminController::class, 'resetPasswordExec'], // PW強制リセット実行
         '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'],
+        '/admin/users/register' => [AdminController::class, 'registerUser'],  // 登録実行
     ]
 ];
 
