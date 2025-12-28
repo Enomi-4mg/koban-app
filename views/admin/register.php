@@ -9,14 +9,14 @@
     </div>
 
     <div class="box">
-        <table style="width: 100%; border-collapse: collapse; color: #1eff1a;">
+        <table style="width: 100%; border-collapse: collapse; color: #1eff1a; background-color: #000;">
             <thead>
-                <tr style="border-bottom: 1px solid #555; text-align: center;">
+                <tr style="border-bottom: 2px solid #1eff1a;">
                     <th style="padding: 10px; text-align: left;">ログインID</th>
-                    <th>データ</th>
-                    <th>管理</th>
-                    <th>ログ</th>
-                    <th style="text-align: right;">操作</th>
+                    <th style="width: 60px;">データ</th>
+                    <th style="width: 60px;">管理</th>
+                    <th style="width: 60px;">ログ</th>
+                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,19 +24,14 @@
                     <tr style="border-bottom: 1px solid #222;">
                         <td style="padding: 12px 10px;">
                             <?php echo h($admin['login_id']); ?>
-                            <?php if ($admin['login_id'] === $_SESSION['login_id']) echo ' <span style="color:#888; font-size:0.8em;">(自分)</span>'; ?>
+                            <?php if ($admin['login_id'] === $_SESSION['login_id']) echo ' <span style="color:#666; font-size:0.8em;">(自分)</span>'; ?>
                         </td>
-                        <td style="text-align: center;">
-                            <span style="color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#333'; ?>;">●</span>
-                        </td>
-                        <td style="text-align: center;">
-                            <span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span>
-                        </td>
-                        <td style="text-align: center;">
-                            <span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail" style="text-decoration: none; padding: 2px 10px; font-size: 0.9em;">詳細</a>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#333'; ?>;">●</span></td>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
+                        <td style="padding: 10px; text-align: center;">
+                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail"
+                                style="text-decoration: none; padding: 4px 12px; font-size: 0.85em; display: inline-block;">詳細</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
