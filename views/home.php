@@ -5,58 +5,59 @@ require __DIR__ . '/layouts/header.php';
 <div class="container">
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>
-            <div style="text-align: right; display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
-                <span style="color: #666; font-size: 0.8em; font-family: monospace;">GUEST_ACCESS_ONLY >></span>
-                <a href="/auth/login" class="btn btn-secondary" style="border-color: #1eff1a; color: #1eff1a;">ログイン</a>
-                <a href="/register" class="btn btn-primary">サインアップ</a>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;">
+                    <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
+                    <p style="margin: 5px 0 0 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
+                </div>
+                <div style="text-align: right; display: flex; gap: 15px; align-items: center;">
+                    <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
+                    <a href="/auth/login" class="btn btn-secondary" style="border-color: #1eff1a; color: #1eff1a; min-width: 80px;">ログイン</a>
+                    <a href="/register" class="btn btn-primary" style="min-width: 100px;">サインアップ</a>
+                </div>
             </div>
+
         <?php else: ?>
-            <div style="text-align: right;">
-                <span style="color: #1eff1a;">SYSTEM_USER: <?php echo h($_SESSION['login_id']); ?></span> |
-                <a href="/admin/password/change" style="color: #fff;">[PW変更]</a> |
-                <form action="/auth/logout" method="post" style="display:inline;">
-                    <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                    <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
-                </form>
-            </div>
-        <?php endif; ?>
-    </div>
-    <div class="box">
-        <?php if (!isset($_SESSION['logged_in'])): ?>
-            <form method="post" action="/auth/login" style="text-align: right;">
-                <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                <span style="color: #888; font-size: 14px;">管理者ログイン: </span>
-                <input type="text" name="login_id" placeholder="ID" size="10">
-                <input type="password" name="login_pass" placeholder="PASS" size="10">
-                <input type="submit" value="ログイン" class="btn-primary">
-            </form>
-            <div style="text-align: right; margin-top: 10px;">
-                <a href="/register" style="color: #1eff1a; font-size: 13px; text-decoration: underline;">新規アカウント作成はこちら</a>
-            </div>
-        <?php else: ?>
-            <div style="border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 10px; text-align: right;">
-                <span style="color: #1eff1aff;">ログイン中: <?php echo h($_SESSION['login_id']); ?></span> |
+            <div style="display: flex; flex-direction: column; gap: 15px;">
 
-                <?php if (hasPermission(PERM_LOG)): ?>
-                    <a href="/admin/logs" style="color: #00ccff;">[操作ログ監査]</a> |
-                <?php endif; ?>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <div style="text-align: left;">
+                        <span style="color: #1eff1a; font-family: monospace; font-size: 1.1em;">
+                            SYSTEM_USER: <strong style="color: #fff;"><?php echo h($_SESSION['login_id']); ?></strong>
+                        </span>
+                    </div>
+                    <div style="text-align: right; font-size: 0.9em;">
+                        <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
+                        <form action="/auth/logout" method="post" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer; font-family: sans-serif;">LOGOUT</button>
+                        </form>
+                    </div>
+                </div>
 
-                <?php if (hasPermission(PERM_ADMIN)): ?>
-                    <a href="/admin/users" style="color: #ffff00;">[管理者登録]</a> |
-                <?php endif; ?>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="text-align: left;">
+                        <?php if (hasPermission(PERM_DATA)): ?>
+                            <a href="/koban/create" class="btn-primary btn" style="padding: 10px 25px; box-shadow: 0 0 10px rgba(30, 255, 26, 0.2);">
+                                ＋ 新規データ追加 / CSV登録
+                            </a>
+                        <?php else: ?>
+                            <span style="color: #888; font-size: 0.9em; border: 1px dotted #444; padding: 8px;">
+                                ※閲覧専用モード（編集権限なし）
+                            </span>
+                        <?php endif; ?>
+                    </div>
 
-                <a href="/admin/password/change" style="color: #fff;">[PW変更]</a> |
-                <form action="/auth/logout" method="post" style="display:inline;">
-                    <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">ログアウト</button>
-                </form>
-            </div>
+                    <div style="text-align: right; display: flex; gap: 10px;">
+                        <?php if (hasPermission(PERM_LOG)): ?>
+                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff; font-size: 0.85em;">[操作ログ監査]</a>
+                        <?php endif; ?>
 
-            <div style="text-align: left;">
-                <?php if (hasPermission(PERM_DATA)): ?>
-                    <a href="/koban/create" class="btn-primary btn" style="padding: 10px 20px;">＋ 新規データ追加 / CSV登録</a>
-                <?php else: ?>
-                    <span style="color: #888;">※データ編集権限がありません</span>
-                <?php endif; ?>
+                        <?php if (hasPermission(PERM_ADMIN)): ?>
+                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00; font-size: 0.85em;">[管理者管理]</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
     </div>
