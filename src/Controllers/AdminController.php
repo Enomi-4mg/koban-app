@@ -163,8 +163,6 @@ class AdminController
         $this->requirePermission(PERM_ADMIN);
 
         $adminModel = new AdminUser();
-        $message = $_SESSION['message'] ?? '';
-        unset($_SESSION['message']); // 一度表示したら消す
 
         $all_admins = $adminModel->findAll();
 
@@ -183,7 +181,6 @@ class AdminController
 
         return View::render('admin/register', [
             'admin_list' => $filtered_list,
-            'message' => $message
         ]);
     }
 

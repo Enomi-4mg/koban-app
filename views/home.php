@@ -3,9 +3,6 @@ require __DIR__ . '/layouts/header.php';
 ?>
 
 <div class="container">
-    <?php if ($message): ?>
-        <div style="color: #ff4444; font-weight: bold; margin-bottom:10px; border: 1px solid #ff4444; padding: 10px;"><?php echo h($message); ?></div>
-    <?php endif; ?>
 
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>

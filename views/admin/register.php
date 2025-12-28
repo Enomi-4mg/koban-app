@@ -4,12 +4,6 @@
 <div style="width: 850px; margin: 30px auto; background-color: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 10px; color: #1eff1a; font-family: sans-serif;">
     <h2 style="text-align: center;">管理者権限 管理パネル</h2>
 
-    <?php if ($message): ?>
-        <p style="color: #ff4444; font-weight: bold; border: 1px solid #555; padding: 10px; text-align: center;">
-            <?php echo h($message); ?>
-        </p>
-    <?php endif; ?>
-
     <div style="border-bottom: 1px solid #444; padding-bottom: 20px; margin-bottom: 20px;">
         <h3 style="color: #fff; margin-top: 0;">新規管理者 登録</h3>
         <form method="post" action="/admin/users/store" style="display: flex; flex-direction: column; gap: 10px; text-align: left; width: 70%; margin: 0 auto;">
