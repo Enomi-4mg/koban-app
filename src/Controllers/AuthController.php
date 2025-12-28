@@ -75,7 +75,7 @@ class AuthController
             logAction($login_id, 'ログインエラー', "ログインにてエラーが発生しました");
         }
 
-        header("Location: /");
+        header("Location: /auth/login");
         exit;
     }
 
