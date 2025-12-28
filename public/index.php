@@ -30,7 +30,7 @@ sendSecurityHeaders();
 $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 // ▼▼▼ 追加：HEADリクエストをGETとして処理（404対策） ▼▼▼
-if ($method === 'HEAD') {
+if ($method === 'HEAD' && ($requestPath === '/' || $requestPath === '/index.php')) {
     $method = 'GET';
 }
 // スクリプトが置かれているディレクトリを取得 (例: /public)

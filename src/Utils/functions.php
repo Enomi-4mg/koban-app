@@ -75,24 +75,27 @@ function hasPermission($types)
 }
 
 // 保護対象の管理者IDを定義（環境変数から読み込むのが理想的）
-define('SUPER_ADMIN_ID', 'admin'); 
+define('SUPER_ADMIN_ID', 'admin');
 
 /**
  * 対象IDが保護された特権アカウントか判定
  */
-function isProtectedAdmin($loginId) {
+function isProtectedAdmin($loginId)
+{
     return $loginId === SUPER_ADMIN_ID;
 }
 /**
  * 現在ログインしているユーザーが最高管理者（Super Admin）か判定
  */
-function isCurrentSuperAdmin() {
+function isCurrentSuperAdmin()
+{
     return isset($_SESSION['login_id']) && $_SESSION['login_id'] === SUPER_ADMIN_ID;
 }
 /**
  * 接続元の真のIPアドレスを取得する
  */
-function getRemoteIp() {
+function getRemoteIp()
+{
     // Renderやプロキシ環境では X-Forwarded-For を優先する
     if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         // カンマ区切りで複数入ることがあるので最初の1つを取得
@@ -108,7 +111,8 @@ function getRemoteIp() {
 /**
  * セッションから一度だけ表示するメッセージを取得
  */
-function getFlashMessage() {
+function getFlashMessage()
+{
     if (isset($_SESSION['message'])) {
         $msg = $_SESSION['message'];
         unset($_SESSION['message']);
@@ -120,6 +124,15 @@ function getFlashMessage() {
 // ログ記録 (Databaseクラスを使う形に少し修正)
 function logAction($userId, $actionType, $details)
 {
+    // 監視サービス特有のUser-Agentを判定
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $isPing = (stripos($ua, 'UptimeRobot') !== false || stripos($ua, 'cron-job') !== false);
+    // HEADリクエストまたは監視サービスの場合は種別を PING に固定
+    if ($_SERVER['REQUEST_METHOD'] === 'HEAD' || $isPing) {
+        $actionType = 'PING';
+        $userId = 'system_monitor';
+    }
+
     try {
         $db = \App\Utils\Database::connect();
         $sql = "INSERT INTO audit_logs (user_id, action_type, details, ip_address, user_agent, action_time) VALUES (?, ?, ?, ?, ?, ?)";
@@ -133,6 +146,14 @@ function logAction($userId, $actionType, $details)
             $_SERVER['HTTP_USER_AGENT'] ?? '',
             date('Y-m-d H:i:s')
         ]);
+
+        // ▼▼▼ DB圧迫対策：古い PING ログを自動削除（1日以上前） ▼▼▼
+        // このクエリにより、監視ログが無限に増えるのを防ぎます
+        if ($actionType === 'PING') {
+            $cleanupSql = "DELETE FROM audit_logs WHERE action_type = 'PING' AND action_time < CURRENT_TIMESTAMP - INTERVAL '1 day'";
+            $db->exec($cleanupSql);
+        }
+        // ▲▲▲ 対策ここまで ▲▲▲
 
         if (!$success) {
             // SQLの実行に失敗した場合、エラー内容を Render のログへ出力
