@@ -16,6 +16,22 @@ class AdminUser
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // ログイン失敗時にカウントを1増やす
+    public function incrementFailureCount($login_id)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET failure_count = failure_count + 1 WHERE login_id = ?");
+        return $stmt->execute([$login_id]);
+    }
+
+    // アカウントをロックする
+    public function lockAccount($login_id, $until_time)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET locked_until = ? WHERE login_id = ?");
+        return $stmt->execute([$until_time, $login_id]);
+    }
+
     // ログイン成功時に失敗回数をリセット
     public function resetFailureCount($login_id)
     {
@@ -24,11 +40,12 @@ class AdminUser
         $stmt->execute([$login_id]);
     }
 
-    // パスワード変更（change_password.php等で使用）
+    // パスワード変更/リセット時にロックも同時解除するようにする
     public function updatePassword($login_id, $new_hash)
     {
         $db = Database::connect();
-        $stmt = $db->prepare("UPDATE admin_users SET password_hash = ? WHERE login_id = ?");
+        // パスワード更新時に、失敗回数とロック期限もクリアする
+        $stmt = $db->prepare("UPDATE admin_users SET password_hash = ?, failure_count = 0, locked_until = NULL WHERE login_id = ?");
         return $stmt->execute([$new_hash, $login_id]);
     }
 
