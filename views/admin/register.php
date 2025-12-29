@@ -56,19 +56,23 @@
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
                         <td style="padding: 10px; text-align: center;">
-                            <div class="badge-wrapper">
+                            <?php
+                            $isPending = ($admin['request_status'] ?? '') === 'pending'; // 申請中か判定
+                            ?>
+
+                            <div class="badge-wrapper" style="position: relative; display: inline-block;">
                                 <?php
-                                $isPending = ($admin['request_status'] ?? '') === 'pending';
                                 \App\Utils\View::component('button', [
                                     'type'    => 'link',
-                                    'variant' => $isPending ? 'warning' : 'primary',
-                                    'text'    => $isPending ? '詳細編集 [!]' : '詳細編集',
+                                    'variant' => $isPending ? 'warning' : 'primary', // 申請中はイエロー(warning)に変更
+                                    'text'    => $isPending ? '承認審査' : '詳細編集', // 文言を動的に変更
                                     'href'    => '/admin/users/edit?id=' . h($admin['login_id']),
                                     'style'   => 'padding: 4px 12px; font-size: 0.85em;'
                                 ]);
                                 ?>
+
                                 <?php if ($isPending): ?>
-                                    <span class="notification-badge" style="top: -5px; right: -5px;">!</span>
+                                    <span class="notification-badge" style="top: -8px; right: -8px;">!</span>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -86,7 +90,7 @@
         <?php \App\Utils\View::component('button', [
             'type'    => 'link',
             'variant' => 'secondary',
-            'text'    => '← メイン画面へ戻る',
+            'text'    => 'メイン画面へ戻る',
             'href'    => '/'
         ]); ?>
     </div>

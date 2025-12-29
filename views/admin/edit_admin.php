@@ -49,20 +49,70 @@
 <div class="container" style="max-width: 600px; margin-top: 20px;">
 
     <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
-        <div class="box" style="border: 2px solid var(--cyber-yellow); margin-bottom: 30px;">
-            <h3 style="color: var(--cyber-yellow);">申請内容の審査</h3>
-            <p style="font-size: 0.9em;">理由: <?php echo h($admin['request_message']); ?></p>
+        <div class="box" style="border: 2px solid var(--cyber-yellow); padding: 20px; margin-bottom: 30px; background: rgba(255, 255, 0, 0.05);">
+            <h3 style="color: var(--cyber-yellow); margin-top: 0; border-bottom: 1px solid var(--cyber-yellow); padding-bottom: 10px;">
+                PERMISSION_REVIEW / 権限昇格の審査
+            </h3>
+
+            <p style="color: #ccc; font-size: 0.9em; margin-bottom: 15px;">
+                <strong style="color: var(--cyber-yellow);">申請理由:</strong><br>
+                <?php echo h($admin['request_message'] ?: '（理由なし）'); ?>
+            </p>
 
             <form method="post" action="/admin/users/handle_request">
-                <div style="margin-bottom: 15px;">
-                    <label>
-                        <input type="checkbox" name="grant_data" value="1" <?php echo $admin['req_perm_data'] ? 'checked' : ''; ?>>
-                        データ管理権限 <?php echo $admin['req_perm_data'] ? '<span style="color:var(--cyber-yellow)">[!] 申請中</span>' : ''; ?>
-                    </label><br>
+                <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
+
+                <p style="font-size: 0.85em; color: #888; margin-bottom: 10px;">付与する権限にチェックを入れてください：</p>
+
+                <div style="display: grid; gap: 8px; margin-bottom: 20px;">
+                    <?php
+                    $permTypes = [
+                        'data'  => ['label' => 'データ管理権限', 'color' => 'var(--cyber-green)'],
+                        'admin' => ['label' => '管理者管理権限', 'color' => 'var(--cyber-blue)'],
+                        'log'   => ['label' => 'ログ閲覧権限',   'color' => '#ff00ff']
+                    ];
+
+                    foreach ($permTypes as $key => $info):
+                        $hasPerm = $admin['perm_' . $key] == 1; // 既に持っているか
+                        $isRequested = $admin['req_perm_' . $key] == 1; // 申請されているか
+                    ?>
+                        <label style="display: block; cursor: <?php echo $hasPerm ? 'default' : 'pointer'; ?>; padding: 5px; border-radius: 4px; <?php echo $isRequested ? 'background: rgba(255,255,0,0.1);' : ''; ?>">
+                            <input type="checkbox" name="grant_<?php echo $key; ?>" value="1"
+                                <?php echo ($hasPerm || $isRequested) ? 'checked' : ''; ?>
+                                <?php echo $hasPerm ? 'onclick="return false;" style="opacity: 0.5;"' : ''; ?>>
+
+                            <span style="color: <?php echo $hasPerm ? $info['color'] : ($isRequested ? 'var(--cyber-yellow)' : '#fff'); ?>;">
+                                ● <?php echo $info['label']; ?>
+                                <?php if ($hasPerm): ?>
+                                    <small style="color: #666; margin-left: 10px;">[ 取得済み ]</small>
+                                <?php elseif ($isRequested): ?>
+                                    <strong style="color: var(--cyber-yellow); margin-left: 10px;">[!] 申請中</strong>
+                                <?php endif; ?>
+                            </span>
+                        </label>
+                    <?php endforeach; ?>
                 </div>
 
-                <button name="request_action" value="approve" class="btn btn-primary">選択した権限を付与して承認</button>
-                <button name="request_action" value="reject" class="btn btn-danger">申請を却下</button>
+                <div style="display: flex; gap: 10px;">
+                    <?php \App\Utils\View::component('button', [
+                        'type'    => 'submit',
+                        'name'    => 'request_action',
+                        'value'   => 'approve',
+                        'variant' => 'primary',
+                        'text'    => '選択した権限を付与して承認',
+                        'style'   => 'flex: 1;'
+                    ]); ?>
+
+                    <?php \App\Utils\View::component('button', [
+                        'type'    => 'submit',
+                        'name'    => 'request_action',
+                        'value'   => 'reject',
+                        'variant' => 'danger',
+                        'text'    => '申請を却下',
+                        'style'   => 'flex: 1;'
+                    ]); ?>
+                </div>
             </form>
         </div>
     <?php endif; ?>

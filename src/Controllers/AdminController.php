@@ -301,34 +301,39 @@ class AdminController
      */
     public function handleRequest()
     {
-        $this->requirePermission(PERM_ADMIN); // 管理者管理権限のチェック
-        verifyCsrfToken(); // CSRF対策
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
 
         $targetId = $_POST['target_admin_id'] ?? '';
         $action = $_POST['request_action'] ?? '';
 
-        // ★修正：ブロックの外でインスタンス化することで、どこでも使えるようにします
         $adminModel = new AdminUser();
 
+        // 1. 対象ユーザーの「現在の権限状態」を取得
+        $currentUser = $adminModel->findById($targetId);
+        if (!$currentUser) {
+            $_SESSION['message'] = "エラー：対象ユーザーが見つかりません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
         if ($targetId && $action === 'approve') {
-            // 選択された権限のみを1にし、それ以外は0にする
             $perms = [
-                'perm_data'  => isset($_POST['grant_data']) ? 1 : 0,
-                'perm_admin' => isset($_POST['grant_admin']) ? 1 : 0,
-                'perm_log'   => isset($_POST['grant_log']) ? 1 : 0
+                'perm_data'  => ($currentUser['perm_data']  || isset($_POST['grant_data']))  ? 1 : 0,
+                'perm_admin' => ($currentUser['perm_admin'] || isset($_POST['grant_admin'])) ? 1 : 0,
+                'perm_log'   => ($currentUser['perm_log']   || isset($_POST['grant_log']))   ? 1 : 0
             ];
 
-            // 申請フラグのリセットを含む一括更新
             $adminModel->approveRequestWithDetails($targetId, $perms);
 
-            $_SESSION['message'] = "ユーザー {$targetId} の権限を更新し、申請を承認しました。";
-            logAction($_SESSION['login_id'], "申請承認", "対象: $targetId");
+            // ログ詳細の構築
+            $finalPerms = sprintf("Data:%d, Admin:%d, Log:%d", $perms['perm_data'], $perms['perm_admin'], $perms['perm_log']);
+            logAction($_SESSION['login_id'], "権限承認完了", "対象: {$targetId} / 最終権限状態: [{$finalPerms}]");
         } elseif ($targetId && $action === 'reject') {
-            // 却下処理：ステータスを 'rejected' に変更
+            // 却下処理は既存のまま
             $adminModel->updateRequestStatus($targetId, 'reject');
-
             $_SESSION['message'] = "ユーザー {$targetId} の申請を却下しました。";
-            logAction($_SESSION['login_id'], "申請却下", "対象: $targetId");
+            logAction($_SESSION['login_id'], "申請却下", "対象: {$targetId}");
         }
 
         header("Location: /admin/users");

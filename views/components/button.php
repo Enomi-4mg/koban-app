@@ -3,6 +3,8 @@
 /**
  * @var string $type 'submit' | 'link' | 'button'
  * @var string $variant 'primary' | 'secondary' | 'warning' | 'danger'
+ * @var string $name フォーム送信時の名前
+ * @var string $value フォーム送信時の値
  * @var string $text 表示文字
  * @var string $href linkの場合の遷移先
  * @var string $onclick JSイベント
@@ -19,6 +21,8 @@ $customStyle = $style ?? '';
     </a>
 <?php else: ?>
     <button type="<?php echo h($type ?? 'submit'); ?>"
+        name="<?php echo h($name ?? ''); ?>"
+        value="<?php echo h($value ?? ''); ?>"
         class="<?php echo $class; ?>"
         onclick="<?php echo h($onclick ?? ''); ?>"
         style="<?php echo $customStyle; ?>">

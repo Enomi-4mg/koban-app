@@ -216,7 +216,14 @@ class AuthController
         $_SESSION['request_status'] = 'pending';
         $_SESSION['message'] = "選択した権限の昇格を申請しました。管理者の承認をお待ちください。";
 
-        logAction($userId, '権限詳細申請', "理由: $reason");
+        // ログ用の文字列作成
+        $items = [];
+        if ($reqPerms['data']) $items[] = 'データ管理';
+        if ($reqPerms['admin']) $items[] = '管理者管理';
+        if ($reqPerms['log']) $items[] = 'ログ閲覧';
+        $requestedList = implode(', ', $items);
+        // 徹底したログ記録
+        logAction($userId, '権限昇格申請', "申請項目: [{$requestedList}] / 理由: {$_POST['request_reason']}");
         header("Location: /");
         exit;
     }

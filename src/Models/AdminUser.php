@@ -70,7 +70,7 @@ class AdminUser
     {
         $db = Database::connect();
         // 最終操作ログの日時もサブクエリで取得（元のロジックを継承）
-        $sql = "SELECT u.login_id, u.perm_data, u.perm_admin, u.perm_log,
+        $sql = "SELECT u.login_id, u.perm_data, u.perm_admin, u.perm_log, u.request_status,
                 (SELECT action_time FROM audit_logs l WHERE l.user_id = u.login_id ORDER BY id DESC LIMIT 1) as last_act_time,
                 (SELECT action_type FROM audit_logs l WHERE l.user_id = u.login_id ORDER BY id DESC LIMIT 1) as last_act_type
                 FROM admin_users u ORDER BY u.login_id ASC";

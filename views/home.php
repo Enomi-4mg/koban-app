@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/layouts/header.php';
+
 use App\Utils\View;
 ?>
 <div class="container">
@@ -23,7 +24,15 @@ use App\Utils\View;
                     </div>
 
                     <div style="text-align: right; font-size: 0.9em;">
-                        <a href="/auth/request_permission" style="color: var(--cyber-yellow); margin-right: 15px;">[権限の申請]</a>
+                        <?php
+                        $requestStatus = $_SESSION['request_status'] ?? null;
+                        if ($requestStatus === 'pending'): ?>
+                            <span style="color: var(--cyber-yellow); opacity: 0.7; margin-right: 15px; font-family: monospace;">
+                                [ 権限申請中... ]
+                            </span>
+                        <?php else: ?>
+                            <a href="/auth/request_permission" style="color: var(--cyber-yellow); margin-right: 15px;">[権限の申請]</a>
+                        <?php endif; ?>
                         <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
 
                         <form action="/auth/logout" method="post" style="display:inline;">

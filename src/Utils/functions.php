@@ -58,15 +58,60 @@ function sendSecurityHeaders()
     // header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 }
 
-// 権限チェックヘルパー
+/**
+ * 権限チェックヘルパー (定数対応版・DB同期と変更通知機能付き)
+ */
 function hasPermission($types)
 {
-    if (!isset($_SESSION['permissions'])) return false;
+    if (!isset($_SESSION['login_id'])) return false;
 
-    // 配列でない場合は配列に変換してループ処理
+    static $isSynced = false;
+
+    if (!$isSynced) {
+        try {
+            $db = Database::connect();
+            // DBから最新の状態を取得
+            $stmt = $db->prepare("SELECT perm_data, perm_admin, perm_log, request_status FROM admin_users WHERE login_id = ?");
+            $stmt->execute([$_SESSION['login_id']]);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if ($user) {
+                // --- 変更通知の判定ロジック ---
+                $oldStatus = $_SESSION['request_status'] ?? null;
+                $newStatus = $user['request_status'];
+
+                // 申請中(pending)だった状態が、承認(NULL)または却下(reject/rejected)に変わったか判定
+                if ($oldStatus === 'pending' && $newStatus !== 'pending') {
+                    if ($newStatus === null) {
+                        // 承認された場合
+                        $_SESSION['message'] = "権限昇格申請が承認されました！新しい機能が利用可能です。";
+                    } else {
+                        // 却下された場合
+                        $_SESSION['message'] = "権限昇格申請が却下されました。";
+                    }
+                    $resetStmt = $db->prepare("UPDATE admin_users SET request_status = NULL, request_message = NULL WHERE login_id = ?");
+                    $resetStmt->execute([$_SESSION['login_id']]);
+                    $newStatus = null;
+                    logAction($_SESSION['login_id'], '通知確認・自動リセット', "却下通知を確認し、申請ステータスを初期化しました。");
+                }
+
+                // セッションの権限情報を最新状態に更新
+                $_SESSION['permissions'] = [
+                    'data'  => (int)$user['perm_data'],
+                    'admin' => (int)$user['perm_admin'],
+                    'log'   => (int)$user['perm_log']
+                ];
+                $_SESSION['request_status'] = $newStatus;
+                $isSynced = true;
+            }
+        } catch (\Exception $e) {
+            error_log("Permission Sync Error: " . $e->getMessage());
+        }
+    }
+
+    // 権限の配列チェック実行
     $types = (array)$types;
     foreach ($types as $type) {
-        // セッション内に該当する権限フラグが1であればtrueを返す
         if (!empty($_SESSION['permissions'][$type])) {
             return true;
         }

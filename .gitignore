@@ -11,7 +11,7 @@ bfg-1.15.0.jar
 # PHP依存パッケージ（サーバー側で composer install するため不要）
 /vendor/
 
-/storage/
+/storage/cache
 
 # OSやエディタのキャッシュファイル
 .DS_Store
