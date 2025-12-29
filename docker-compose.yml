@@ -7,8 +7,6 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      # コンテナ内のPostgreSQLを指すURL
-      - ***REMOVED***
       - PORT=80
     depends_on:
       - db
