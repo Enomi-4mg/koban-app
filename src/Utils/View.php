@@ -19,17 +19,17 @@ class View
     }
 
     /**
-     * UIコンポーネントのレンダリング（新規追加）
-     * @param string $componentName componentsフォルダ内のファイル名
-     * @param array $props コンポーネントに渡す引数
+     * UIコンポーネントを安全に読み込む
      */
     public static function component($componentName, $props = [])
     {
-        extract($props);
+        // EXTR_SKIP を指定することで、既存の変数（もしあれば）の上書きを防ぎつつ展開
+        extract($props, EXTR_SKIP);
+
         $filePath = __DIR__ . '/../../views/components/' . $componentName . '.php';
 
         if (file_exists($filePath)) {
-            include $filePath; // componentは複数回呼ばれるため include
+            include $filePath;
         } else {
             echo "";
         }
@@ -38,22 +38,12 @@ class View
 ?>
 
 <?php
-/**
- * @var string $type 'submit' or 'link'
- * @var string $variant 'primary' | 'danger' | 'warning' | 'secondary'
- * @var string $text ボタンの文字
- * @var string $href linkの場合の遷移先
- * @var string $onclick onclickイベント
- */
-$class = "btn btn-" . ($variant ?? 'primary');
+$isSuccess = preg_match('/(作成|成功|完了|変更しました)/u', $message);
+$color = $isSuccess ? 'var(--cyber-green)' : 'var(--cyber-red)';
+$label = $isSuccess ? '[ SUCCESS ]' : '[ ERROR ]';
 ?>
-
-<?php if (($type ?? 'submit') === 'link'): ?>
-    <a href="<?php echo h($href ?? '#'); ?>" class="<?php echo $class; ?>" style="text-align: center;">
-        [ <?php echo h($text); ?> ]
-    </a>
-<?php else: ?>
-    <button type="submit" class="<?php echo $class; ?>" onclick="<?php echo h($onclick ?? ''); ?>">
-        <?php echo h($text); ?>
-    </button>
-<?php endif; ?>
+<div class="alert-container" style="border: 1px solid <?php echo $color; ?>; background: rgba(0,0,0,0.8); padding: 15px; margin: 10px auto; width: 80%;">
+    <span style="color: <?php echo $color; ?>; font-weight: bold; text-shadow: 0 0 5px <?php echo $color; ?>;">
+        <?php echo $label; ?> <?php echo h($message); ?>
+    </span>
+</div>
