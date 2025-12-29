@@ -49,17 +49,23 @@
 <div class="container" style="max-width: 600px; margin-top: 20px;">
 
     <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
-        <div style="background: rgba(255, 255, 0, 0.1); border: 1px solid #ffff00; padding: 15px; margin-bottom: 20px;">
-            <h3 style="color: #ffff00; margin-top: 0;">昇格リクエスト受信</h3>
-            <p style="color: #ccc; font-size: 0.9em;">理由: <?php echo h($admin['request_message']); ?></p>
-            <p style="color: #888; font-size: 0.8em;">申請日時: <?php echo h($admin['requested_at']); ?></p>
-
+        <div style="background: rgba(255, 255, 0, 0.1); border: 1px solid var(--cyber-yellow); padding: 15px; margin-bottom: 20px;">
             <form method="post" action="/admin/users/handle_request" style="display: flex; gap: 10px;">
                 <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
                 <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
 
-                <button type="submit" name="request_action" value="approve" class="btn-primary">承認 (データ権限付与)</button>
-                <button type="submit" name="request_action" value="reject" class="btn-danger">却下する</button>
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'submit',
+                    'variant' => 'primary',
+                    'text' => '承認 (データ権限付与)',
+                    'onclick' => "this.name='request_action'; this.value='approve';"
+                ]); ?>
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'submit',
+                    'variant' => 'danger',
+                    'text' => '却下する',
+                    'onclick' => "this.name='request_action'; this.value='reject';"
+                ]); ?>
             </form>
         </div>
     <?php endif; ?>
@@ -103,7 +109,11 @@
             </div>
 
             <?php if (!isProtectedAdmin($admin['login_id'])): ?>
-                <input type="submit" value="権限を更新する" class="btn-primary">
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'submit',
+                    'variant' => 'primary',
+                    'text' => '権限を更新する'
+                ]); ?>
             <?php endif; ?>
         </form>
 
@@ -116,7 +126,13 @@
 
                     <input type="password" name="new_password" placeholder="新しいパスワードを入力" required
                         style="background: #000; color: #ff4444; border: 1px solid #ff4444; padding: 8px; width: 100%; margin: 10px 0;">
-                    <input type="submit" value="パスワードをリセット" class="btn-danger" style="width: 100%;">
+
+                    <?php \App\Utils\View::component('button', [
+                        'type' => 'submit',
+                        'variant' => 'danger',
+                        'text' => 'パスワードをリセット',
+                        'style' => 'width: 100%;'
+                    ]); ?>
                 </form>
             </div>
 

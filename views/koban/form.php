@@ -2,7 +2,12 @@
 
 <div class="container">
     <div style="text-align: left; margin-bottom: 15px;">
-        <a href="/" class="btn btn-secondary">← 一覧に戻る</a>
+        <?php \App\Utils\View::component('button', [
+            'type' => 'link',
+            'variant' => 'secondary',
+            'text' => '← 一覧に戻る',
+            'href' => '/'
+        ]); ?>
     </div>
 
     <?php if ($message): ?>
@@ -70,7 +75,12 @@
             </div>
 
             <div style="text-align: center; margin-top: 20px;">
-                <input type="submit" value="<?php echo !empty($edit_data) ? '変更を保存' : 'データベースに追加'; ?>" class="btn-primary" style="padding: 10px 40px;">
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'submit',
+                    'variant' => 'primary',
+                    'text' => !empty($edit_data) ? '変更を保存' : 'データベースに追加',
+                    'style' => 'padding: 10px 40px;'
+                ]); ?>
             </div>
         </form>
     </div>
@@ -79,11 +89,13 @@
         <h3 style="margin-top: 0; color: #ccc;">CSV一括インポート</h3>
 
         <form method="post" action="/koban/import" enctype="multipart/form-data" style="display: flex; gap: 10px; align-items: center;">
-
             <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-
             <input type="file" name="csv_file" accept=".csv" required style="color: #fff;">
-            <input type="submit" value="インポート実行" class="btn-warning">
+            <?php \App\Utils\View::component('button', [
+                'type' => 'submit',
+                'variant' => 'warning',
+                'text' => 'インポート実行'
+            ]); ?>
         </form>
         <p style="font-size: 11px; color: #888;">※列順: id, 名前, 種別, 電話, コード, 〒, 都道府県, 住所</p>
     </div>

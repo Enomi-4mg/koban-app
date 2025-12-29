@@ -115,11 +115,19 @@ require __DIR__ . '/layouts/header.php';
 
         <div style="margin-top: 20px; text-align: right; border-top: 1px solid #444; padding-top: 10px; display: flex; justify-content: flex-end; gap: 10px;">
             <form action="/koban/export" method="get">
-                <button type="submit" class="btn-secondary">全データをCSV保存</button>
+                <?php \App\Utils\View::component('button', [
+                    'type'    => 'submit',
+                    'variant' => 'secondary',
+                    'text'    => '全データをCSV保存'
+                ]); ?>
             </form>
             <form action="/koban/export" method="get">
                 <?php foreach (['keyword', 'search_type', 'search_pref'] as $k) echo '<input type="hidden" name="' . $k . '" value="' . h($_GET[$k] ?? '') . '">'; ?>
-                <button type="submit" class="btn-primary" style="color: #000;">検索結果をCSV保存</button>
+                <?php \App\Utils\View::component('button', [
+                    'type'    => 'submit',
+                    'variant' => 'primary',
+                    'text'    => '検索結果をCSV保存'
+                ]); ?>
             </form>
         </div>
     </div>
@@ -165,11 +173,22 @@ require __DIR__ . '/layouts/header.php';
                     <td style="text-align: center;">
                         <?php if (hasPermission('data')): ?>
                             <div style="display: flex; justify-content: center; gap: 5px;">
-                                <a href="/koban/edit?id=<?php echo h($row['id']); ?>" class="btn btn-warning" style="padding: 4px 8px; font-size:12px;">編集</a>
+                                <?php \App\Utils\View::component('button', [
+                                    'type'    => 'link',
+                                    'variant' => 'warning',
+                                    'text'    => '編集',
+                                    'href'    => '/koban/edit?id=' . h($row['id']),
+                                    'style'   => 'padding: 4px 8px; font-size:12px;'
+                                ]); ?>
                                 <form method="post" action="/koban/delete" onsubmit="return confirm('本当に削除しますか？');">
                                     <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
                                     <input type="hidden" name="delete_id" value="<?php echo h($row['id']); ?>">
-                                    <input type="submit" value="削除" class="btn-danger" style="padding: 4px 8px; font-size:12px;">
+                                    <?php \App\Utils\View::component('button', [
+                                        'type'    => 'submit',
+                                        'variant' => 'danger',
+                                        'text'    => '削除',
+                                        'style'   => 'padding: 4px 8px; font-size:12px;'
+                                    ]); ?>
                                 </form>
                             </div>
                         <?php else: ?>
