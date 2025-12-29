@@ -15,6 +15,9 @@ require __DIR__ . '/layouts/header.php';
                 <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
             </div>
         <?php else: ?>
+            <?php if (!hasPermission(PERM_DATA)): ?>
+                <?php \App\Utils\View::component('request_panel'); ?>
+            <?php endif; ?>
             <div style="display: flex; flex-direction: column; gap: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
                     <div style="text-align: left;">

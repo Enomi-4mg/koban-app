@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\KobanController;
-use App\Controllers\AuthController; // 後で作る予定ならコメントアウトでもOK
-use App\Controllers\AdminController; // まだない場合はコメントアウト
+use App\Controllers\AuthController;
+use App\Controllers\AdminController;
 
 // 2. 環境変数の読み込み (.env)
 try {
@@ -80,8 +80,10 @@ $routes = [
         '/koban/delete' => [KobanController::class, 'delete'],
         '/auth/login'   => [AuthController::class, 'login'],
         '/auth/logout'  => [AuthController::class, 'logout'],
+        '/auth/request_permission' => [AuthController::class, 'submitRequest'],
         '/koban/import' => [KobanController::class, 'importCsv'],
-        '/register' => [App\Controllers\AuthController::class, 'register'],
+        '/register' => [AuthController::class, 'register'],
+
 
         // ▼▼▼ 管理者用ルート (追加) ▼▼▼
         '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行

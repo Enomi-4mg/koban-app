@@ -1,0 +1,3799 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+.htaccess
+composer.json
+docker-compose.yml
+Dockerfile
+index.php
+public/.htaccess
+public/css/style.css
+public/index.php
+README.md
+SQL/.htaccess
+src/Controllers/AdminController.php
+src/Controllers/AuthController.php
+src/Controllers/KobanController.php
+src/Models/AdminUser.php
+src/Models/AuditLog.php
+src/Models/Koban.php
+src/Utils/Cache.php
+src/Utils/Database.php
+src/Utils/functions.php
+src/Utils/Validator.php
+src/Utils/View.php
+views/admin/change_password.php
+views/admin/edit_admin.php
+views/admin/log_list.php
+views/admin/register.php
+views/admin/reset_password.php
+views/admin/user_registration.php
+views/auth/login.php
+views/auth/register.php
+views/home.php
+views/koban/form.php
+views/layouts/footer.php
+views/layouts/header.php
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="README.md">
+# R6 交番・駐在所検索データベース
+(Koban Search App)
+
+このプロジェクトは、全国の交番および駐在所の情報を検索・管理するためのWebアプリケーションであり、PHP 8.2とDocker環境をベースにしています。DBに関する知識の学習を目的としています。
+
+---
+
+#### データ出典：[e-Gov データポータル - 交番・駐在所オープンデータ](https://data.e-gov.go.jp/data/ja/dataset/04b81179-879c-40e7-ab86-9f097ffac49d/resource/18ce28d1-e3b6-43dd-a3c9-6d4b767bace0?inner_span=True&activity_id=7f92bdf3-a897-4a1e-88d5-59755ea7d37b)
+
+## 🚀 主な機能
+
+### 🔍 検索・閲覧
+* **条件検索**: ID、都道府県、種別（交番/駐在所）、キーワード（名称や住所）による絞り込み。
+* **ページネーション**: 大量データの快適な閲覧（1ページ100件表示）。
+* **外部連携**: 住所からGoogleマップへのダイレクトリンク機能。
+
+### 🔐 管理者・セキュリティ
+* **権限管理**: 「データ管理」「アカウント管理」「ログ閲覧」の3段階のパーミッション設定。
+* **認証システム**: 安全なパスワードハッシュ（`password_hash`）とセッション管理。
+* **CSRF対策**: すべてのPOSTリクエストに対するトークン検証。
+* **操作ログ監査**: システム内の主要な操作を記録し、管理者パネルからリアルタイムで確認可能。
+
+### 📊 データ管理
+* **CRUD操作**: ブラウザ上での新規登録、編集、削除。
+* **CSVインポート**: 外部データの一括取り込み機能（UPSERT対応）。
+* **CSVエクスポート**: 検索結果または全データのバックアップ。
+
+---
+
+## 🛠 技術スタック
+
+* **Language**: PHP 8.2 (Apache)
+* **Architecture**: MVC（Model-View-Controller）パターン
+* **Database**:
+    * 本番環境: PostgreSQL (Render等での運用を想定)
+    * ローカル環境: SQLite
+* **Environment**: Docker / Docker Compose
+* **Frontend**: Vanilla JS (Real-time Log API), CSS3 (Cyber-style Green UI)
+* **Dependencies**: 
+    * `phpdotenv`: 環境変数管理
+    * `composer`: ライブラリ管理
+
+---
+
+## 📁 ディレクトリ構造
+
+```text
+.
+├── Dockerfile              # Dockerイメージ定義
+├── docker-compose.yml      # コンテナ構成管理
+├── index.php               # エントリポイント（public/index.phpへ委譲）
+├── public/                 # 公開ディレクトリ（静的ファイル、フロントコントローラ）
+│   ├── css/                # スタイルシート
+│   └── index.php           # ルーティング処理
+├── src/                    # アプリケーションロジック
+│   ├── Controllers/        # 各画面の制御（Auth, Admin, Koban）
+│   ├── Models/             # データベース操作（Koban, AdminUser, AuditLog）
+│   └── Utils/              # 共通ユーティリティ（Database, Cache, Validator）
+├── views/                  # UIテンプレート（PHP/HTML）
+│   ├── admin/              # 管理者用画面
+│   ├── koban/              # データ管理画面
+│   └── layouts/            # 共通ヘッダー等
+├── SQL/                    # データベース関連ファイル（SQLite等）
+└── storage/                # 書き込み可能ディレクトリ（Cache用）
+```
+
+## ⚡ 起動手順（ローカル開発環境）
+
+1. 準備
+Docker Desktop がインストール・起動されていることを確認してください。
+
+2. 環境変数の設定
+プロジェクトルートに .env ファイルを作成します。
+
+コード スニペット
+
+* ローカルでSQLiteを使用する場合は空欄、PostgreSQLを使用する場合はURLを記述
+
+DATABASE_URL=
+
+3. コンテナのビルド・起動
+ターミナルで以下のコマンドを実行します。
+
+```Bash
+docker-compose up -d --build
+```
+
+4. ブラウザでアクセス
+以下のURLを開きます。 http://localhost:8080
+
+## 🔧 開発・運用メモ
+- キャッシュ機能: src/Utils/Cache.php により、検索結果や件数取得をファイルベースでキャッシュし、DB負荷を軽減しています。
+
+- リアルタイムログ: views/admin/log_list.php では JavaScript の fetch を用いて、ページ遷移なしで最新の操作ログを自動更新表示します。
+
+- デプロイ: Dockerfile は Render 等の PaaS 環境（$PORT 環境変数対応）へのデプロイを考慮して設計されています。
+
+📝 ライセンス
+このプロジェクトの取り扱いについては、管理者に確認してください。
+</file>
+
+<file path=".gitignore">
+# データベースファイル（PostgreSQLへ移行済みのため不要）
+/SQL/opendata.sqlite
+/SQL/log_archives/
+
+# 環境変数（認証情報が含まれるため絶対に公開しない）
+.env
+
+# PHP依存パッケージ（サーバー側で composer install するため不要）
+/vendor/
+
+# OSやエディタのキャッシュファイル
+.DS_Store
+/node_modules/
+.vscode/
+</file>
+
+<file path=".htaccess">
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ▼▼▼ 追加: 重要なディレクトリへの直接アクセスを禁止 ▼▼▼
+    RewriteRule ^(src|views|vendor|SQL)/ - [F,L]
+    RewriteRule ^composer\.(json|lock)$ - [F,L]
+    # ▲▲▲ 追加ここまで ▲▲▲
+    # ファイルやディレクトリが存在しなければ index.php に転送
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+</file>
+
+<file path="composer.json">
+{
+    "name": "miyashu/koban-app",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        },
+        "files": [
+            "src/Utils/functions.php"
+        ]
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
+</file>
+
+<file path="docker-compose.yml">
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+</file>
+
+<file path="index.php">
+<?php
+// ルートディレクトリの index.php
+
+// すべてのリクエストを public/index.php に丸投げ（委譲）します
+require_once __DIR__ . '/public/index.php';
+</file>
+
+<file path="public/.htaccess">
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 実在するファイル（画像、CSS、JSなど）へのアクセスはそのまま通す
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # それ以外はすべて index.php に転送する
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+</file>
+
+<file path="SQL/.htaccess">
+<FilesMatch "\.(sqlite|csv|log|bak|sql)$">
+    Require all denied
+</FilesMatch>
+
+Qptions -Indexes
+</file>
+
+<file path="src/Models/AuditLog.php">
+<?php
+
+namespace App\Models;
+
+use App\Utils\Database;
+use PDO;
+
+class AuditLog
+{
+
+    // ログ検索・一覧取得
+    public function search($params, $limit = 500)
+    {
+        $db = Database::connect();
+        $query = $this->buildQuery($params);
+
+        $sql = "SELECT * FROM audit_logs " . $query['where'] . " ORDER BY id DESC LIMIT " . (int)$limit;
+        $stmt = $db->prepare($sql);
+        $stmt->execute($query['params']);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 新しいログのみ取得（リアルタイム更新API用）
+    public function getNewLogs($lastId, $params)
+    {
+        $db = Database::connect();
+        $query = $this->buildQuery($params);
+
+        // 既存の検索条件 AND id > ?
+        $where = $query['where'] === "" ? "WHERE id > ?" : $query['where'] . " AND id > ?";
+        $params = $query['params'];
+        $params[] = $lastId;
+
+        $stmt = $db->prepare("SELECT * FROM audit_logs " . $where . " ORDER BY id DESC");
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 操作種別（Action Type）のリスト取得（ドロップダウン用）
+    public function getActionTypes()
+    {
+        $db = Database::connect();
+        return $db->query("SELECT DISTINCT action_type FROM audit_logs ORDER BY action_type ASC")
+            ->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    // 内部用: 検索クエリ構築メソッド
+    private function buildQuery($params)
+    {
+        $conditions = [];
+        $sqlParams = [];
+
+        // ユーザーID
+        if (!empty($params['filter_user'])) {
+            $conditions[] = "user_id LIKE ?";
+            $sqlParams[] = '%' . $params['filter_user'] . '%';
+        }
+
+        // 操作種別
+        if (!empty($params['filter_action'])) {
+            if ($params['filter_action'] === 'AUTH_SET') {
+                $conditions[] = "(action_type LIKE ? OR action_type LIKE ? OR action_type LIKE ?)";
+                $sqlParams[] = '%ログイン%';
+                $sqlParams[] = '%ログアウト%';
+                $sqlParams[] = '%権限%';
+            } else {
+                $conditions[] = "action_type = ?";
+                $sqlParams[] = $params['filter_action'];
+            }
+        }
+
+        // 日時範囲
+        if (!empty($params['filter_date_start'])) {
+            $conditions[] = "action_time >= ?";
+            $sqlParams[] = $params['filter_date_start'] . ' 00:00:00';
+        }
+        if (!empty($params['filter_date_end'])) {
+            $conditions[] = "action_time <= ?";
+            $sqlParams[] = $params['filter_date_end'] . ' 23:59:59';
+        }
+
+        // キーワード
+        if (!empty($params['filter_keyword'])) {
+            $conditions[] = "details LIKE ?";
+            $sqlParams[] = '%' . $params['filter_keyword'] . '%';
+        }
+
+        $whereSql = !empty($conditions) ? "WHERE " . implode(' AND ', $conditions) : "";
+
+        return ['where' => $whereSql, 'params' => $sqlParams];
+    }
+}
+</file>
+
+<file path="views/admin/change_password.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div style="width: 400px; margin: 50px auto; background-color: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 10px; box-shadow: 0px 0px 20px rgba(78, 78, 78, 0.4); text-align: center; color: #1eff1a; font-family: sans-serif;">
+    <h2>パスワード変更</h2>
+
+    <p style="color: <?php echo strpos($message, '変更しました') !== false ? '#1eff1a' : '#ff4444'; ?>;">
+        <?php echo h($message); ?>
+    </p>
+
+    <p style="font-size: 14px; color: #ccc;">
+        対象ID: <b><?php echo h($_SESSION['login_id'] ?? '不明'); ?></b>
+    </p>
+
+    <form method="post" action="/admin/password/update" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+        <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+        <div>
+            <label style="color:#ccc;">現在のパスワード:</label>
+            <input type="password" name="current_pass" required style="width: 100%; padding: 8px; background:#333; color:#fff; border:1px solid #555; box-sizing: border-box;">
+        </div>
+        <div>
+            <label style="color:#ccc;">新しいパスワード:</label>
+            <input type="password" name="new_pass" required style="width: 100%; padding: 8px; background:#333; color:#fff; border:1px solid #555; box-sizing: border-box;">
+        </div>
+        <input type="submit" value="変更する" style="background-color: #1eff1a; border: none; padding: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px;">
+    </form>
+
+    <br>
+    <a href="/" style="color: #888;">検索ページに戻る</a>
+</div>
+</file>
+
+<file path="views/admin/log_list.php">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>操作ログ監査</title>
+    <style>
+        body {
+            background-color: #010000;
+            color: #1eff1a;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        table {
+            width: 95%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #333;
+        }
+
+        th,
+        td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #111;
+        }
+
+        tr:hover {
+            background-color: #222;
+        }
+
+        /* 新着ログのアニメーション用 */
+        @keyframes flash {
+            0% {
+                background-color: #ffff00;
+                color: #000;
+            }
+
+            100% {
+                background-color: transparent;
+                color: #1eff1a;
+            }
+        }
+
+        .new-log {
+            animation: flash 2s ease-out;
+        }
+
+        .search-box {
+            background-color: #1a1a1a;
+            padding: 15px;
+            margin: 20px auto;
+            width: 90%;
+            border: 1px solid #333;
+            border-radius: 8px;
+            text-align: left;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input,
+        select {
+            padding: 6px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .btn-search {
+            background-color: #1eff1a;
+            color: #000;
+        }
+
+        .btn-csv {
+            background-color: #ffff00;
+            color: #000;
+            margin-left: auto;
+        }
+
+        .btn-reset {
+            background-color: #555;
+            color: #fff;
+            text-decoration: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .btn-back {
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            border: 1px solid #555;
+            padding: 5px 10px;
+        }
+
+        .danger {
+            color: #ff4444;
+        }
+
+        .login {
+            color: #00ccff;
+        }
+
+        .num-col {
+            text-align: center;
+            color: #888;
+            font-weight: bold;
+        }
+
+        /* 更新インジケーター */
+        #live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #555;
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        #live-indicator.active {
+            background-color: #1eff1a;
+            box-shadow: 0 0 5px #1eff1a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>システム操作ログ監査 <span id="live-indicator" title="リアルタイム更新待機中..."></span></h2>
+    <div style="width: 90%; margin: 0 auto; text-align: left;">
+        <a href="/" class="btn btn-back">← 検索画面に戻る</a>
+    </div>
+
+    <form method="get" class="search-box" id="searchForm">
+        <div>
+            <label>ユーザーID:</label>
+            <input type="text" name="filter_user" value="<?php echo h($_GET['filter_user'] ?? ''); ?>" size="10" placeholder="部分一致">
+        </div>
+        <div>
+            <label>操作:</label>
+            <select name="filter_action">
+                <option value="">(すべて)</option>
+                <option value="AUTH_SET" style="color: #00ccff; font-weight: bold;" <?php if (($_GET['filter_action'] ?? '') === 'AUTH_SET') echo 'selected'; ?>>
+                    【 認証・セッション関連 】
+                </option>
+                <option disabled>----------------</option>
+                <?php foreach ($types as $t): ?>
+                    <option value="<?php echo h($t); ?>" <?php if (($_GET['filter_action'] ?? '') === $t) echo 'selected'; ?>>
+                        <?php echo h($t); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-search">検索</button>
+        <a href="/admin/logs" class="btn-reset">リセット</a>
+        <button type="submit" name="download_csv" value="1" class="btn btn-csv">結果をCSV保存</button>
+    </form>
+
+    <div style="width: 95%; margin: 0 auto; text-align: left; margin-bottom: 5px;">
+        該当件数: <span style="font-weight: bold; font-size: 1.2em;" id="count-display"><?php echo count($logs); ?></span> 件 (最大500件)
+    </div>
+
+    <table id="logTable">
+        <thead>
+            <tr>
+                <th width="5%">No.</th>
+                <th width="5%">DB-ID</th>
+                <th width="15%">日時</th>
+                <th width="10%">ユーザー</th>
+                <th width="10%">操作</th>
+                <th width="40%">詳細</th>
+                <th width="15%">環境情報</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+            <?php if (empty($logs)): ?>
+                <tr id="no-logs-row">
+                    <td colspan="7" style="text-align: center; padding: 20px; color: #888;">ログが見つかりません</td>
+                </tr>
+            <?php else: ?>
+                <?php $row_num = count($logs); ?>
+                <?php foreach ($logs as $log): ?>
+                    <tr>
+                        <td class="num-col"><?php echo $row_num--; ?></td>
+                        <td style="text-align:center; color:#666; font-size:0.9em;"><?php echo h($log['id']); ?></td>
+                        <td><?php echo h($log['action_time']); ?></td>
+                        <td><?php echo h($log['user_id']); ?></td>
+                        <td style="font-weight: bold; text-align: center;">
+                            <?php
+                            $act = h($log['action_type']);
+                            if (strpos($act, '削除') !== false || strpos($act, '失敗') !== false || strpos($act, 'エラー') !== false || strpos($act, '拒否') !== false) {
+                                echo "<span class='danger'>$act</span>";
+                            } elseif (strpos($act, 'ログイン') !== false) {
+                                echo "<span class='login'>$act</span>";
+                            } else {
+                                echo $act;
+                            }
+                            ?>
+                        </td>
+                        <td><?php echo h($log['details']); ?></td>
+                        <td style="font-size: 12px; color: #888;">
+                            <div>IP: <?php echo h($log['ip_address']); ?></div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <script>
+        // PHPから渡された最新のIDを初期値としてセット
+        let latestId = <?php echo (int)$latest_id; ?>;
+
+        // 1.5秒ごとに新しいログを取りに行くタイマーを開始
+        setInterval(fetchNewLogs, 1500);
+
+        function fetchNewLogs() {
+            // 検索フォームに入力されている条件を取得
+            const formData = new FormData(document.getElementById('searchForm'));
+            const params = new URLSearchParams(formData);
+
+            // 「今の最新IDより後のデータ」をください、というパラメータを追加
+            params.append('last_id', latestId);
+
+            // ★修正ポイント: URLを新しいAPIエンドポイントに変更
+            fetch('/admin/api/logs?' + params.toString())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // エラーが返ってきた場合はログに出して終了
+                    if (data.error) {
+                        console.error('API Error:', data.error);
+                        return;
+                    }
+
+                    // 新しいログがあれば画面に追加
+                    if (data.length > 0) {
+                        updateTable(data);
+                    }
+
+                    // 動作確認用の「緑の点」をピカッとさせる
+                    flashIndicator();
+                })
+                .catch(error => console.error('Fetch error:', error));
+        }
+
+        // テーブルを更新する関数
+        function updateTable(newLogs) {
+            const tbody = document.getElementById('logTableBody');
+            const noLogsRow = document.getElementById('no-logs-row');
+            const countDisplay = document.getElementById('count-display');
+
+            // 「ログが見つかりません」の表示があれば消す
+            if (noLogsRow) {
+                noLogsRow.remove();
+            }
+
+            // 受け取ったログ配列（降順）を逆転させて、古い順にする
+            // これにより、forEachで順番に「先頭へ挿入」していくと、最終的に正しい順序（最新が一番上）になる
+            newLogs.slice().reverse().forEach(log => {
+                // 最新IDを更新（次のリクエスト用）
+                if (parseInt(log.id) > latestId) {
+                    latestId = parseInt(log.id);
+                }
+
+                // HTMLの行を作成
+                const row = document.createElement('tr');
+                row.className = 'new-log'; // CSSアニメーション（黄色く光る）を適用
+
+                // 操作種別の色分け（PHP側と同じロジック）
+                let actionHtml = log.action_type;
+                if (log.action_type.match(/削除|失敗|エラー|拒否/)) {
+                    actionHtml = `<span class='danger'>${log.action_type}</span>`;
+                } else if (log.action_type.match(/ログイン/)) {
+                    actionHtml = `<span class='login'>${log.action_type}</span>`;
+                }
+
+                // ▼▼▼ 修正箇所: 1行目の td を "NEW" に変更 ▼▼▼
+                row.innerHTML = `
+                    <td class="num-col" style="color: #ffff00; font-weight: bold; font-size: 0.8em;">NEW</td>
+                    <td style="text-align:center; color:#666; font-size:0.9em;">${log.id}</td>
+                    <td>${log.action_time}</td>
+                    <td>${log.user_id}</td>
+                    <td style="font-weight: bold; text-align: center;">${actionHtml}</td>
+                    <td>${log.details}</td>
+                    <td style="font-size: 12px; color: #888;">
+                        <div>IP: ${log.ip_address}</div>
+                    </td>
+                `;
+                // ▲▲▲ 修正ここまで ▲▲▲
+
+                // テーブルの一番上に追加
+                tbody.insertAdjacentElement('afterbegin', row);
+            });
+
+            // 件数表示を更新
+            if (countDisplay) {
+                countDisplay.textContent = tbody.rows.length;
+            }
+        }
+
+        // 通信インジケーターのアニメーション
+        function flashIndicator() {
+            const indicator = document.getElementById('live-indicator');
+            if (indicator) {
+                indicator.classList.add('active');
+                setTimeout(() => indicator.classList.remove('active'), 500);
+            }
+        }
+    </script>
+</body>
+
+</html>
+</file>
+
+<file path="views/admin/reset_password.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div style="width: 500px; margin: 50px auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; border-radius: 10px; text-align: left; color: #1eff1a; font-family: sans-serif;">
+    <h2 style="color: #fff; margin-top: 0; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;">パスワード強制リセット</h2>
+
+    <?php if ($message): ?>
+        <p style="color: <?php echo strpos($message, 'エラー') !== false ? '#ff4444' : '#1eff1a'; ?>; font-weight: bold; text-align: center;">
+            <?php echo h($message); ?>
+        </p>
+    <?php endif; ?>
+
+    <p style="font-size: 13px; color: #ccc;">
+        指定した管理者IDのパスワードを強制的に上書きします。<br>
+        <span style="color: #ff4444;">※現在のパスワードを知らなくても変更可能です。</span>
+    </p>
+
+    <form method="post" onsubmit="return confirm('本当にパスワードを変更しますか？\nこの操作は取り消せません。');">
+        <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+
+        <div style="margin-bottom: 15px;">
+            <label style="color: #fff;">対象の管理者ID:</label>
+            <input type="text" name="reset_target_id" value="<?php echo h($target_id); ?>" required placeholder="user_id" style="width: 100%; padding: 8px; margin-top: 5px; background: #333; color: #fff; border: 1px solid #555;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="color: #fff;">新しいパスワード:</label>
+            <input type="password" name="reset_new_pass" required placeholder="New Password" style="width: 100%; padding: 8px; margin-top: 5px; background: #333; color: #fff; border: 1px solid #555;">
+        </div>
+
+        <input type="submit" value="変更を実行する" style="width: 100%; background-color: #ffff00; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; margin-top: 20px; font-size: 16px; border-radius: 4px;">
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/admin/users" style="color: #888; text-decoration: none;">管理者一覧に戻る</a>
+    </div>
+</div>
+</file>
+
+<file path="views/koban/form.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div class="container">
+    <div style="text-align: left; margin-bottom: 15px;">
+        <a href="/" class="btn btn-secondary">← 一覧に戻る</a>
+    </div>
+
+    <?php if ($message): ?>
+        <div style="color: #ff4444; margin-bottom: 15px; font-weight: bold; border: 1px solid red; padding: 10px;">
+            <?php echo h($message); ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="box">
+        <h2 style="margin-top:0; border-bottom: 1px solid #444; padding-bottom: 10px;">
+            <?php echo h($page_title); ?>
+        </h2>
+
+        <form method="post" action="/koban/store" class="h-adr" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+            <input type="hidden" name="save_data" value="1">
+            <span class="p-country-name" style="display:none;">Japan</span>
+
+            <?php if (!empty($edit_data['id'])): ?>
+                <input type="hidden" name="update_id" value="<?php echo h($edit_data['id']); ?>">
+                <p style="color: #888; font-size: 12px;">ID: <?php echo h($edit_data['id']); ?> を編集中</p>
+            <?php endif; ?>
+
+            <div>
+                <label>交番名 <span style="color: #ff4444;">*</span></label>
+                <input type="text" name="new_name" placeholder="例: 明治大学前交番" required
+                    value="<?php echo h($edit_data['koban_fullname'] ?? ''); ?>" style="width: 100%;">
+            </div>
+
+            <div>
+                <label>種別</label><br>
+                <?php $cur = $edit_data['type'] ?? '交番'; ?>
+                <label><input type="radio" name="new_type" value="交番" <?php if ($cur == '交番') echo 'checked'; ?>> 交番</label>
+                <label style="margin-left: 15px;"><input type="radio" name="new_type" value="駐在所" <?php if ($cur == '駐在所') echo 'checked'; ?>> 駐在所</label>
+            </div>
+
+            <div>
+                <label>電話番号</label>
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <input type="text" name="phone_part1" value="<?php echo h($phone_parts[0] ?? ''); ?>" size="6"> -
+                    <input type="text" name="phone_part2" value="<?php echo h($phone_parts[1] ?? ''); ?>" size="6"> -
+                    <input type="text" name="phone_part3" value="<?php echo h($phone_parts[2] ?? ''); ?>" size="6">
+                </div>
+            </div>
+
+            <div>
+                <label>全国地方公共団体コード</label>
+                <input type="tel" name="new_group_code" value="<?php echo h($edit_data['group_code'] ?? ''); ?>" style="width: 100%;">
+            </div>
+
+            <div>
+                <label>郵便番号 <span style="font-size:12px; color:#ffff00;">(自動入力対応)</span></label>
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    〒 <input type="text" name="postal_part1" maxlength="3" value="<?php echo h($postal_parts[0] ?? ''); ?>" class="p-postal-code" size="5"> -
+                    <input type="text" name="postal_part2" maxlength="4" value="<?php echo h($postal_parts[1] ?? ''); ?>" class="p-postal-code" size="6">
+                </div>
+            </div>
+
+            <div>
+                <label>都道府県 / 市区町村</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" name="new_pref" placeholder="都道府県" value="<?php echo h($edit_data['pref'] ?? ''); ?>" class="p-region" style="width: 30%;">
+                    <input type="text" name="new_addr3" placeholder="市区町村以下" value="<?php echo h($edit_data['addr3'] ?? ''); ?>" class="p-locality p-street-address p-extended-address" style="width: 70%;">
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <input type="submit" value="<?php echo !empty($edit_data) ? '変更を保存' : 'データベースに追加'; ?>" class="btn-primary" style="padding: 10px 40px;">
+            </div>
+        </form>
+    </div>
+
+    <div class="box" style="margin-top: 30px;">
+        <h3 style="margin-top: 0; color: #ccc;">CSV一括インポート</h3>
+
+        <form method="post" action="/koban/import" enctype="multipart/form-data" style="display: flex; gap: 10px; align-items: center;">
+
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+
+            <input type="file" name="csv_file" accept=".csv" required style="color: #fff;">
+            <input type="submit" value="インポート実行" class="btn-warning">
+        </form>
+        <p style="font-size: 11px; color: #888;">※列順: id, 名前, 種別, 電話, コード, 〒, 都道府県, 住所</p>
+    </div>
+
+</div>
+<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+</body>
+
+</html>
+</file>
+
+<file path="public/css/style.css">
+:root {
+    /* カラーパレット */
+    --cyber-green: #1eff1a;
+    --cyber-green-dim: rgba(30, 255, 26, 0.2);
+    --cyber-green-glow: rgba(30, 255, 26, 0.5);
+    --cyber-bg: #010000;
+    --cyber-box-bg: #1a1a1a;
+    --cyber-red: #ff4444;
+    --cyber-yellow: #ffff00;
+    --cyber-blue: #00ccff;
+    --cyber-gray: #333;
+    --cyber-text-dim: #888;
+    
+    /* 共通設定 */
+    --cyber-border: 1px solid var(--cyber-gray);
+    --cyber-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    --cyber-glow-shadow: 0 0 10px var(--cyber-green-glow);
+    --transition-speed: 0.3s;
+}
+
+/* 変数を使用した既存セレクタの更新例 */
+body {
+    background-color: var(--cyber-bg);
+    color: var(--cyber-green);
+    transition: background-color var(--transition-speed);
+}
+
+.box {
+    background-color: var(--cyber-box-bg);
+    border: var(--cyber-border);
+    box-shadow: var(--cyber-shadow);
+}
+
+.btn-primary {
+    background-color: var(--cyber-green);
+    color: #000;
+    transition: box-shadow var(--transition-speed);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--cyber-glow-shadow);
+}
+
+body {
+    background-color: #010000;
+    color: #1eff1a;
+    font-family: sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1,
+h2,
+h3 {
+    color: #fbfffc;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* フォームやメニューを囲むボックス */
+.box {
+    background-color: #1a1a1a;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    text-align: left;
+}
+
+/* 入力フォームデザイン */
+input[type=text],
+input[type=password],
+input[type=tel],
+input[type=date],
+select {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+/* ボタンデザイン */
+input[type=submit],
+button,
+.btn {
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #1eff1a;
+    color: #000;
+}
+
+.btn-warning {
+    background-color: #ffff00;
+    color: #000;
+}
+
+.btn-danger {
+    background-color: #ff4444;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+.btn-back {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 5px 10px;
+}
+
+a {
+    color: #888;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* テーブルデザイン（元ファイルのデザインを復元） */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #b0ffd4;
+    margin-top: 10px;
+}
+
+th {
+    background-color: #1a1a1aff;
+    color: #fff;
+    padding: 8px;
+    border: 1px solid #b0ffd4;
+    text-align: center;
+}
+
+td {
+    border: 1px solid #b0ffd4;
+    /* 元のボーダー色 */
+    padding: 8px;
+    color: #1eff1a;
+    background-color: #010000;
+}
+
+tr:hover td {
+    background-color: #111;
+}
+
+/* ページネーション */
+.pagination a {
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+.pagination .current {
+    background: #1eff1a;
+    color: #000;
+    font-weight: bold;
+}
+
+.pagination .other {
+    background: #333;
+    color: #fff;
+}
+
+/* レイアウト調整用 */
+.flex-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.right-align {
+    text-align: right;
+}
+</file>
+
+<file path="src/Utils/Cache.php">
+<?php
+
+namespace App\Utils;
+
+class Cache
+{
+    private static $cacheDir = __DIR__ . '/../../storage/cache/';
+    private static $defaultTtl = 600;
+
+    /**
+     * キャッシュを取得
+     * @param string $key 検索キー
+     * @return mixed 内容のみを返す
+     */
+    public static function get($key)
+    {
+        $path = self::findPath($key);
+        if (!$path || !file_exists($path)) return null;
+
+        $data = unserialize(file_get_contents($path));
+
+        // 有効期限チェック
+        if (time() > $data['metadata']['expires']) {
+            unlink($path);
+            return null;
+        }
+
+        return $data['content'];
+    }
+
+    /**
+     * キャッシュを保存（メタデータ付き）
+     * @param string $key 検索キー
+     * @param mixed $content 保存内容
+     * @param string $tag 識別タグ（例: 'koban_list'）
+     */
+    public static function set($key, $content, $tag = 'default', $ttl = null)
+    {
+        if (!is_dir(self::$cacheDir)) mkdir(self::$cacheDir, 0755, true);
+
+        $ttl = $ttl ?? self::$defaultTtl;
+        $hash = md5($key);
+        // [タグ]__[ハッシュ].cache という形式で保存
+        $path = self::$cacheDir . "{$tag}__{$hash}.cache";
+        $tmpPath = $path . '.' . uniqid(mt_rand(), true) . '.tmp';
+
+        $data = [
+            'metadata' => [
+                'tag' => $tag,
+                'expires' => time() + $ttl,
+                'created_at' => date('Y-m-d H:i:s'),
+                'php_version' => PHP_VERSION,
+                'server' => gethostname() // Renderのインスタンス識別用
+            ],
+            'content' => $content
+        ];
+
+        if (file_put_contents($tmpPath, serialize($data), LOCK_EX) !== false) {
+            rename($tmpPath, $path);
+        }
+    }
+
+    /**
+     * 特定のタグを持つキャッシュのみを削除（ピンポイント無効化）
+     */
+    public static function clearByTag($tag)
+    {
+        $files = glob(self::$cacheDir . "{$tag}__*.cache");
+        foreach ($files as $file) {
+            if (is_file($file)) unlink($file);
+        }
+    }
+
+    /**
+     * キーから既存のキャッシュファイルパスを探す
+     */
+    private static function findPath($key)
+    {
+        $hash = md5($key);
+        $files = glob(self::$cacheDir . "*__{$hash}.cache");
+        return !empty($files) ? $files[0] : null;
+    }
+}
+</file>
+
+<file path="src/Utils/Validator.php">
+<?php
+
+namespace App\Utils;
+
+class Validator
+{
+    /**
+     * パスワードの強度バリデーション
+     * @param string $password
+     * @return array [bool $isValid, string $errorMessage]
+     */
+    private $errors = [];
+
+    public function validateKoban($data)
+    {
+        // 1. 必須チェック
+        if (empty($data['new_name'])) {
+            $this->errors['new_name'] = '交番名は必須です。';
+        }
+
+        // 2. 文字数チェック (例: 100文字以内)
+        if (mb_strlen($data['new_name']) > 100) {
+            $this->errors['new_name'] = '交番名は100文字以内で入力してください。';
+        }
+
+        // 3. 形式チェック (例: グループコードは半角英数のみ)
+        // preg_match は正規表現でチェックします
+        if (!empty($data['new_group_code']) && !preg_match('/^[0-9]+$/', $data['new_group_code'])) {
+            $this->errors['new_group_code'] = '団体コードは半角数字で入力してください。';
+        }
+
+        $phone_raw = ($data['phone_part1'] ?? '') . ($data['phone_part2'] ?? '') . ($data['phone_part3'] ?? '');
+        $postal_raw = ($data['postal_part1'] ?? '') . ($data['postal_part2'] ?? '');
+        if (!empty($postal_raw) && !preg_match('/^[0-9]+$/', $postal_raw)) {
+            $this->errors['postal'] = '郵便番号は半角数字のみで入力してください。';
+        }
+
+        return empty($this->errors);
+    }
+    public static function validatePassword(string $password): array
+    {
+        // 1. 文字数チェック (NIST推奨の最小8文字)
+        if (mb_strlen($password) < 8) {
+            return [false, "パスワードは8文字以上で入力してください。"];
+        }
+
+        // 2. 複雑性チェック (正規表現)
+        // 英大文字、小文字、数字がそれぞれ1つ以上含まれているか
+        $hasUpper = preg_match('/[A-Z]/', $password);
+        $hasLower = preg_match('/[a-z]/', $password);
+        $hasNumber = preg_match('/[0-9]/', $password);
+        $hasSymbol = preg_match('/[!-@#%^&*(),.?":{}|<>]/', $password);
+
+        if (!$hasUpper || !$hasLower || !$hasNumber) {
+            return [false, "英大文字、小文字、数字をすべて組み合わせてください。"];
+        }
+
+        return [true, ""];
+    }
+
+    /**
+     * ログインIDのバリデーション
+     */
+    public static function validateLoginId(string $loginId): array
+    {
+        if (!preg_match('/^[a-zA-Z0-9_]{4,20}$/', $loginId)) {
+            return [false, "IDは4〜20文字の半角英数字（アンダースコア可）で入力してください。"];
+        }
+        return [true, ""];
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+}
+</file>
+
+<file path="views/auth/login.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div class="container" style="max-width: 450px; margin-top: 60px;">
+    <div class="box" style="border: 2px solid #1eff1a; padding: 30px; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(30, 255, 26, 0.3);">
+        <div class="scan-line"></div>
+
+        <h2 style="color: #1eff1a; text-shadow: 0 0 10px rgba(30, 255, 26, 0.5); text-align: center; margin-top: 0; letter-spacing: 2px; font-family: 'Courier New', Courier, monospace;">
+            システム認証
+        </h2>
+
+        <?php if ($message): ?>
+            <div style="color: #ff4444; border: 1px solid #ff4444; padding: 10px; margin-bottom: 20px; font-size: 0.9em; background: rgba(255, 68, 68, 0.1); text-align: left;">
+                [!] <?php echo h($message); ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="/auth/login" style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+
+            <div>
+                <label style="color: #1eff1a; display: block; margin-bottom: 8px; font-size: 0.9em;">ログインID</label>
+                <input type="text" name="login_id" required
+                    style="width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #1eff1a; box-sizing: border-box; font-family: monospace;"
+                    placeholder="IDを入力してください">
+            </div>
+
+            <div>
+                <label style="color: #1eff1a; display: block; margin-bottom: 8px; font-size: 0.9em;">パスワード</label>
+                <input type="password" name="login_pass" required
+                    style="width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #1eff1a; box-sizing: border-box; font-family: monospace;"
+                    placeholder="パスワードを入力してください">
+            </div>
+
+            <input type="submit" value="[ システムにログイン ]" class="btn-primary"
+                style="width: 100%; padding: 15px; font-weight: bold; font-size: 1.1em; cursor: pointer; border: 1px solid #1eff1a; background: transparent; color: #1eff1a; transition: 0.3s;">
+        </form>
+
+        <div style="margin-top: 25px; text-align: center; border-top: 1px solid #333; padding-top: 15px;">
+            <p style="color: #666; font-size: 0.8em; margin-bottom: 10px;">アカウントをお持ちでない場合</p>
+            <a href="/register" style="color: #1eff1a; text-decoration: underline; font-size: 0.9em;">新規アカウント作成</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scan-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(30, 255, 26, 0.2);
+        box-shadow: 0 0 15px #1eff1a;
+        animation: scan 4s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes scan {
+        0% {
+            top: -5%;
+        }
+
+        100% {
+            top: 105%;
+        }
+    }
+
+    input[type=submit]:hover {
+        background: #1eff1a !important;
+        color: #000 !important;
+        box-shadow: 0 0 20px #1eff1a;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #1eff1a !important;
+        box-shadow: 0 0 5px #1eff1a;
+    }
+</style>
+
+<?php require __DIR__ . '/../layouts/footer.php'; ?>
+</file>
+
+<file path="views/auth/register.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div class="container" style="max-width: 450px; margin-top: 60px;">
+    <div class="box" style="border: 2px solid #1eff1a; padding: 30px; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(30, 255, 26, 0.3);">
+        <div class="scan-line"></div>
+
+        <h2 style="color: #1eff1a; text-shadow: 0 0 10px rgba(30, 255, 26, 0.5); text-align: center; margin-top: 0; letter-spacing: 2px; font-family: 'Courier New', Courier, monospace;">
+            新規アカウント作成
+        </h2>
+
+        <p style="color: #888; font-size: 0.8em; text-align: center; margin-bottom: 25px;">
+            システムを利用するためのIDとパスワードを設定してください。
+        </p>
+
+        <form method="post" action="/register" style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+
+            <div>
+                <label style="color: #1eff1a; display: block; margin-bottom: 8px; font-size: 0.9em;">ログインID</label>
+                <input type="text" name="login_id" required
+                    style="width: 100%; background: #000; border: 1px solid #333; color: #1eff1a; padding: 12px; font-family: monospace; box-sizing: border-box;"
+                    placeholder="4-20文字の半角英数字">
+            </div>
+
+            <div>
+                <label style="color: #1eff1a; display: block; margin-bottom: 8px; font-size: 0.9em;">パスワード</label>
+                <input type="password" name="password" required
+                    style="width: 100%; background: #000; border: 1px solid #333; color: #1eff1a; padding: 12px; font-family: monospace; box-sizing: border-box;"
+                    placeholder="8文字以上 (英大・小・数を含む)">
+            </div>
+
+            <div style="background: rgba(30, 255, 26, 0.05); border-left: 3px solid #ffff00; padding: 10px; margin: 10px 0 20px 0;">
+                <p style="color: #ffff00; font-size: 0.75em; margin: 0; line-height: 1.4;">
+                    ※登録直後の権限は「閲覧のみ」に設定されます。データの編集が必要な場合は、ログイン後に管理者に申請してください。
+                </p>
+            </div>
+
+            <input type="submit" value="[ アカウントを作成する ]" class="btn-primary"
+                style="width: 100%; padding: 15px; font-weight: bold; font-size: 1.1em; cursor: pointer; border: 1px solid #1eff1a; background: transparent; color: #1eff1a; transition: 0.3s;">
+        </form>
+
+        <div style="margin-top: 25px; text-align: center; border-top: 1px solid #333; padding-top: 15px;">
+            <a href="/auth/login" style="color: #888; text-decoration: none; font-size: 0.9em;">← ログイン画面へ戻る</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scan-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(30, 255, 26, 0.2);
+        box-shadow: 0 0 15px #1eff1a;
+        animation: scan 4s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes scan {
+        0% {
+            top: -5%;
+        }
+
+        100% {
+            top: 105%;
+        }
+    }
+
+    input[type=submit]:hover {
+        background: #1eff1a !important;
+        color: #000 !important;
+        box-shadow: 0 0 20px #1eff1a;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #1eff1a !important;
+        box-shadow: 0 0 5px #1eff1a;
+    }
+</style>
+
+<?php require __DIR__ . '/../layouts/footer.php'; ?>
+</file>
+
+<file path="views/layouts/footer.php">
+<div style="margin-top: 50px; padding-bottom: 20px; color: #444; font-size: 0.7em; font-family: monospace;">
+    &copy; 2025 R6 Koban Database Management System / Enomi-4mg
+</div>
+</body>
+
+</html>
+</file>
+
+<file path="src/Models/AdminUser.php">
+<?php
+
+namespace App\Models;
+
+use App\Utils\Database;
+use PDO;
+
+class AdminUser
+{
+    // IDでユーザー情報を取得
+    public function findById($login_id)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("SELECT * FROM admin_users WHERE login_id = ?");
+        $stmt->execute([$login_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // ログイン失敗時にカウントを1増やす
+    public function incrementFailureCount($login_id)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET failure_count = failure_count + 1 WHERE login_id = ?");
+        return $stmt->execute([$login_id]);
+    }
+
+    // アカウントをロックする
+    public function lockAccount($login_id, $until_time)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET locked_until = ? WHERE login_id = ?");
+        return $stmt->execute([$until_time, $login_id]);
+    }
+
+    // ログイン成功時に失敗回数をリセット
+    public function resetFailureCount($login_id)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET failure_count = 0 WHERE login_id = ?");
+        $stmt->execute([$login_id]);
+    }
+
+    // パスワード変更/リセット時にロックも同時解除するようにする
+    public function updatePassword($login_id, $new_hash)
+    {
+        $db = Database::connect();
+        // パスワード更新時に、失敗回数とロック期限もクリアする
+        $stmt = $db->prepare("UPDATE admin_users SET password_hash = ?, failure_count = 0, locked_until = NULL WHERE login_id = ?");
+        return $stmt->execute([$new_hash, $login_id]);
+    }
+
+    // 管理者作成（初期設定用）
+    public function create($login_id, $password, $perms = [])
+    {
+        $db = Database::connect();
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // 権限設定のデフォルト
+        $p_data  = $perms['data'] ?? 1;
+        $p_admin = $perms['admin'] ?? 1;
+        $p_log   = $perms['log'] ?? 1;
+
+        $sql = "INSERT INTO admin_users (login_id, password_hash, role, perm_data, perm_admin, perm_log) VALUES (?, ?, 1, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([$login_id, $hash, $p_data, $p_admin, $p_log]);
+    }
+    
+    // ★追加: 全管理者を取得（一覧画面用）
+    public function findAll() {
+        $db = Database::connect();
+        // 最終操作ログの日時もサブクエリで取得（元のロジックを継承）
+        $sql = "SELECT u.login_id, u.perm_data, u.perm_admin, u.perm_log,
+                (SELECT action_time FROM audit_logs l WHERE l.user_id = u.login_id ORDER BY id DESC LIMIT 1) as last_act_time,
+                (SELECT action_type FROM audit_logs l WHERE l.user_id = u.login_id ORDER BY id DESC LIMIT 1) as last_act_type
+                FROM admin_users u ORDER BY u.login_id ASC";
+        return $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 管理者削除
+    public function delete($login_id) {
+        $db = Database::connect();
+        $stmt = $db->prepare("DELETE FROM admin_users WHERE login_id = ?");
+        return $stmt->execute([$login_id]);
+    }
+    
+    // ID重複チェック用
+    public function exists($login_id) {
+        $db = Database::connect();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM admin_users WHERE login_id = ?");
+        $stmt->execute([$login_id]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * 特定の管理者の権限フラグのみを更新する
+     */
+    public function updatePermissions($login_id, $perms)
+    {
+        $db = Database::connect();
+        $sql = "UPDATE admin_users SET perm_data = ?, perm_admin = ?, perm_log = ? WHERE login_id = ?";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $perms['data'],
+            $perms['admin'],
+            $perms['log'],
+            $login_id
+        ]);
+    }
+}
+</file>
+
+<file path="src/Utils/View.php">
+<?php
+
+namespace App\Utils;
+
+class View
+{
+    /**
+     * ページ全体のレンダリング（既存）
+     */
+    public static function render($viewName, $data = [])
+    {
+        extract($data);
+        $filePath = __DIR__ . '/../../views/' . $viewName . '.php';
+        if (file_exists($filePath)) {
+            require $filePath;
+        } else {
+            echo "View file not found: " . htmlspecialchars($viewName);
+        }
+    }
+
+    /**
+     * UIコンポーネントを安全に読み込む
+     */
+    public static function component($componentName, $props = [])
+    {
+        // EXTR_SKIP を指定することで、既存の変数（もしあれば）の上書きを防ぎつつ展開
+        extract($props, EXTR_SKIP);
+
+        $filePath = __DIR__ . '/../../views/components/' . $componentName . '.php';
+
+        if (file_exists($filePath)) {
+            include $filePath;
+        } else {
+            echo "";
+        }
+    }
+}
+?>
+
+<?php
+$isSuccess = preg_match('/(作成|成功|完了|変更しました)/u', $message);
+$color = $isSuccess ? 'var(--cyber-green)' : 'var(--cyber-red)';
+$label = $isSuccess ? '[ SUCCESS ]' : '[ ERROR ]';
+?>
+<div class="alert-container" style="border: 1px solid <?php echo $color; ?>; background: rgba(0,0,0,0.8); padding: 15px; margin: 10px auto; width: 80%;">
+    <span style="color: <?php echo $color; ?>; font-weight: bold; text-shadow: 0 0 5px <?php echo $color; ?>;">
+        <?php echo $label; ?> <?php echo h($message); ?>
+    </span>
+</div>
+</file>
+
+<file path="views/admin/user_registration.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+
+<div class="container" style="max-width: 500px; margin-top: 40px;">
+
+    <div style="margin-bottom: 20px;">
+        <a href="/admin/users" style="color: #888; text-decoration: none; font-size: 0.9em;">← 管理者一覧へ戻る</a>
+    </div>
+
+    <div class="box" style="border: 2px solid #1eff1a; padding: 30px; background-color: #000; box-shadow: 0 0 20px rgba(30, 255, 26, 0.1);">
+        <h2 style="color: #1eff1a; border-bottom: 1px solid #1eff1a; padding-bottom: 10px; text-align: center; margin-top: 0;">新規管理者アカウント発行</h2>
+
+        <form method="post" action="/admin/users/register">
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: #1eff1a; display: block; margin-bottom: 5px;">ログインID</label>
+                <input type="text" name="new_id" required
+                    style="width: 100%; background: #000; border: 1px solid #333; color: #1eff1a; padding: 10px; font-family: monospace;"
+                    placeholder="IDを入力...">
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label style="color: #1eff1a; display: block; margin-bottom: 5px;">初期パスワード</label>
+                <input type="password" name="new_pass" required
+                    style="width: 100%; background: #000; border: 1px solid #333; color: #1eff1a; padding: 10px; font-family: monospace;"
+                    placeholder="PASSWORDを入力...">
+            </div>
+
+            <h3 style="color: #ffff00; font-size: 0.85em; margin-bottom: 10px;">初期権限の設定</h3>
+            <div style="display: grid; gap: 8px; margin-bottom: 30px;">
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_data" value="1" checked>
+                    <span class="cyber-panel">● データ管理権限</span>
+                </label>
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_admin" value="1">
+                    <span class="cyber-panel">● 管理者管理権限</span>
+                </label>
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_log" value="1">
+                    <span class="cyber-panel">● ログ閲覧権限</span>
+                </label>
+            </div>
+
+            <div style="text-align: center;">
+                <input type="submit" value="システムに登録実行" class="btn-primary"
+                    style="width: 100%; padding: 12px; font-weight: bold; font-size: 1.1em; cursor: pointer;">
+            </div>
+        </form>
+    </div>
+</div>
+</file>
+
+<file path="Dockerfile">
+# 1. ベースイメージの指定
+FROM php:8.2-apache
+
+# 2. 必要なライブラリとPostgreSQL/SQLite拡張をインストール
+RUN apt-get update && apt-get install -y \
+    unzip git libsqlite3-dev libpq-dev \
+    && docker-php-ext-install pdo_sqlite pdo_pgsql
+
+# 3. Apacheの設定変更 (403対策の肝)
+# ApacheのDocumentRootを /var/www/html に設定し、.htaccessを有効化します
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+# 4. Renderの動的ポート設定に対応
+# Renderが割り当てる $PORT 環境変数でApacheが待ち受けるようにします
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+# 5. mod_rewrite (URL書き換え) を有効化
+RUN a2enmod rewrite
+
+# 6. Composer のインストール
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 7. 作業ディレクトリの設定とファイルのコピー
+WORKDIR /var/www/html
+COPY . .
+
+# 8. 権限の設定
+# キャッシュディレクトリを作成し、所有者を www-data に変更
+RUN mkdir -p /var/www/html/storage/cache \
+    && chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage
+
+# 9. 依存関係のインストール
+RUN composer install --no-dev --optimize-autoloader
+
+# 10. Apacheの起動
+CMD ["apache2-foreground"]
+</file>
+
+<file path="src/Controllers/AuthController.php">
+<?php
+
+namespace App\Controllers;
+
+use App\Models\AdminUser;
+use App\Utils\View;
+
+class AuthController
+{
+    // ログイン画面の表示（もし専用画面を作るならここ。今回はトップページにフォームがあるので使いません）
+
+    public function login()
+    {
+        verifyCsrfToken();
+        $login_id = $_POST['login_id'] ?? '';
+        $password = $_POST['login_pass'] ?? '';
+        $adminModel = new AdminUser();
+
+        // ユーザーに返す共通エラーメッセージ
+        $common_error = "IDまたはパスワードが正しくありません。";
+
+        try {
+            $user = $adminModel->findById($login_id);
+
+            // IDが存在しない場合でも、わざと「パスワード検証」に相当する時間待機させるか、
+            // すぐに返さず一律のメッセージをセットする
+            if (!$user) {
+                $_SESSION['message'] = $common_error;
+                logAction($login_id ?: 'unknown', 'ログイン失敗', "存在しないIDでの試行");
+                header("Location: /");
+                exit;
+            }
+
+            // 1. ロック確認（ロックされていても、メッセージは変えない）
+            if ($user['locked_until'] && strtotime($user['locked_until']) > time()) {
+                $_SESSION['message'] = $common_error; // 「ロック中」とは教えない
+                logAction($login_id, 'ログイン拒否', "ロック中のIDへのアクセス");
+                header("Location: /");
+                exit;
+            }
+
+            // 2. パスワード検証
+            if (password_verify($password, $user['password_hash'])) {
+                // 成功時の処理（既存通り）
+                session_regenerate_id(true);
+                $_SESSION['logged_in'] = true;
+                $_SESSION['login_id'] = $user['login_id'];
+                $_SESSION['permissions'] = [
+                    'data'  => $user['perm_data'],
+                    'admin' => $user['perm_admin'],
+                    'log'   => $user['perm_log'] ?? 0
+                ];
+                $adminModel->resetFailureCount($login_id);
+                logAction($login_id, 'ログイン', '成功');
+                header("Location: /");
+                exit;
+            }
+
+            // 3. 失敗時：回数カウントやロック処理は裏で行う
+            $adminModel->incrementFailureCount($login_id);
+            $updatedUser = $adminModel->findById($login_id);
+            $fail_count = $updatedUser ? (int)$updatedUser['failure_count'] : 0;
+
+            if ($fail_count >= 10) {
+                $lock_time = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+                $adminModel->lockAccount($login_id, $lock_time);
+                logAction($login_id, 'アカウントロック', "自動ロック実行");
+            }
+
+            $_SESSION['message'] = $common_error; // 失敗回数も教えない
+            logAction($login_id, 'ログイン失敗', "パスワード不一致（累計: {$fail_count}回）");
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            $_SESSION['message'] = "システムエラーが発生しました。";
+            logAction($login_id, 'ログインエラー', "ログインにてエラーが発生しました");
+        }
+
+        header("Location: /auth/login");
+        exit;
+    }
+
+    // ログアウト処理
+    public function logout()
+    {
+        $user_id = $_SESSION['login_id'] ?? 'guest';
+        logAction($user_id, 'ログアウト', '成功');
+
+        // セッション破棄
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+        session_destroy();
+
+        header("Location: /");
+        exit;
+    }
+
+    /**
+     * 新規登録画面の表示
+     */
+    public function showRegisterForm()
+    {
+        // ログイン済みの場合はトップへ
+        if (isset($_SESSION['logged_in'])) {
+            header("Location: /");
+            exit;
+        }
+
+        return \App\Utils\View::render('auth/register', [
+            'page_title' => 'SIGN UP - 新規アカウント作成',
+            'message' => getFlashMessage()
+        ]);
+    }
+
+    /**
+     * 登録処理の実行
+     */
+    public function register()
+    {
+        verifyCsrfToken();
+
+        $login_id = $_POST['login_id'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // 1. バリデーション (Validatorクラスの再利用)
+        list($idValid, $idMsg) = \App\Utils\Validator::validateLoginId($login_id);
+        if (!$idValid) {
+            $_SESSION['message'] = $idMsg;
+            header("Location: /register");
+            exit;
+        }
+
+        list($pwValid, $pwMsg) = \App\Utils\Validator::validatePassword($password);
+        if (!$pwValid) {
+            $_SESSION['message'] = $pwMsg;
+            header("Location: /register");
+            exit;
+        }
+
+        $adminModel = new \App\Models\AdminUser();
+
+        // 2. ID重複チェック
+        if ($adminModel->exists($login_id)) {
+            $_SESSION['message'] = "このIDは既に使用されています。";
+            header("Location: /register");
+            exit;
+        }
+
+        // 3. 保存 (一般ユーザーは全権限 0 で登録)
+        $perms = [
+            'data'  => 0,
+            'admin' => 0,
+            'log'   => 0
+        ];
+
+        if ($adminModel->create($login_id, $password, $perms)) {
+            logAction($login_id, '自己登録', "新規アカウント作成（一般ユーザー）");
+            $_SESSION['message'] = "アカウントを作成しました。ログインしてください。";
+            header("Location: /"); // トップページのログインフォームへ
+        } else {
+            $_SESSION['message'] = "登録中にエラーが発生しました。";
+            header("Location: /register");
+        }
+        exit;
+    }
+
+    /**
+     * ログイン専用画面の表示
+     */
+    public function showLoginForm()
+    {
+        if (isset($_SESSION['logged_in'])) {
+            header("Location: /");
+            exit;
+        }
+
+        return \App\Utils\View::render('auth/login', [
+            'page_title' => 'ACCESS GRANTED - ログイン',
+            'message' => getFlashMessage() // functions.php の関数
+        ]);
+    }
+
+    /**
+     * 権限昇格の申請を実行
+     */
+    public function submitRequest()
+    {
+        verifyCsrfToken();
+        if (!isset($_SESSION['logged_in'])) header("Location: /");
+
+        $userId = $_SESSION['login_id'];
+        $message = $_POST['request_reason'] ?? '';
+
+        $db = \App\Utils\Database::connect();
+        $stmt = $db->prepare("UPDATE admin_users SET request_status = 'pending', request_message = ?, requested_at = ? WHERE login_id = ?");
+        $stmt->execute([$message, date('Y-m-d H:i:s'), $userId]);
+
+        logAction($userId, '権限申請', "理由: $message");
+        $_SESSION['message'] = "権限昇格を申請しました。管理者の承認をお待ちください。";
+        header("Location: /");
+        exit;
+    }
+}
+</file>
+
+<file path="src/Utils/Database.php">
+<?php
+namespace App\Utils;
+use PDO;
+use Exception;
+
+class Database {
+    // インスタンス保持用の静的変数（シングルトン）
+    private static $instance = null;
+
+    public static function connect(): PDO {
+        // すでに接続済みの場合は、既存のインスタンスを即座に返す
+        if (self::$instance !== null) {
+            return self::$instance;
+        }
+
+        // --- 計測開始 ---
+        $startTime = microtime(true);
+
+        $dbUrl = $_ENV['DATABASE_URL'] ?? null;
+
+        try {
+            if ($dbUrl) {
+                // PostgreSQL接続 (Render本番環境)
+                $dbopts = parse_url($dbUrl);
+                $dsn = sprintf("pgsql:host=%s;port=%d;dbname=%s", 
+                    $dbopts["host"], $dbopts["port"], ltrim($dbopts["path"], "/"));
+                $user = $dbopts["user"];
+                $pass = $dbopts["pass"];
+                
+                self::$instance = new PDO($dsn, $user, $pass, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    // ▼ 高速化の鍵：永続接続を有効化
+                    PDO::ATTR_PERSISTENT => true,
+                    // タイムアウト設定（応答がない場合に5秒で切り上げる）
+                    PDO::ATTR_TIMEOUT => 5,
+                ]);
+            } else {
+                // SQLite接続 (ローカル開発環境)
+                $dbPath = __DIR__ . '/../../SQL/opendata.sqlite';
+                self::$instance = new PDO("sqlite:" . $dbPath, null, null, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]);
+            }
+
+            // --- 計測終了とログ出力 ---
+            $endTime = microtime(true);
+            $duration = round(($endTime - $startTime) * 1000, 2); // ミリ秒単位に変換
+            
+            // Renderのログに表示されるよう出力
+            error_log("【PERF】DB Connected in {$duration}ms (Host: " . ($dbopts['host'] ?? 'sqlite') . ")");
+
+        } catch (Exception $e) {
+            error_log("【ERROR】DB Connection Failed: " . $e->getMessage());
+            throw $e;
+        }
+
+        return self::$instance;
+    }
+}
+?>
+</file>
+
+<file path="views/admin/edit_admin.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+<style>
+    /* サイバーチェックボックスのスタイル */
+    .cyber-checkbox-label {
+        display: block;
+        cursor: pointer;
+    }
+
+    .cyber-checkbox-label input {
+        display: none;
+    }
+
+    /* デフォルトのチェックボックスを隠す */
+
+    .cyber-panel {
+        display: block;
+        padding: 12px;
+        border: 1px solid #333;
+        background: #111;
+        color: #555;
+        /* デフォルトは暗い色 */
+        transition: all 0.3s;
+    }
+
+    .cyber-panel .status-dot {
+        margin-right: 10px;
+    }
+
+    /* チェック時のスタイル */
+    .cyber-checkbox-label input:checked+.cyber-panel {
+        border-color: #1eff1a;
+        color: #1eff1a;
+        background: rgba(30, 255, 26, 0.1);
+        box-shadow: 0 0 10px rgba(30, 255, 26, 0.2) inset;
+    }
+
+    /* ホバー時 */
+    .cyber-panel:hover {
+        border-color: #666;
+    }
+
+    /* 無効時（特権アカウント） */
+    .cyber-checkbox-label input:disabled+.cyber-panel {
+        opacity: 0.5;
+        cursor: not-allowed;
+        border-style: dotted;
+    }
+</style>
+<div class="container" style="max-width: 600px; margin-top: 20px;">
+
+    <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
+        <div style="background: rgba(255, 255, 0, 0.1); border: 1px solid #ffff00; padding: 15px; margin-bottom: 20px;">
+            <h3 style="color: #ffff00; margin-top: 0;">昇格リクエスト受信</h3>
+            <p style="color: #ccc; font-size: 0.9em;">理由: <?php echo h($admin['request_message']); ?></p>
+            <p style="color: #888; font-size: 0.8em;">申請日時: <?php echo h($admin['requested_at']); ?></p>
+
+            <form method="post" action="/admin/users/handle_request" style="display: flex; gap: 10px;">
+                <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
+
+                <button type="submit" name="request_action" value="approve" class="btn-primary">承認 (データ権限付与)</button>
+                <button type="submit" name="request_action" value="reject" class="btn-danger">却下する</button>
+            </form>
+        </div>
+    <?php endif; ?>
+
+    <div style="margin-bottom: 15px;">
+        <a href="/admin/users" style="color: #888; text-decoration: none;">← 管理者一覧に戻る</a>
+    </div>
+
+    <div class="box" style="border: 1px solid #1eff1a; padding: 20px;">
+        <h2 style="color: #1eff1a; border-bottom: 1px solid #1eff1a; padding-bottom: 10px; margin-bottom: 20px;">
+            設定対象: <?php echo h($admin['login_id']); ?>
+        </h2>
+
+        <form method="post" action="/admin/users/update_perms" style="margin-bottom: 30px;">
+            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+            <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
+
+            <h3 style="color: #ffff00; font-size: 0.9em; margin-bottom: 15px;">■ 権限割り当て (クリックで切替)</h3>
+            <div style="display: grid; gap: 10px; margin-bottom: 25px;">
+
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_data" value="1" <?php echo $admin['perm_data'] ? 'checked' : ''; ?> <?php echo isProtectedAdmin($admin['login_id']) ? 'disabled' : ''; ?>>
+                    <span class="cyber-panel">
+                        <span class="status-dot">●</span> データ管理権限
+                    </span>
+                </label>
+
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_admin" value="1" <?php echo $admin['perm_admin'] ? 'checked' : ''; ?> <?php echo isProtectedAdmin($admin['login_id']) ? 'disabled' : ''; ?>>
+                    <span class="cyber-panel">
+                        <span class="status-dot">●</span> 管理者管理権限
+                    </span>
+                </label>
+
+                <label class="cyber-checkbox-label">
+                    <input type="checkbox" name="perm_log" value="1" <?php echo $admin['perm_log'] ? 'checked' : ''; ?> <?php echo isProtectedAdmin($admin['login_id']) ? 'disabled' : ''; ?>>
+                    <span class="cyber-panel">
+                        <span class="status-dot">●</span> ログ閲覧権限
+                    </span>
+                </label>
+            </div>
+
+            <?php if (!isProtectedAdmin($admin['login_id'])): ?>
+                <input type="submit" value="権限を更新する" class="btn-primary">
+            <?php endif; ?>
+        </form>
+
+        <?php if (isCurrentSuperAdmin()): ?>
+            <div style="border-top: 1px dashed #444; padding-top: 20px;">
+                <h3 style="color: #ff4444; font-size: 1em;">■ パスワードの強制変更</h3>
+                <form method="post" action="/admin/users/reset_pw" onsubmit="return confirm('パスワードを上書きします。よろしいですか？');">
+                    <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                    <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
+
+                    <input type="password" name="new_password" placeholder="新しいパスワードを入力" required
+                        style="background: #000; color: #ff4444; border: 1px solid #ff4444; padding: 8px; width: 100%; margin: 10px 0;">
+                    <input type="submit" value="パスワードをリセット" class="btn-danger" style="width: 100%;">
+                </form>
+            </div>
+
+            <?php if (!isProtectedAdmin($admin['login_id']) && $admin['login_id'] !== $_SESSION['login_id']): ?>
+                <div style="margin-top: 30px; text-align: right;">
+                    <form method="post" action="/admin/users/delete" onsubmit="return confirm('このアカウントを完全に削除しますか？');">
+                        <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                        <input type="hidden" name="delete_admin_id" value="<?php echo h($admin['login_id']); ?>">
+                        <input type="submit" value="アカウントを削除" style="background:none; border:none; color:#666; cursor:pointer; font-size:0.8em; text-decoration:underline;">
+                    </form>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+</div>
+</file>
+
+<file path="views/layouts/header.php">
+<?php require_once __DIR__ . '/../../vendor/autoload.php'; ?>
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo h($page_title ?? '交番データベース'); ?></title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+</head>
+
+<body>
+    <h1><?php echo h($page_title ?? 'R6 交番・駐在所検索データベース'); ?></h1>
+
+    <?php if ($flash_msg = getFlashMessage()): ?>
+        <?php \App\Utils\View::component('alert', ['message' => $flash_msg]); ?>
+    <?php endif; ?>
+</file>
+
+<file path="public/index.php">
+<?php
+// 1. オートロードの読み込み
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Controllers\KobanController;
+use App\Controllers\AuthController; // 後で作る予定ならコメントアウトでもOK
+use App\Controllers\AdminController; // まだない場合はコメントアウト
+
+// 2. 環境変数の読み込み (.env)
+try {
+    // プロジェクトルート(一つ上の階層)の .env を探す
+    $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+} catch (\Exception $e) {
+    // .envがなくても動作を止めない（本番環境の環境変数を使う場合など）
+}
+
+// 3. セッション開始 (全ページ共通)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+sendSecurityHeaders();
+
+// 4. ルーティング処理 (修正版)
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
+// ▼▼▼ 追加：HEADリクエストをGETとして処理（404対策） ▼▼▼
+if ($method === 'HEAD' && ($requestPath === '/' || $requestPath === '/index.php')) {
+    $method = 'GET';
+}
+// スクリプトが置かれているディレクトリを取得 (例: /public)
+$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+
+// リクエストパスの先頭にディレクトリパスが含まれていれば削除する
+// これにより /public/koban/edit へのアクセスを /koban/edit として扱えます
+if ($scriptDir !== '/' && strpos($requestPath, $scriptDir) === 0) {
+    $requestPath = substr($requestPath, strlen($scriptDir));
+}
+
+// さらに /index.php が付いていたら削除する
+$path = str_replace('/index.php', '', $requestPath);
+
+// 空文字になった場合はルート(/)とみなす
+if ($path === '') {
+    $path = '/';
+}
+
+// 確認用デバッグ (解決したら消してください)
+// echo "Resolved Path: " . htmlspecialchars($path);
+
+// ルート定義
+$routes = [
+    'GET' => [
+        '/'             => [KobanController::class, 'index'],
+        '/opendata'     => [KobanController::class, 'index'],
+        '/koban/create' => [KobanController::class, 'create'],
+        '/koban/edit'   => [KobanController::class, 'edit'],
+        '/admin/login'  => [AuthController::class, 'showLoginForm'],
+        '/koban/export' => [KobanController::class, 'export'],
+        '/auth/login'   => [AuthController::class, 'showLoginForm'], // 追加
+        '/register' => [App\Controllers\AuthController::class, 'showRegisterForm'],
+
+        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
+        '/admin/logs'            => [AdminController::class, 'logs'],            // ログ一覧
+        '/admin/api/logs'        => [AdminController::class, 'apiLogs'],         // ログAPI (JS用)
+        '/admin/password/change' => [AdminController::class, 'changePassword'],  // PW変更画面
+        '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
+        '/admin/users/export' => [AdminController::class, 'exportAdmins'],
+        '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
+        '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
+        '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
+    ],
+    'POST' => [
+        '/koban/store'  => [KobanController::class, 'store'],
+        '/koban/delete' => [KobanController::class, 'delete'],
+        '/auth/login'   => [AuthController::class, 'login'],
+        '/auth/logout'  => [AuthController::class, 'logout'],
+        '/koban/import' => [KobanController::class, 'importCsv'],
+        '/register' => [App\Controllers\AuthController::class, 'register'],
+
+        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
+        '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行
+        '/admin/users/store'     => [AdminController::class, 'storeAdmin'],      // 管理者登録・削除
+        '/admin/password/reset'  => [AdminController::class, 'resetPasswordExec'], // PW強制リセット実行
+        '/admin/users/register'  => [AdminController::class, 'registerUser'],    // 新規登録実行
+        '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'], // 権限更新
+        '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
+        '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
+    ]
+];
+
+// 5. ディスパッチ (コントローラー呼び出し)
+if (isset($routes[$method][$path])) {
+    // 対応するコントローラーとメソッドを取り出す
+    [$controllerClass, $action] = $routes[$method][$path];
+
+    // クラスが存在するかチェック
+    if (class_exists($controllerClass)) {
+        $controller = new $controllerClass();
+        if (method_exists($controller, $action)) {
+            // メソッド実行！
+            $controller->$action();
+        } else {
+            http_response_code(500);
+            echo "Error: Method '$action' not found in $controllerClass";
+        }
+    } else {
+        http_response_code(500);
+        echo "Error: Class '$controllerClass' not found";
+    }
+} else {
+    // 定義されていないURLの場合
+    http_response_code(404);
+    echo "<h1>404 Not Found</h1>";
+    echo "<p>ページが見つかりません。</p>";
+    echo "<a href='/'>トップページへ戻る</a>";
+}
+</file>
+
+<file path="src/Controllers/KobanController.php">
+<?php
+
+namespace App\Controllers;
+
+// 必要なクラス（部品）を読み込む宣言
+use App\Models\Koban;       // データベース操作担当
+use App\Utils\View;         // 画面表示担当 (さっき作ったやつ)
+use App\Utils\Validator;    // 入力チェック担当
+
+class KobanController
+{
+
+    /**
+     * 一覧画面を表示する (旧 opendata.php の役割)
+     */
+    public function index()
+    {
+        // 1. モデルの呼び出し
+        // 「交番データ」を扱うためのクラスをインスタンス化（実体化）します
+        $kobanModel = new Koban();
+
+        $log_detail = "トップ表示";
+
+        // ▼▼▼ ログ用詳細情報の構築 ▼▼▼
+        $conditions = [];
+        if (!empty($_GET['keyword'])) {
+            $conditions[] = "KW: " . $_GET['keyword'];
+        }
+        if (!empty($_GET['search_type'])) {
+            $conditions[] = "種別: " . $_GET['search_type'];
+        }
+        if (!empty($_GET['search_pref'])) {
+            $conditions[] = "県: " . $_GET['search_pref'];
+        }
+        if (!empty($_GET['sort'])) {
+            // ソート順も記録しておくと分析に役立ちます
+            $conditions[] = "順: " . $_GET['sort'];
+        }
+
+        // 条件がなければ「トップ表示」、あれば連結して記録
+        $log_detail = empty($conditions) ? "トップ表示" : "検索実行 [" . implode(", ", $conditions) . "]";
+
+        // ログ保存
+        logAction($_SESSION['login_id'] ?? 'guest', 'アクセス', $log_detail);
+        // ▲▲▲ 構築終了 ▲▲▲
+
+        // 2. データの取得
+        // $_GET にはURLのパラメータが入っています (例: ?keyword=新宿&page=2)
+        // モデルの search メソッドに「検索条件」を渡して、結果をもらいます
+        $limit = 100;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $offset = ($page - 1) * $limit;
+
+        $data = $kobanModel->search($_GET, $limit, $offset, $_GET['sort'] ?? 'id_asc');
+        $total_count = $kobanModel->count($_GET);
+        $total_pages = ceil($total_count / $limit);
+
+        // 3. ビューの表示
+        // 'home' は views/home.php を指します
+        // 第2引数の配列が、home.php 内で変数として使えるようになります
+        return View::render('home', [
+            'all_data'    => $data,
+            'total_count' => $total_count,
+            'page'        => $page,
+            'total_pages' => $total_pages,
+            'pref_list'   => ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
+        ]);
+    }
+
+    /**
+     * 新規作成フォームを表示する (旧 koban_form.php の初期表示)
+     */
+    public function create()
+    {
+        // 権限チェック (functions.phpの関数)
+        if (!hasPermission(PERM_DATA)) {
+            die('権限がありません');
+        }
+
+        $message = $_SESSION['message'] ?? '';
+        unset($_SESSION['message']);
+
+        $phone_parts = ['', '', ''];
+        $postal_parts = ['', ''];
+
+        // フォームを表示。新規なのでデータは空っぽです。
+        return View::render('koban/form', [
+            'page_title' => '新規データ登録',
+            'edit_data'  => [],
+            'message'    => $message,
+            'phone_parts' => $phone_parts,   // ビューへ渡す
+            'postal_parts' => $postal_parts, // ビューへ渡す
+        ]);
+    }
+
+    /**
+     * 編集フォームを表示する
+     */
+    public function edit()
+    {
+        // 1. 権限チェックとID取得 (変更なし)
+        if (!hasPermission(PERM_DATA)) {
+            die('権限がありません');
+        }
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die('IDが指定されていません');
+        }
+
+        $kobanModel = new Koban();
+        $data = $kobanModel->findById($id);
+
+        if (!$data) {
+            die('データが見つかりません');
+        }
+
+        // セッションからメッセージを取得して消去（インポートエラー等の表示用）
+        $message = $_SESSION['message'] ?? '';
+        unset($_SESSION['message']);
+
+
+        // ▼▼▼ 修正: 「無し」データを空欄に変換するロジックを追加 ▼▼▼
+        $keys_to_clean = ['phone_number', 'postal_code', 'group_code'];
+        foreach ($keys_to_clean as $key) {
+            if (isset($data[$key]) && $data[$key] === '無し') {
+                $data[$key] = '';
+            }
+        }
+        // ▲▲▲ 変換ロジックここまで ▲▲▲
+
+        // 2. フォーム初期値の計算ロジック
+        // phone_number と postal_code が空文字列になったため、以下のロジックが正しく動作します
+
+        // 電話番号の分割
+        $phone_parts = explode('-', $data['phone_number'] ?? '') + ['', '', ''];
+
+        // 郵便番号の分割
+        $p = $data['postal_code'] ?? '';
+        $postal_parts = (strpos($p, '-') !== false) ? explode('-', $p) : [substr($p, 0, 3), substr($p, 3)];
+
+        // 3. View にデータを渡して表示 (変更なし)
+        return View::render('koban/form', [
+            'page_title' => 'データ編集 (ID: ' . $data['id'] . ')',
+            'edit_data'  => $data, // 変換済みの$dataを渡す
+            'message'    => $message,
+            'phone_parts' => $phone_parts,
+            'postal_parts' => $postal_parts,
+        ]);
+    }
+
+    /**
+     * データの保存処理を行う (新規・更新 共通)
+     */
+    public function store()
+    {
+        // CSRFトークンチェック (セキュリティ対策)
+        verifyCsrfToken();
+
+        if (!hasPermission(PERM_DATA)) {
+            die('権限がありません');
+        }
+
+        // 1. 入力値のチェック (Validatorクラスを利用)
+        $validator = new Validator();
+
+        // データの整形（バリデーション前に一部実行）
+        $raw_phone_parts = [$_POST['phone_part1'] ?? '', $_POST['phone_part2'] ?? '', $_POST['phone_part3'] ?? ''];
+        $raw_postal = ($_POST['postal_part1'] ?? '') . ($_POST['postal_part2'] ?? '');
+
+        if (!$validator->validateKoban($_POST)) {
+            // エラーがあった場合、フォーム画面に戻す
+            $errors = $validator->getErrors();
+
+            // ★修正: エラー時も電話番号・郵便番号のパーツを渡すことで入力値を保持する
+            return View::render('koban/form', [
+                'page_title' => '入力エラー',
+                'edit_data'  => $_POST,
+                'message'    => implode('<br>', $errors),
+                // 電話番号パーツはフォームからの入力をそのまま返す
+                'phone_parts' => $raw_phone_parts,
+                // 郵便番号パーツはフォームからの入力をそのまま返す
+                'postal_parts' => [$_POST['postal_part1'] ?? '', $_POST['postal_part2'] ?? '']
+            ]);
+        }
+
+        // 2. データの整形
+        $kobanModel = new Koban();
+
+        $group_code = $_POST['new_group_code'] ?? '';
+        // 【修正】数値型カラムには '無し' ではなく null を入れる
+        $group_code = (empty($group_code) || $group_code === '無し') ? null : $group_code;
+
+        // 電話番号や郵便番号が文字列型(VARCHAR/TEXT)なら '無し' でも通りますが、
+        // 念のため統一して null または空文字を検討してください
+        $phone = implode('-', array_filter($raw_phone_parts, fn($v) => $v !== ''));
+        $phone = empty($phone) ? null : $phone; // nullを推奨
+
+        $postal = empty($raw_postal) ? null : $raw_postal; // nullを推奨
+
+
+        // ▼▼▼ 住所結合処理（元のkoban_form.phpにあったロジックを移植） ▼▼▼
+        // 全角数字の半角化、丁目/番地などをハイフンに置換
+        $addr3 = str_replace(['丁目', '番地', '番', '号'], '-', mb_convert_kana($_POST['new_addr3'] ?? '', 'n', 'UTF-8'));
+        // 連続するハイフンを一つにまとめ、末尾のハイフンを削除
+        $addr3 = rtrim(preg_replace('/-+/', '-', $addr3), '-');
+
+
+        // データベース保存用データ
+        $saveData = [
+            'koban_fullname' => $_POST['new_name'],
+            'type'           => $_POST['new_type'],
+            'phone_number'   => $phone,         // ★「無し」判定後の値
+            'group_code'     => $group_code,
+            'postal_code'    => $postal,        // ★「無し」判定後の値
+            'pref'           => $_POST['new_pref'],
+            'addr3'          => $addr3          // ★整形後の値
+        ];
+
+        // 3. DBへの保存
+        if (!empty($_POST['update_id'])) {
+            // IDがあるなら更新
+            $kobanModel->update($_POST['update_id'], $saveData);
+            $_SESSION['message'] = "ID: {$_POST['update_id']} を更新しました。";
+            logAction($_SESSION['login_id'], 'データ更新', "ID: {$_POST['update_id']} を更新");
+        } else {
+            // IDがないなら新規作成
+            $kobanModel->create($saveData);
+            $_SESSION['message'] = "新規データを登録しました！";
+            logAction($_SESSION['login_id'], 'データ登録', "新規: {$_POST['new_name']} を追加");
+        }
+
+        // 4. 一覧画面へリダイレクト (index.phpへ戻る)
+        header("Location: /");
+        exit;
+    }
+
+    /**
+     * 削除処理
+     */
+    public function delete()
+    {
+        verifyCsrfToken();
+        if (!hasPermission(PERM_DATA)) {
+            die('権限がありません');
+        }
+
+        $id = $_POST['delete_id'] ?? null;
+        if ($id) {
+            $kobanModel = new Koban();
+            $kobanModel->delete($id);
+            $_SESSION['message'] = "ID: {$id} を削除しました。";
+            logAction($_SESSION['login_id'], 'データ削除', "ID: {$id} を削除しました。");
+        }
+
+        header("Location: /");
+        exit;
+    }
+
+    /**
+     * CSV一括インポート処理
+     */
+    public function importCsv()
+    {
+        verifyCsrfToken();
+        // 権限チェック：'data' ではなく 'admin'（管理者管理ロール）に変更
+        if (!isset($_SESSION['logged_in']) || !hasPermission(PERM_ADMIN)) {
+            $_SESSION['message'] = "エラー：CSVインポートには管理者管理権限が必要です。";
+            logAction($_SESSION['login_id'] ?? 'guest', '権限拒否', 'CSVインポート試行（権限不足）');
+            header("Location: /koban/create");
+            exit;
+        }
+
+        $kobanModel = new Koban();
+
+        // 処理の本体 (旧koban_form.phpのインポート部分)
+        if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] == 0) {
+            try {
+                $handle = fopen($_FILES['csv_file']['tmp_name'], "r");
+                if ($handle) {
+                    $head = fgets($handle);
+                    // 文字コード変換
+                    if (mb_detect_encoding($head, ['UTF-8', 'SJIS-win'], true) !== 'UTF-8') {
+                        rewind($handle);
+                        stream_filter_append($handle, 'convert.iconv.cp932/utf-8');
+                    } else {
+                        rewind($handle);
+                    }
+
+                    fgetcsv($handle); // ヘッダスキップ
+                    $rows = [];
+                    while (($d = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                        if (!isset($d[0]) || !is_numeric($d[0])) continue;
+                        $rows[] = $d;
+                    }
+                    fclose($handle);
+
+                    // Modelで一括登録
+                    $kobanModel->bulkInsert($rows);
+
+                    $count = count($rows);
+                    $_SESSION['message'] = "インポート完了：{$count}件のデータを処理しました。";
+                    logAction($_SESSION['login_id'], 'CSVインポート', "ファイル名: {$_FILES['csv_file']['name']} / 処理件数: {$count}件");
+                }
+            } catch (\Exception $e) {
+                $_SESSION['message'] = "インポートエラー: " . $e->getMessage();
+                logAction($_SESSION['login_id'], 'CSVインポート失敗', $e->getMessage());
+            }
+        } else {
+            $_SESSION['message'] = "ファイルがアップロードされていません。";
+        }
+
+        // 処理完了後、フォーム画面に戻る
+        header("Location: /koban/create");
+        exit;
+    }
+
+
+    /**
+     * 交番データを移行用カスタムCSVとしてエクスポートする
+     */
+    public function export()
+    {
+        // タイムアウト対策
+        set_time_limit(0);
+        if (ob_get_level()) ob_end_clean();
+
+        try {
+            $kobanModel = new \App\Models\Koban();
+
+            // ログ記録
+            logAction($_SESSION['login_id'] ?? 'guest', 'CSVエクスポート', '移行用カスタム形式で出力');
+
+            // 全件取得 (ジェネレータを使用)
+            $rows = $kobanModel->exportAll($_GET, $_GET['sort'] ?? 'id_asc');
+
+            $filename = "koban_migration_" . date('Ymd_His') . ".csv";
+
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+            $output = fopen('php://output', 'w');
+            fwrite($output, "\xEF\xBB\xBF"); // Excel対応用BOM
+
+            // 指定された順序とカラム名でヘッダーを出力 (使用していないカラムは除外)
+            fputcsv($output, [
+                'id',
+                'pref',
+                'type',
+                'koban_fullname',
+                'phone_number',
+                'postal_code',
+                'group_code',
+                'addr3'
+            ]);
+
+            foreach ($rows as $row) {
+                // データベースのカラム名とCSVのヘッダーを正確にマッピング
+                fputcsv($output, [
+                    $row['id'],
+                    $row['pref'],
+                    $row['type'],
+                    $row['koban_fullname'],
+                    $row['phone_number'],
+                    $row['postal_code'],
+                    $row['group_code'],
+                    $row['addr3']
+                ]);
+            }
+
+            fclose($output);
+            exit;
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            header("Location: /");
+            exit;
+        }
+    }
+}
+</file>
+
+<file path="src/Models/Koban.php">
+<?php
+
+namespace App\Models;
+
+use App\Utils\Database;
+use App\Utils\Cache;
+use PDO;
+
+class Koban
+{
+    // 検索・一覧取得メソッド
+    public function search($params, $limit, $offset, $sort)
+    {
+        $cacheKey = "koban_search_" . json_encode($params) . "_{$limit}_{$offset}_{$sort}";
+
+        // 'koban_list' というタグを付けて保存
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) return $cached;
+
+        $db = Database::connect();
+
+        // 検索条件の構築 (functions.phpの関数を利用)
+        $searchData = buildSearchQuery($params);
+        $sql = "SELECT * FROM koban " . $searchData['sql'];
+
+        // ソート順の決定
+        $sort_sql = match ($sort) {
+            'id_desc' => "ORDER BY id DESC",
+            'name_asc' => "ORDER BY koban_fullname ASC",
+            default => "ORDER BY id ASC"
+        };
+        $sql .= " $sort_sql LIMIT $limit OFFSET $offset";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($searchData['params']);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 結果をキャッシュに保存
+        Cache::set($cacheKey, $result, 'koban_list');
+        return $result;
+    }
+
+    // 総件数を取得するメソッド（ページネーション用）
+    public function count($params)
+    {
+        $cacheKey = "koban_count_" . json_encode($params);
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) return $cached;
+
+        $db = Database::connect();
+        $searchData = buildSearchQuery($params);
+
+        $stmt = $db->prepare("SELECT COUNT(*) FROM koban " . $searchData['sql']);
+        $stmt->execute($searchData['params']);
+
+        // 【修正】executeの結果ではなく、fetchColumn()で実際の数値を取得する
+        $result = (int)$stmt->fetchColumn();
+
+        Cache::set($cacheKey, $result);
+        return $result;
+    }
+
+    // 削除メソッド
+    public function delete($id)
+    {
+        Cache::clearByTag('koban_list');
+        $db = Database::connect();
+        $stmt = $db->prepare("DELETE FROM koban WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    // ★追加: IDで1件データを取得（編集画面用
+    public function findById($id)
+    {
+        $db = Database::connect();
+        $stmt = $db->prepare("SELECT * FROM koban WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // ★追加: 新規登録
+    public function create($data)
+    {
+        Cache::clearByTag('koban_list');
+        $db = Database::connect();
+        $sql = "INSERT INTO koban (koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $data['koban_fullname'],
+            $data['type'],
+            $data['phone_number'],
+            $data['group_code'],
+            $data['postal_code'],
+            $data['pref'],
+            $data['addr3']
+        ]);
+    }
+
+    // ★追加: 更新
+    public function update($id, $data)
+    {
+        Cache::clearByTag('koban_list');
+        $db = Database::connect();
+        $sql = "UPDATE koban SET koban_fullname=?, type=?, phone_number=?, group_code=?, postal_code=?, pref=?, addr3=? WHERE id=?";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $data['koban_fullname'],
+            $data['type'],
+            $data['phone_number'],
+            $data['group_code'],
+            $data['postal_code'],
+            $data['pref'],
+            $data['addr3'],
+            $id
+        ]);
+    }
+
+    // ★追加: CSV一括登録（トランザクション対応）
+    public function bulkInsert($rows)
+    {
+        $db = Database::connect();
+        try {
+            $db->beginTransaction();
+            // ★修正前 (SQLite専用)
+            // $stmt = $db->prepare("INSERT OR REPLACE INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?,?,?,?,?,?,?,?)");
+
+            // ★修正後 (PostgreSQL / SQLite 両対応の書き方)
+            // idが重複した際に更新（UPSERT）する構文に変更します
+            $sql = "INSERT INTO koban (id, pref, type, koban_fullname, phone_number, postal_code, group_code, addr3) 
+                VALUES (?,?,?,?,?,?,?,?) 
+                ON CONFLICT (id) DO UPDATE SET 
+                pref=EXCLUDED.pref, type=EXCLUDED.type, koban_fullname=EXCLUDED.koban_fullname, 
+                phone_number=EXCLUDED.phone_number, postal_code=EXCLUDED.postal_code, 
+                group_code=EXCLUDED.group_code, addr3=EXCLUDED.addr3";
+
+            $stmt = $db->prepare($sql);
+            foreach ($rows as $row) {
+                $params = array_pad($row, 8, ''); // 8列分を確保
+
+                // 1. IDが数値でないヘッダー行などはスキップ
+                if (!is_numeric($params[0])) continue;
+
+                // 2. 画像の順序に基づき、数値型カラム group_code (インデックス6) をクレンジング
+                if (!isset($params[6]) || !preg_match('/^[0-9]+$/', (string)$params[6])) {
+                    $params[6] = null; // 数値以外（「無し」や空文字）ならNULL
+                }
+
+                // 3. 文字列カラムの「無し」をNULLに変換（phone_number:4, postal_code:5）
+                foreach ([4, 5] as $idx) {
+                    if ($params[$idx] === '無し' || $params[$idx] === '' || $params[$idx] === '-') {
+                        $params[$idx] = null;
+                    }
+                }
+
+                $stmt->execute($params);
+            }
+
+            Cache::clearByTag('koban_list');
+            $db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $db->rollBack();
+            error_log("CSV Import Error: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    // ★追加: CSV出力用に全件を1行ずつ返す (ジェネレータ)
+    public function exportAll($params, $sort)
+    {
+        $db = Database::connect();
+
+        // functions.php の buildSearchQuery を利用
+        $searchData = buildSearchQuery($params);
+        $sql = "SELECT * FROM koban " . $searchData['sql'];
+
+        // ソート順
+        $sort_sql = match ($sort) {
+            'id_desc' => "ORDER BY id DESC",
+            'name_asc' => "ORDER BY koban_fullname ASC",
+            default => "ORDER BY id ASC"
+        };
+        $sql .= " $sort_sql"; // LIMITとOFFSETは付けない！
+
+        // プリペアドステートメント実行
+        // (バッファなしクエリの設定などはSQLiteの場合あまり気にしなくてOKですが、MySQL等の場合はここで設定します)
+        $stmt = $db->prepare($sql);
+        $stmt->execute($searchData['params']);
+
+        // ★ここがポイント: fetchAllせず、1行ずつ yield で返す
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            yield $row;
+        }
+    }
+}
+</file>
+
+<file path="src/Utils/functions.php">
+<?php
+// 権限管理用の定数定義
+const PERM_DATA  = 'data';
+const PERM_ADMIN = 'admin';
+const PERM_LOG   = 'log';
+
+/**
+ * 権限チェックヘルパー (定数対応版)
+ * @param string|array $types チェックしたい権限(定数)またはその配列
+ * @return bool
+ */
+
+// 名前空間は定義せず、グローバル関数として扱います
+use App\Utils\Database;
+
+define('PAGE_LIMIT', 100);
+date_default_timezone_set('Asia/Tokyo');
+// HTMLエスケープ (頻繁に使うので短い名前のまま)
+function h($str)
+{
+    return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+// CSRFトークン検証
+function verifyCsrfToken()
+{
+    // セッションが開始されていなければ開始
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // トークン生成（なければ作る）
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    // POST送信時はチェックを行う
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            http_response_code(403);
+            die('CSRF Token Verification Failed');
+        }
+    }
+}
+
+function sendSecurityHeaders()
+{
+    // クリックジャッキング対策（iframeでの表示を禁止）
+    header('X-Frame-Options: DENY');
+
+    // XSSフィルター機能の強制有効化（古いブラウザ向け）
+    header('X-XSS-Protection: 1; mode=block');
+
+    // コンテンツタイプのスニッフィング防止（画像に見せかけたスクリプト実行などを防ぐ）
+    header('X-Content-Type-Options: nosniff');
+
+    // 可能な限りHTTPSを強制（本番環境のみ推奨）
+    // header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+}
+
+// 権限チェックヘルパー
+function hasPermission($types)
+{
+    if (!isset($_SESSION['permissions'])) return false;
+
+    // 配列でない場合は配列に変換してループ処理
+    $types = (array)$types;
+    foreach ($types as $type) {
+        // セッション内に該当する権限フラグが1であればtrueを返す
+        if (!empty($_SESSION['permissions'][$type])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 保護対象の管理者IDを定義（環境変数から読み込むのが理想的）
+define('SUPER_ADMIN_ID', 'admin');
+
+/**
+ * 対象IDが保護された特権アカウントか判定
+ */
+function isProtectedAdmin($loginId)
+{
+    return $loginId === SUPER_ADMIN_ID;
+}
+/**
+ * 現在ログインしているユーザーが最高管理者（Super Admin）か判定
+ */
+function isCurrentSuperAdmin()
+{
+    return isset($_SESSION['login_id']) && $_SESSION['login_id'] === SUPER_ADMIN_ID;
+}
+/**
+ * 接続元の真のIPアドレスを取得する
+ */
+function getRemoteIp()
+{
+    // Renderやプロキシ環境では X-Forwarded-For を優先する
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // カンマ区切りで複数入ることがあるので最初の1つを取得
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ips[0]);
+    }
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
+/**
+ * セッションから一度だけ表示するメッセージを取得
+ */
+function getFlashMessage()
+{
+    if (isset($_SESSION['message'])) {
+        $msg = $_SESSION['message'];
+        unset($_SESSION['message']);
+        return $msg;
+    }
+    return null;
+}
+
+// ログ記録 (Databaseクラスを使う形に少し修正)
+function logAction($userId, $actionType, $details)
+{
+    // 監視サービス特有のUser-Agentを判定
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $isPing = (stripos($ua, 'UptimeRobot') !== false || stripos($ua, 'cron-job') !== false);
+    // HEADリクエストまたは監視サービスの場合は種別を PING に固定
+    if ($_SERVER['REQUEST_METHOD'] === 'HEAD' || $isPing) {
+        $actionType = 'PING';
+        $userId = 'system_monitor';
+    }
+
+    try {
+        $db = \App\Utils\Database::connect();
+        $sql = "INSERT INTO audit_logs (user_id, action_type, details, ip_address, user_agent, action_time) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+
+        $success = $stmt->execute([
+            $userId,
+            $actionType,
+            $details,
+            getRemoteIp(),
+            $_SERVER['HTTP_USER_AGENT'] ?? '',
+            date('Y-m-d H:i:s')
+        ]);
+
+        // ▼▼▼ DB圧迫対策：古い PING ログを自動削除（1日以上前） ▼▼▼
+        // このクエリにより、監視ログが無限に増えるのを防ぎます
+        if ($actionType === 'PING') {
+            $cleanupSql = "DELETE FROM audit_logs WHERE action_type = 'PING' AND action_time < CURRENT_TIMESTAMP - INTERVAL '1 day'";
+            $db->exec($cleanupSql);
+        }
+        // ▲▲▲ 対策ここまで ▲▲▲
+
+        if (!$success) {
+            // SQLの実行に失敗した場合、エラー内容を Render のログへ出力
+            $errorInfo = $stmt->errorInfo();
+            error_log("【DB ERROR】Log save failed: " . $errorInfo[2]);
+        }
+    } catch (\Exception $e) {
+        // 接続エラーなどの致命的エラーを記録
+        error_log("【LOG CRITICAL ERROR】" . $e->getMessage());
+    }
+}
+
+/**
+ * 検索クエリ構築ヘルパー
+ */
+function buildSearchQuery($getParams)
+{
+    $where_clauses = [];
+    $params = [];
+    $log_parts = [];
+
+    // --- 1. 専用ID検索 (追加) ---
+    // 完全一致で検索するため、高速かつPostgreSQLでも安全です
+    if (!empty($getParams['search_id'])) {
+        $where_clauses[] = "id = ?";
+        $params[] = (int)$getParams['search_id'];
+        $log_parts[] = "ID: " . $getParams['search_id'];
+    }
+
+    // --- 2. 都道府県・種別 (既存) ---
+    if (!empty($getParams['search_pref'])) {
+        $where_clauses[] = "pref = ?";
+        $params[] = $getParams['search_pref'];
+        $log_parts[] = "県: " . $getParams['search_pref'];
+    }
+    if (!empty($getParams['search_type'])) {
+        $where_clauses[] = "type = ?";
+        $params[] = $getParams['search_type'];
+        $log_parts[] = "種別: " . $getParams['search_type'];
+    }
+
+    // --- 3. キーワード検索 (修正) ---
+    if (!empty($getParams['keyword'])) {
+        $keyword = $getParams['keyword'];
+        $keywords = preg_split('/[\s]+/', mb_convert_kana($keyword, 's', 'UTF-8'));
+        foreach ($keywords as $word) {
+            if ($word === "") continue;
+            // PostgreSQL対応: id を CAST(id AS TEXT) に変更して LIKE を通るようにする
+            $where_clauses[] = "(pref LIKE ? OR CAST(id AS TEXT) LIKE ? OR koban_fullname LIKE ? OR addr3 LIKE ?)";
+            $params = array_merge($params, array_fill(0, 4, "%" . $word . "%"));
+        }
+        $log_parts[] = "KW: $keyword";
+    }
+
+    $where_sql = !empty($where_clauses) ? "WHERE " . implode(' AND ', $where_clauses) : "";
+
+    return [
+        'sql' => $where_sql,
+        'params' => $params,
+        'log_detail' => empty($log_parts) ? "全データ" : implode(' ', $log_parts)
+    ];
+}
+</file>
+
+<file path="src/Controllers/AdminController.php">
+<?php
+
+namespace App\Controllers;
+
+use App\Models\AdminUser;
+use App\Models\AuditLog;
+use App\Utils\View;
+use App\Utils\Validator;
+
+class AdminController
+{
+
+    // 共通の権限チェックメソッド
+    private function requirePermission($type)
+    {
+        // 文字列の代わりに定数を受け取るようにし、セッションを確認
+        if (!isset($_SESSION['logged_in']) || !hasPermission($type)) {
+            $_SESSION['message'] = "権限がありません。";
+            header("Location: /");
+            exit;
+        }
+    }
+
+    /**
+     * 操作ログ一覧画面 (旧 view_logs.php)
+     */
+    public function logs()
+    {
+        $this->requirePermission(PERM_LOG);
+
+        $logModel = new AuditLog();
+
+        // CSVダウンロード処理
+        if (isset($_GET['download_csv'])) {
+            $this->downloadLogsCsv($logModel);
+            return;
+        }
+
+        // 画面表示用データ
+        $types = $logModel->getActionTypes();
+        $logs = $logModel->search($_GET, 500);
+        $latest_id = count($logs) > 0 ? $logs[0]['id'] : 0;
+
+        return View::render('admin/log_list', [
+            'types' => $types,
+            'logs' => $logs,
+            'latest_id' => $latest_id
+        ]);
+    }
+
+    /**
+     * ログCSVダウンロード（logsメソッドから呼ばれる）
+     */
+    private function downloadLogsCsv($logModel)
+    {
+        $logs = $logModel->search($_GET, 10000);
+        $filename = "audit_log_" . date('Ymd_His') . ".csv";
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        $output = fopen('php://output', 'w');
+        fwrite($output, "\xEF\xBB\xBF");
+        fputcsv($output, ['ID', 'ユーザーID', '日時', '操作種別', '詳細内容', 'IPアドレス', 'UserAgent']);
+
+        foreach ($logs as $row) {
+            fputcsv($output, [
+                $row['id'],
+                $row['user_id'],
+                $row['action_time'],
+                $row['action_type'],
+                $row['details'],
+                $row['ip_address'],
+                $row['user_agent'] ?? ''
+            ]);
+        }
+        fclose($output);
+        exit;
+    }
+
+    /**
+     * ログAPI (旧 api_get_logs.php)
+     * JavaScriptから非同期で呼ばれるJSON返却用メソッド
+     */
+    public function apiLogs()
+    {
+        // APIでもしっかり権限チェック
+        if (!isset($_SESSION['logged_in']) || !hasPermission(PERM_LOG)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Forbidden']);
+            exit;
+        }
+
+        $logModel = new AuditLog();
+        $last_id = isset($_GET['last_id']) ? (int)$_GET['last_id'] : 0;
+        $newLogs = $logModel->getNewLogs($last_id, $_GET);
+
+        // XSS対策をしてJSONで返す
+        $clean_logs = array_map(function ($log) {
+            return [
+                'id' => h($log['id']),
+                'action_time' => h($log['action_time']),
+                'user_id' => h($log['user_id']),
+                'action_type' => h($log['action_type']),
+                'details' => h($log['details']),
+                'ip_address' => h($log['ip_address']),
+                'user_agent' => h($log['user_agent'] ?? '')
+            ];
+        }, $newLogs);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($clean_logs);
+        exit;
+    }
+
+    /**
+     * 自分のパスワード変更画面 (旧 change_password.php)
+     */
+    public function changePassword()
+    {
+        if (!isset($_SESSION['logged_in'])) {
+            header("Location: /");
+            exit;
+        }
+        return View::render('admin/change_password', ['message' => $_SESSION['message'] ?? '']);
+    }
+
+    /**
+     * パスワード変更処理 (POST)
+     */
+    public function updatePassword()
+    {
+        verifyCsrfToken();
+        if (!isset($_SESSION['logged_in'])) header("Location: /");
+
+        $adminModel = new AdminUser();
+        $user_id = $_SESSION['login_id'];
+
+        try {
+            $user = $adminModel->findById($user_id);
+            if ($user && password_verify($_POST['current_pass'], $user['password_hash'])) {
+                $new_hash = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+                $adminModel->updatePassword($user_id, $new_hash);
+
+                $_SESSION['message'] = "パスワードを変更しました！";
+                logAction($user_id, 'パスワード変更', '成功');
+            } else {
+                $_SESSION['message'] = "現在のパスワードが間違っています。";
+                logAction($user_id, 'パスワード変更失敗', '入力ミス');
+            }
+        } catch (\Exception $e) {
+            $_SESSION['message'] = "エラー: " . $e->getMessage();
+        }
+
+        // フォームへリダイレクト
+        header("Location: /admin/password/change");
+        exit;
+    }
+
+    /**
+     * 管理者一覧 (フォームを除去)
+     */
+    public function admins()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        $adminModel = new AdminUser();
+        $all_admins = $adminModel->findAll();
+
+        // 特権アカウントの隠蔽
+        $filtered = array_filter($all_admins, function ($a) {
+            return isCurrentSuperAdmin() || !isProtectedAdmin($a['login_id']);
+        });
+
+        return View::render('admin/register', [ // ファイル名は既存のまま一覧として使用
+            'admin_list' => $filtered
+        ]);
+    }
+    /**
+     * 管理者保存・削除処理 (POST)
+     */
+    public function storeAdmin()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        $adminModel = new AdminUser();
+
+        // 削除処理
+        if (isset($_POST['delete_admin_id'])) {
+            if (!isCurrentSuperAdmin()) {
+                $_SESSION['message'] = "エラー：管理者の削除権限は最高管理者に限定されています。";
+                header("Location: /admin/users");
+                exit;
+            }
+            $target = $_POST['delete_admin_id'];
+
+            // 特権アカウントの削除をブロック
+            if (isProtectedAdmin($target)) {
+                $_SESSION['message'] = "エラー：システム管理者は削除できません。";
+            } elseif ($_POST['delete_admin_id'] === $_SESSION['login_id']) {
+                $_SESSION['message'] = "エラー：自分自身は削除できません。";
+            } else {
+                $adminModel->delete($_POST['delete_admin_id']);
+                $_SESSION['message'] = "管理者ID: {$_POST['delete_admin_id']} を削除しました。";
+                logAction($_SESSION['login_id'], '管理者削除', "対象: {$_POST['delete_admin_id']}");
+            }
+        }
+
+        // 新規登録処理
+        if (isset($_POST['new_admin_id'])) {
+            if ($adminModel->exists($_POST['new_admin_id'])) {
+                $_SESSION['message'] = "エラー：そのIDは既に登録されています。";
+            } else {
+                $perms = [
+                    'data'  => isset($_POST['perm_data']) ? 1 : 0,
+                    'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+                    'log'   => isset($_POST['perm_log']) ? 1 : 0
+                ];
+                $adminModel->create($_POST['new_admin_id'], $_POST['new_admin_pass'], $perms);
+                $_SESSION['message'] = "管理者「{$_POST['new_admin_id']}」を登録しました。";
+                logAction($_SESSION['login_id'], '管理者登録', "新規: {$_POST['new_admin_id']}");
+            }
+        }
+
+        header("Location: /admin/users");
+        exit;
+    }
+    /**
+     * 新規ユーザー登録画面の表示
+     */
+    public function showRegisterForm()
+    {
+        // ログインチェックと最高管理者権限の確認
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "エラー：ユーザー登録は最高管理者のみ許可されています。";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        return View::render('admin/user_registration', [
+            'page_title' => '新規管理者登録',
+            'message' => getFlashMessage()
+        ]);
+    }
+
+    /**
+     * ユーザー登録処理の実行
+     */
+    public function registerUser()
+    {
+        verifyCsrfToken();
+
+        $login_id = $_POST['new_id'] ?? '';
+        $password = $_POST['new_pass'] ?? '';
+
+        // IDの形式チェック
+        list($idValid, $idMsg) = Validator::validateLoginId($login_id);
+        if (!$idValid) {
+            $_SESSION['message'] = $idMsg;
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        // パスワードの強度チェック
+        list($pwValid, $pwMsg) = Validator::validatePassword($password);
+        if (!$pwValid) {
+            $_SESSION['message'] = $pwMsg;
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        $adminModel = new \App\Models\AdminUser();
+
+        // 重複チェック
+        if ($adminModel->exists($login_id)) {
+            $_SESSION['message'] = "エラー：そのIDは既に使用されています。";
+            header("Location: /admin/users/create");
+            exit;
+        }
+
+        // 権限設定の取得
+        $perms = [
+            'data'  => isset($_POST['perm_data']) ? 1 : 0,
+            'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+            'log'   => isset($_POST['perm_log']) ? 1 : 0
+        ];
+
+        // 保存実行
+        if ($adminModel->create($login_id, $password, $perms)) {
+            logAction($_SESSION['login_id'], '管理者登録', "新規ユーザー: $login_id");
+            $_SESSION['message'] = "管理者「{$login_id}」を正常に登録しました。";
+            header("Location: /admin/users");
+        } else {
+            $_SESSION['message'] = "エラー：登録に失敗しました。";
+            header("Location: /admin/users/create");
+        }
+        exit;
+    }
+
+    /**
+     * 申請の承認または却下
+     */
+    public function handleRequest()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        $targetId = $_POST['target_admin_id'];
+        $action = $_POST['request_action']; // 'approve' or 'reject'
+
+        $db = \App\Utils\Database::connect();
+
+        if ($action === 'approve') {
+            // 承認：データ管理権限(perm_data)を付与してステータスをクリア
+            $stmt = $db->prepare("UPDATE admin_users SET perm_data = 1, request_status = NULL WHERE login_id = ?");
+            $stmt->execute([$targetId]);
+            logAction($_SESSION['login_id'], '申請承認', "対象: $targetId");
+            $_SESSION['message'] = "ユーザー $targetId の権限を承認しました。";
+        } else {
+            // 却下：ステータスを rejected に変更
+            $stmt = $db->prepare("UPDATE admin_users SET request_status = 'rejected' WHERE login_id = ?");
+            $stmt->execute([$targetId]);
+            logAction($_SESSION['login_id'], '申請却下', "対象: $targetId");
+            $_SESSION['message'] = "ユーザー $targetId の申請を却下しました。";
+        }
+
+        header("Location: /admin/users");
+        exit;
+    }
+
+    /**
+     * 管理者一覧をCSVエクスポートする
+     */
+    public function exportAdmins()
+    {
+        // 「admin」権限（アカウント管理）があるかチェックします
+        $this->requirePermission(PERM_ADMIN);
+
+        // Supabase移行に必要なすべてのカラムを直接取得します
+        $db = \App\Utils\Database::connect(); //
+        $sql = "SELECT login_id, password_hash, role, failure_count, locked_until, perm_data, perm_admin, perm_log FROM admin_users";
+        $stmt = $db->query($sql);
+        $admins = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $filename = "admin_users_migration_" . date('Ymd_His') . ".csv";
+
+        // 出力バッファをクリアし、余計な文字が混入するのを防ぎます
+        if (ob_get_level()) ob_end_clean();
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+        // Excelで開いても文字化けしないようBOMを付与します
+        fwrite($output, "\xEF\xBB\xBF");
+
+        // 指定されたヘッダーを出力します
+        fputcsv($output, ['login_id', 'password_hash', 'role', 'failure_count', 'locked_until', 'perm_data', 'perm_admin', 'perm_log']);
+
+        foreach ($admins as $row) {
+            fputcsv($output, [
+                $row['login_id'],
+                $row['password_hash'],
+                $row['role'] ?? 1,
+                $row['failure_count'] ?? 0,
+                $row['locked_until'] ?? '',
+                $row['perm_data'] ?? 0,
+                $row['perm_admin'] ?? 0,
+                $row['perm_log'] ?? 0
+            ]);
+        }
+        fclose($output);
+        exit; // ビューを表示せずに終了します
+    }
+    /**
+     * パスワード強制リセット画面 (旧 reset_admin_pass.php)
+     */
+    public function resetPasswordForm()
+    {
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "エラー：この操作には最高管理者権限が必要です。";
+            header("Location: /admin/users");
+            exit;
+        }
+        $this->requirePermission(PERM_ADMIN);
+        return View::render('admin/reset_password', [
+            'target_id' => $_GET['id'] ?? '',
+            'message' => $_SESSION['message'] ?? ''
+        ]);
+    }
+
+    /**
+     * パスワード強制リセット処理 (POST)
+     */
+    public function resetPasswordExec()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        $adminModel = new AdminUser();
+        $target = $_POST['reset_target_id'];
+
+        if (!$adminModel->exists($target)) {
+            $_SESSION['message'] = "エラー：ID「{$target}」は見つかりません。";
+        } else {
+            $hash = password_hash($_POST['reset_new_pass'], PASSWORD_DEFAULT);
+            $adminModel->updatePassword($target, $hash);
+            $_SESSION['message'] = "管理者「{$target}」のパスワードをリセットしました。";
+            logAction($_SESSION['login_id'], 'PWリセット', "対象: $target");
+        }
+
+        header("Location: /admin/password/reset"); // 画面更新
+        exit;
+    }
+
+    /**
+     * パスワードリセット実行
+     */
+    public function resetPassword()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "ACCESS_DENIED: SuperAdmin authority required.";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        $targetId = $_POST['target_admin_id'] ?? '';
+        $newPass = $_POST['new_password'] ?? '';
+
+        if (strlen($newPass) < 8) {
+            $_SESSION['message'] = "ERROR: Password must be at least 8 chars.";
+            header("Location: /admin/users/edit?id=" . urlencode($targetId));
+            exit;
+        }
+
+        $adminModel = new AdminUser();
+        $hash = password_hash($newPass, PASSWORD_DEFAULT);
+
+        if ($adminModel->updatePassword($targetId, $hash)) {
+            logAction($_SESSION['login_id'], 'PW_RESET', "Target: $targetId");
+            $_SESSION['message'] = "SUCCESS: Password updated for $targetId";
+        }
+
+        header("Location: /admin/users");
+        exit;
+    }
+
+    /**
+     * 管理者詳細・権限編集画面の表示
+     */
+    public function editAdmin()
+    {
+        $this->requirePermission(PERM_ADMIN);
+
+        $login_id = $_GET['id'] ?? '';
+        $adminModel = new AdminUser();
+        $targetAdmin = $adminModel->findById($login_id); //
+
+        if (!$targetAdmin) {
+            $_SESSION['message'] = "エラー：対象の管理者が見つかりません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        return View::render('admin/edit_admin', [
+            'admin' => $targetAdmin,
+            'message' => $_SESSION['message'] ?? ''
+        ]);
+    }
+
+    /**
+     * 管理者権限の更新実行 (POST)
+     */
+    public function updateAdminPerms()
+    {
+        $this->requirePermission(PERM_ADMIN);
+        verifyCsrfToken();
+        $login_id = $_POST['target_admin_id'] ?? '';
+
+        // 特権アカウントの権限変更をブロック
+        if (isProtectedAdmin($login_id)) {
+            $_SESSION['message'] = "エラー：システム管理者の権限は変更できません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
+        $perms = [
+            'data'  => isset($_POST['perm_data']) ? 1 : 0,
+            'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+            'log'   => isset($_POST['perm_log']) ? 1 : 0
+        ];
+
+        $adminModel = new AdminUser();
+        if ($adminModel->updatePermissions($login_id, $perms)) {
+            $_SESSION['message'] = "管理者「{$login_id}」の権限を更新しました。";
+            logAction($_SESSION['login_id'], '権限変更', "対象: {$login_id} / Data:{$perms['data']}, Admin:{$perms['admin']}, Log:{$perms['log']}"); //
+        } else {
+            $_SESSION['message'] = "エラー：更新に失敗しました。";
+        }
+
+        header("Location: /admin/users");
+        exit;
+    }
+}
+</file>
+
+<file path="views/admin/register.php">
+<?php require __DIR__ . '/../layouts/header.php'; ?>
+<div class="container" style="max-width: 850px; margin-top: 20px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1eff1a; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="color: #1eff1a; margin: 0;">管理者一覧</h2>
+        <?php if (isCurrentSuperAdmin()): ?>
+            <a href="/admin/users/create" class="btn-primary" style="text-decoration: none; padding: 5px 15px;">＋ 新規登録</a>
+        <?php endif; ?>
+    </div>
+
+    <div class="box">
+        <table style="width: 100%; border-collapse: collapse; color: #1eff1a; background-color: #000;">
+            <thead>
+                <tr style="border-bottom: 2px solid #1eff1a;">
+                    <th style="padding: 10px; text-align: left;">ログインID</th>
+                    <th style="width: 60px;">データ</th>
+                    <th style="width: 60px;">管理</th>
+                    <th style="width: 60px;">ログ</th>
+                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
+                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($admin_list as $admin): ?>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 12px 10px;">
+                            <?php echo h($admin['login_id']); ?>
+                            <?php if ($admin['login_id'] === $_SESSION['login_id']) echo ' <span style="color:#666; font-size:0.8em;">(自分)</span>'; ?>
+                        </td>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#333'; ?>;">●</span></td>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
+                        <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
+                        <td style="padding: 12px 10px;">
+                            <?php echo h($admin['login_id']); ?>
+                            <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
+                                <span style="background: #ffff00; color: #000; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; font-weight: bold;">
+                                    PENDING REQUEST
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <td style="padding: 10px; text-align: center;">
+                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail"
+                                style="text-decoration: none; padding: 4px 12px; font-size: 0.85em; display: inline-block;">詳細</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <p style="color: #888; font-size: 0.8em; margin-top: 10px;">
+        凡例: <span style="color: #1eff1a;">●</span>データ管理 / <span style="color: #00ccff;">●</span>管理者管理 / <span style="color: #ff00ff;">●</span>ログ閲覧
+    </p>
+
+    <div style="margin-top: 20px;">
+        <a href="/" style="color: #888; text-decoration: none;">← メイン画面へ戻る</a>
+    </div>
+</div>
+</file>
+
+<file path="views/home.php">
+<?php
+require __DIR__ . '/layouts/header.php';
+?>
+
+<div class="container">
+    <div class="box">
+        <?php if (!isset($_SESSION['logged_in'])): ?>
+            <div style="display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
+                <div style="text-align: left; margin-right: auto;">
+                    <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
+                    <p style="margin: 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
+                </div>
+                <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
+                <a href="/auth/login" class="btn btn-secondary" style="min-width: 100px; text-align: center;">ログイン</a>
+                <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
+            </div>
+        <?php else: ?>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <div style="text-align: left;">
+                        <span style="color: #1eff1a; font-family: monospace; font-size: 1.1em;">
+                            SYSTEM_USER: <strong style="color: #fff;"><?php echo h($_SESSION['login_id']); ?></strong>
+                        </span>
+                    </div>
+                    <div style="text-align: right; font-size: 0.9em;">
+                        <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
+                        <form action="/auth/logout" method="post" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
+                        </form>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <?php if (hasPermission(PERM_DATA)): ?>
+                        <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px;">＋ 新規データ追加</a>
+                    <?php else: ?>
+                        <span style="color: #888; font-size: 0.9em;">※閲覧専用モード</span>
+                    <?php endif; ?>
+
+                    <div style="display: flex; gap: 10px;">
+                        <?php if (hasPermission(PERM_LOG)): ?>
+                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff;">[ログ監査]</a>
+                        <?php endif; ?>
+                        <?php if (hasPermission(PERM_ADMIN)): ?>
+                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00;">[管理者管理]</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="box" style="background-color: #282828;">
+        <h2 style="margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 5px; font-size: 20px;">条件検索</h2>
+        <form action="" method="get">
+            <div class="flex-row" style="justify-content: center;">
+                <input type="number" name="search_id" placeholder="ID"
+                    value="<?php echo h($_GET['search_id'] ?? ''); ?>"
+                    style="width: 80px; background: #fff; color: #000;" min="1">
+                <select name="search_pref">
+                    <option value="">都道府県 (すべて)</option>
+                    <?php foreach ($pref_list as $p) echo "<option value='{$p}' " . (($_GET['search_pref'] ?? '') == $p ? 'selected' : '') . ">{$p}</option>"; ?>
+                </select>
+                <select name="search_type">
+                    <option value="">種別 (すべて)</option>
+                    <option value="交番" <?php if (($_GET['search_type'] ?? '') == '交番') echo 'selected'; ?>>交番</option>
+                    <option value="駐在所" <?php if (($_GET['search_type'] ?? '') == '駐在所') echo 'selected'; ?>>駐在所</option>
+                </select>
+                <input type="text" name="keyword" placeholder="キーワード (例: 新宿)" value="<?php echo h($_GET['keyword'] ?? ''); ?>" style="background: #fff; color: #000;" size="30">
+                <select name="sort">
+                    <option value="id_asc">ID昇順</option>
+                    <option value="id_desc" <?php if (($_GET['sort'] ?? '') == 'id_desc') echo 'selected'; ?>>ID降順</option>
+                    <option value="name_asc" <?php if (($_GET['sort'] ?? '') == 'name_asc') echo 'selected'; ?>>名前順</option>
+                </select>
+                <input type="submit" value="絞り込み検索" class="btn-primary">
+            </div>
+            <p style="font-size: 12px; color: #888; text-align: center; margin-bottom: 0;">※スペース区切りで複数の言葉を検索できます（例：東京都 新宿）</p>
+        </form>
+
+        <div style="margin-top: 20px; text-align: right; border-top: 1px solid #444; padding-top: 10px; display: flex; justify-content: flex-end; gap: 10px;">
+            <form action="/koban/export" method="get">
+                <button type="submit" class="btn-secondary">全データをCSV保存</button>
+            </form>
+            <form action="/koban/export" method="get">
+                <?php foreach (['keyword', 'search_type', 'search_pref'] as $k) echo '<input type="hidden" name="' . $k . '" value="' . h($_GET[$k] ?? '') . '">'; ?>
+                <button type="submit" class="btn-primary" style="color: #000;">検索結果をCSV保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div style="text-align: left; margin-bottom: 5px; font-size: 18px;">
+        <?php if ($total_count > 0): ?>
+            検索結果： <span style="font-weight: bold; font-size: 24px; color: #1eff1a;"><strong><?php echo number_format($total_count); ?></strong></span> 件
+        <?php else: ?>
+            <span style="color: #ff4444;">条件に一致するデータは見つかりませんでした。</span>
+        <?php endif; ?>
+    </div>
+
+    <table>
+        <tr style="background-color: #4a4a4a;">
+            <th width="5%">ID</th>
+            <th width="20%">交番名</th>
+            <th width="5%">種別</th>
+            <th width="10%">TEL</th>
+            <th width="5%">団体コード</th>
+            <th width="8%">郵便番号</th>
+            <th>住所</th>
+            <?php if (isset($_SESSION['logged_in'])): ?><th width="10%" style="background-color: #550000;">操作</th><?php endif; ?>
+        </tr>
+        <?php foreach ($all_data as $row): ?>
+            <tr>
+                <td style="text-align: center;"><?php echo h($row['id']); ?></td>
+                <td><?php echo h($row['koban_fullname']); ?></td>
+                <td style="text-align: center;"><?php echo h($row['type']); ?></td>
+                <td style="text-align: center;"><?php echo h($row['phone_number']); ?></td>
+                <td style="text-align: center;"><?php echo h($row['group_code']); ?></td>
+                <td style="text-align: center;"><?php echo h($row['postal_code']); ?></td>
+
+                <td>
+                    <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode($row['pref'] . $row['addr3']); ?>"
+                        target="_blank"
+                        style="color: #1eff1a; text-decoration: underline;"
+                        title="Googleマップで見る">
+                        <?php echo h($row['pref'] . $row['addr3']); ?>
+                    </a>
+                </td>
+
+                <?php if (isset($_SESSION['logged_in'])): ?>
+                    <td style="text-align: center;">
+                        <?php if (hasPermission('data')): ?>
+                            <div style="display: flex; justify-content: center; gap: 5px;">
+                                <a href="/koban/edit?id=<?php echo h($row['id']); ?>" class="btn btn-warning" style="padding: 4px 8px; font-size:12px;">編集</a>
+                                <form method="post" action="/koban/delete" onsubmit="return confirm('本当に削除しますか？');">
+                                    <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                                    <input type="hidden" name="delete_id" value="<?php echo h($row['id']); ?>">
+                                    <input type="submit" value="削除" class="btn-danger" style="padding: 4px 8px; font-size:12px;">
+                                </form>
+                            </div>
+                        <?php else: ?>
+                            <span style="font-size: 10px; color: #888;">操作不可</span>
+                        <?php endif; ?>
+                    </td>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <div class="pagination" style="margin-top: 20px;">
+        <?php
+        $q = http_build_query(array_filter($_GET, fn($k) => $k != 'page', ARRAY_FILTER_USE_KEY));
+        $link = "?$q&page=";
+        if ($page > 1) {
+            echo '<a href="' . $link . '1" class="other">&laquo; 最初</a>';
+            echo '<a href="' . $link . ($page - 1) . '" class="other">&lsaquo; 前へ</a>';
+        }
+        for ($i = max(1, $page - 3); $i <= min($total_pages, $page + 3); $i++) {
+            $class = ($i == $page) ? 'current' : 'other';
+            echo '<a href="' . $link . $i . '" class="' . $class . '">' . $i . '</a>';
+        }
+        if ($page < $total_pages) {
+            echo '<a href="' . $link . ($page + 1) . '" class="other">次へ &rsaquo;</a>';
+            echo '<a href="' . $link . $total_pages . '" class="other">最後 &raquo;</a>';
+        }
+        ?>
+    </div>
+    <p style="color: #888; font-size: 12px; margin-top: 5px;">
+        全 <?php echo $total_count; ?> 件中、<?php echo $page; ?> ページ目を表示
+    </p>
+</div>
+</body>
+
+</html>
+</file>
+
+</files>
