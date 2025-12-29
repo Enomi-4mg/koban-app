@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/layouts/header.php';
+use App\Utils\View;
 ?>
-
 <div class="container">
     <div class="box">
         <?php if (!isset($_SESSION['logged_in'])): ?>
@@ -23,13 +23,12 @@ require __DIR__ . '/layouts/header.php';
                     </div>
 
                     <div style="text-align: right; font-size: 0.9em;">
-                        <?php \App\Utils\View::component('request_link'); ?>
-
+                        <a href="/auth/request_permission" style="color: var(--cyber-yellow); margin-right: 15px;">[権限の申請]</a>
                         <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
 
                         <form action="/auth/logout" method="post" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                            <?php \App\Utils\View::component('button', [
+                            <?php View::component('button', [
                                 'type' => 'submit',
                                 'variant' => 'secondary',
                                 'text' => 'LOGOUT',
@@ -41,7 +40,7 @@ require __DIR__ . '/layouts/header.php';
 
                 <div class="u-flex-between">
                     <?php if (hasPermission(PERM_DATA)): ?>
-                        <?php \App\Utils\View::component('button', [
+                        <?php View::component('button', [
                             'type' => 'link',
                             'variant' => 'primary',
                             'text' => '＋ 新規データ追加',
@@ -56,7 +55,7 @@ require __DIR__ . '/layouts/header.php';
 
                     <div style="display: flex; gap: 10px;">
                         <?php if (hasPermission(PERM_LOG)): ?>
-                            <?php \App\Utils\View::component('button', [
+                            <?php View::component('button', [
                                 'type' => 'link',
                                 'variant' => 'secondary',
                                 'text' => 'ログ監査',
@@ -67,7 +66,7 @@ require __DIR__ . '/layouts/header.php';
 
                         <?php if (hasPermission(PERM_ADMIN)): ?>
                             <div class="badge-wrapper">
-                                <?php \App\Utils\View::component('button', [
+                                <?php View::component('button', [
                                     'type' => 'link',
                                     'variant' => 'secondary',
                                     'text' => '管理者管理',

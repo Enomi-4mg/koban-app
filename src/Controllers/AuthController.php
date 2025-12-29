@@ -200,17 +200,40 @@ class AuthController
         if (!isset($_SESSION['logged_in'])) header("Location: /");
 
         $userId = $_SESSION['login_id'];
-        $message = $_POST['request_reason'] ?? '';
+        $reason = $_POST['request_reason'] ?? '';
 
-        $db = \App\Utils\Database::connect();
-        $stmt = $db->prepare("UPDATE admin_users SET request_status = 'pending', request_message = ?, requested_at = ? WHERE login_id = ?");
-        $stmt->execute([$message, date('Y-m-d H:i:s'), $userId]);
+        // チェックボックスの値（申請したい権限）を取得
+        $reqPerms = [
+            'data'  => isset($_POST['req_data']) ? 1 : 0,
+            'admin' => isset($_POST['req_admin']) ? 1 : 0,
+            'log'   => isset($_POST['req_log']) ? 1 : 0
+        ];
+
+        $adminModel = new AdminUser();
+        // 前のターンで作成した詳細保存用のモデルメソッドを呼び出し
+        $adminModel->saveDetailedRequest($userId, $reason, $reqPerms);
 
         $_SESSION['request_status'] = 'pending';
+        $_SESSION['message'] = "選択した権限の昇格を申請しました。管理者の承認をお待ちください。";
 
-        logAction($userId, '権限申請', "理由: $message");
-        $_SESSION['message'] = "権限昇格を申請しました。管理者の承認をお待ちください。";
+        logAction($userId, '権限詳細申請', "理由: $reason");
         header("Location: /");
         exit;
+    }
+
+    /**
+     * 権限昇格申請画面を表示
+     */
+    public function showRequestForm()
+    {
+        if (!isset($_SESSION['logged_in'])) {
+            header("Location: /auth/login");
+            exit;
+        }
+
+        return View::render('auth/request_permission', [
+            'page_title' => '権限昇格申請',
+            'message' => getFlashMessage()
+        ]);
     }
 }

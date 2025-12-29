@@ -301,21 +301,34 @@ class AdminController
      */
     public function handleRequest()
     {
-        $this->requirePermission(PERM_ADMIN); // 管理者権限チェック
+        $this->requirePermission(PERM_ADMIN); // 管理者管理権限のチェック
         verifyCsrfToken(); // CSRF対策
 
         $targetId = $_POST['target_admin_id'] ?? '';
-        $action = $_POST['request_action'] ?? ''; // 'approve' or 'reject'
+        $action = $_POST['request_action'] ?? '';
 
-        if ($targetId && $action) {
-            $adminModel = new AdminUser();
-            if ($adminModel->updateRequestStatus($targetId, $action)) {
-                $statusMsg = ($action === 'approve') ? '承認' : '却下';
-                logAction($_SESSION['login_id'], "申請{$statusMsg}", "対象: $targetId");
-                $_SESSION['message'] = "ユーザー {$targetId} の申請を{$statusMsg}しました。";
-            } else {
-                $_SESSION['message'] = "エラー：処理に失敗しました。";
-            }
+        // ★修正：ブロックの外でインスタンス化することで、どこでも使えるようにします
+        $adminModel = new AdminUser();
+
+        if ($targetId && $action === 'approve') {
+            // 選択された権限のみを1にし、それ以外は0にする
+            $perms = [
+                'perm_data'  => isset($_POST['grant_data']) ? 1 : 0,
+                'perm_admin' => isset($_POST['grant_admin']) ? 1 : 0,
+                'perm_log'   => isset($_POST['grant_log']) ? 1 : 0
+            ];
+
+            // 申請フラグのリセットを含む一括更新
+            $adminModel->approveRequestWithDetails($targetId, $perms);
+
+            $_SESSION['message'] = "ユーザー {$targetId} の権限を更新し、申請を承認しました。";
+            logAction($_SESSION['login_id'], "申請承認", "対象: $targetId");
+        } elseif ($targetId && $action === 'reject') {
+            // 却下処理：ステータスを 'rejected' に変更
+            $adminModel->updateRequestStatus($targetId, 'reject');
+
+            $_SESSION['message'] = "ユーザー {$targetId} の申請を却下しました。";
+            logAction($_SESSION['login_id'], "申請却下", "対象: $targetId");
         }
 
         header("Location: /admin/users");

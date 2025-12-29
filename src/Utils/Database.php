@@ -37,7 +37,7 @@ class Database {
                 ]);
             } else {
                 // SQLite接続 (ローカル開発環境)
-                $dbPath = __DIR__ . '/../../SQL/opendata.sqlite';
+                $dbPath = __DIR__ . '/../../SQL/backup.sql';
                 self::$instance = new PDO("sqlite:" . $dbPath, null, null, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                 ]);

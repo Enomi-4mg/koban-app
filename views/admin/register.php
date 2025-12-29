@@ -56,16 +56,21 @@
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
                         <td style="padding: 10px; text-align: center;">
-                            <?php
-                            $isPending = ($admin['request_status'] ?? '') === 'pending';
-                            \App\Utils\View::component('button', [
-                                'type'    => 'link',
-                                'variant' => $isPending ? 'warning' : 'primary',
-                                'text'    => $isPending ? '承認審査' : '詳細編集',
-                                'href'    => '/admin/users/edit?id=' . h($admin['login_id']),
-                                'style'   => 'padding: 4px 12px; font-size: 0.85em;'
-                            ]);
-                            ?>
+                            <div class="badge-wrapper">
+                                <?php
+                                $isPending = ($admin['request_status'] ?? '') === 'pending';
+                                \App\Utils\View::component('button', [
+                                    'type'    => 'link',
+                                    'variant' => $isPending ? 'warning' : 'primary',
+                                    'text'    => $isPending ? '詳細編集 [!]' : '詳細編集',
+                                    'href'    => '/admin/users/edit?id=' . h($admin['login_id']),
+                                    'style'   => 'padding: 4px 12px; font-size: 0.85em;'
+                                ]);
+                                ?>
+                                <?php if ($isPending): ?>
+                                    <span class="notification-badge" style="top: -5px; right: -5px;">!</span>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

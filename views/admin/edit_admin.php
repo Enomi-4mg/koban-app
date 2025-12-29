@@ -49,23 +49,20 @@
 <div class="container" style="max-width: 600px; margin-top: 20px;">
 
     <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
-        <div style="background: rgba(255, 255, 0, 0.1); border: 1px solid var(--cyber-yellow); padding: 15px; margin-bottom: 20px;">
-            <form method="post" action="/admin/users/handle_request" style="display: flex; gap: 10px;">
-                <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
+        <div class="box" style="border: 2px solid var(--cyber-yellow); margin-bottom: 30px;">
+            <h3 style="color: var(--cyber-yellow);">申請内容の審査</h3>
+            <p style="font-size: 0.9em;">理由: <?php echo h($admin['request_message']); ?></p>
 
-                <?php \App\Utils\View::component('button', [
-                    'type'    => 'submit',
-                    'variant' => 'primary',
-                    'text'    => '承認 (データ権限付与)',
-                    'onclick' => "this.name='request_action'; this.value='approve';"
-                ]); ?>
-                <?php \App\Utils\View::component('button', [
-                    'type'    => 'submit',
-                    'variant' => 'danger',
-                    'text'    => '却下する',
-                    'onclick' => "this.name='request_action'; this.value='reject';"
-                ]); ?>
+            <form method="post" action="/admin/users/handle_request">
+                <div style="margin-bottom: 15px;">
+                    <label>
+                        <input type="checkbox" name="grant_data" value="1" <?php echo $admin['req_perm_data'] ? 'checked' : ''; ?>>
+                        データ管理権限 <?php echo $admin['req_perm_data'] ? '<span style="color:var(--cyber-yellow)">[!] 申請中</span>' : ''; ?>
+                    </label><br>
+                </div>
+
+                <button name="request_action" value="approve" class="btn btn-primary">選択した権限を付与して承認</button>
+                <button name="request_action" value="reject" class="btn btn-danger">申請を却下</button>
             </form>
         </div>
     <?php endif; ?>

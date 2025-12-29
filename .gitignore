@@ -3,11 +3,15 @@
 /SQL/backup.sql
 /SQL/log_archives/
 
+bfg-1.15.0.jar
+
 # 環境変数（認証情報が含まれるため絶対に公開しない）
 .env
 
 # PHP依存パッケージ（サーバー側で composer install するため不要）
 /vendor/
+
+/storage/
 
 # OSやエディタのキャッシュファイル
 .DS_Store

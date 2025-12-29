@@ -35,7 +35,7 @@
     <?php \App\Utils\View::component('button', [
         'type'    => 'link',
         'variant' => 'secondary',
-        'text'    => '検索ページに戻る',
+        'text'    => '検索画面に戻る',
         'href'    => '/'
     ]); ?>
 </div>

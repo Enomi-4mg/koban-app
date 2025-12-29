@@ -136,4 +136,55 @@ class AdminUser
         $stmt = $db->prepare($sql);
         return $stmt->execute([$login_id]);
     }
+
+    /**
+     * ユーザーからの詳細な権限申請を保存する
+     */
+    public function saveDetailedRequest($login_id, $reason, $req_perms)
+    {
+        $db = \App\Utils\Database::connect();
+        $sql = "UPDATE admin_users SET 
+                request_status = 'pending', 
+                request_message = ?, 
+                requested_at = ?,
+                req_perm_data = ?, 
+                req_perm_admin = ?, 
+                req_perm_log = ? 
+            WHERE login_id = ?";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $reason,
+            date('Y-m-d H:i:s'),
+            $req_perms['data'] ? 1 : 0,
+            $req_perms['admin'] ? 1 : 0,
+            $req_perms['log'] ? 1 : 0,
+            $login_id
+        ]);
+    }
+
+    /**
+     * 審査に基づき、選択された権限を付与して申請を完了させる
+     */
+    public function approveRequestWithDetails($login_id, $perms)
+    {
+        $db = Database::connect();
+        // 承認された権限を反映し、申請中の状態(フラグ・メッセージ)をクリアする
+        $sql = "UPDATE admin_users SET 
+                perm_data = ?, 
+                perm_admin = ?, 
+                perm_log = ?, 
+                request_status = NULL, 
+                request_message = NULL,
+                req_perm_data = 0,
+                req_perm_admin = 0,
+                req_perm_log = 0
+            WHERE login_id = ?";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $perms['perm_data'],
+            $perms['perm_admin'],
+            $perms['perm_log'],
+            $login_id
+        ]);
+    }
 }
