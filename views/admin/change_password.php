@@ -21,9 +21,21 @@
             <label style="color:#ccc;">新しいパスワード:</label>
             <input type="password" name="new_pass" required style="width: 100%; padding: 8px; background:#333; color:#fff; border:1px solid #555; box-sizing: border-box;">
         </div>
-        <input type="submit" value="変更する" style="background-color: #1eff1a; border: none; padding: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px;">
+        <form method="post" action="/admin/password/update" ...>
+            <?php \App\Utils\View::component('button', [
+                'type'    => 'submit',
+                'variant' => 'primary',
+                'text'    => '変更する',
+                'style'   => 'margin-top: 10px; width: 100%; padding: 10px;'
+            ]); ?>
+        </form>
     </form>
 
     <br>
-    <a href="/" style="color: #888;">検索ページに戻る</a>
+    <?php \App\Utils\View::component('button', [
+        'type'    => 'link',
+        'variant' => 'secondary',
+        'text'    => '検索ページに戻る',
+        'href'    => '/'
+    ]); ?>
 </div>

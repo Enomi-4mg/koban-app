@@ -55,15 +55,15 @@
                 <input type="hidden" name="target_admin_id" value="<?php echo h($admin['login_id']); ?>">
 
                 <?php \App\Utils\View::component('button', [
-                    'type' => 'submit',
+                    'type'    => 'submit',
                     'variant' => 'primary',
-                    'text' => '承認 (データ権限付与)',
+                    'text'    => '承認 (データ権限付与)',
                     'onclick' => "this.name='request_action'; this.value='approve';"
                 ]); ?>
                 <?php \App\Utils\View::component('button', [
-                    'type' => 'submit',
+                    'type'    => 'submit',
                     'variant' => 'danger',
-                    'text' => '却下する',
+                    'text'    => '却下する',
                     'onclick' => "this.name='request_action'; this.value='reject';"
                 ]); ?>
             </form>
@@ -110,9 +110,9 @@
 
             <?php if (!isProtectedAdmin($admin['login_id'])): ?>
                 <?php \App\Utils\View::component('button', [
-                    'type' => 'submit',
+                    'type'    => 'submit',
                     'variant' => 'primary',
-                    'text' => '権限を更新する'
+                    'text'    => '権限を更新する'
                 ]); ?>
             <?php endif; ?>
         </form>
@@ -128,10 +128,10 @@
                         style="background: #000; color: #ff4444; border: 1px solid #ff4444; padding: 8px; width: 100%; margin: 10px 0;">
 
                     <?php \App\Utils\View::component('button', [
-                        'type' => 'submit',
+                        'type'    => 'submit',
                         'variant' => 'danger',
-                        'text' => 'パスワードをリセット',
-                        'style' => 'width: 100%;'
+                        'text'    => 'パスワードをリセット',
+                        'style'   => 'width: 100%;'
                     ]); ?>
                 </form>
             </div>

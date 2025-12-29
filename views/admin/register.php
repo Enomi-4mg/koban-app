@@ -1,11 +1,31 @@
 <?php require __DIR__ . '/../layouts/header.php'; ?>
 <div class="container" style="max-width: 850px; margin-top: 20px;">
-
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1eff1a; padding-bottom: 10px; margin-bottom: 20px;">
-        <h2 style="color: #1eff1a; margin: 0;">管理者一覧</h2>
-        <?php if (isCurrentSuperAdmin()): ?>
-            <a href="/admin/users/create" class="btn-primary" style="text-decoration: none; padding: 5px 15px;">＋ 新規登録</a>
-        <?php endif; ?>
+    <div style="display: flex; margin-top: 20px;">
+        <?php \App\Utils\View::component('button', [
+            'type'    => 'link',
+            'variant' => 'secondary',
+            'text'    => '← メイン画面へ戻る',
+            'href'    => '/'
+        ]); ?>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--cyber-green); padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="color: var(--cyber-green); margin: 0;">管理者一覧</h2>
+        <div style="display: flex; gap: 10px;">
+            <?php if (isCurrentSuperAdmin()): ?>
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'link',
+                    'variant' => 'secondary',
+                    'text' => 'CSV出力',
+                    'href' => '/admin/users/export'
+                ]); ?>
+                <?php \App\Utils\View::component('button', [
+                    'type' => 'link',
+                    'variant' => 'primary',
+                    'text' => '＋ 新規登録',
+                    'href' => '/admin/users/create'
+                ]); ?>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="box">
@@ -36,10 +56,16 @@
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
                         <td style="padding: 10px; text-align: center;">
-                            <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail"
-                                style="text-decoration: none; border: 1px solid var(--cyber-green); padding: 4px 12px; font-size: 0.85em; display: inline-block; color: var(--cyber-green);">
-                                <?php echo (($admin['request_status'] ?? '') === 'pending') ? '承認審査' : '詳細編集'; ?>
-                            </a>
+                            <?php
+                            $isPending = ($admin['request_status'] ?? '') === 'pending';
+                            \App\Utils\View::component('button', [
+                                'type'    => 'link',
+                                'variant' => $isPending ? 'warning' : 'primary',
+                                'text'    => $isPending ? '承認審査' : '詳細編集',
+                                'href'    => '/admin/users/edit?id=' . h($admin['login_id']),
+                                'style'   => 'padding: 4px 12px; font-size: 0.85em;'
+                            ]);
+                            ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -52,6 +78,11 @@
     </p>
 
     <div style="margin-top: 20px;">
-        <a href="/" style="color: #888; text-decoration: none;">← メイン画面へ戻る</a>
+        <?php \App\Utils\View::component('button', [
+            'type'    => 'link',
+            'variant' => 'secondary',
+            'text'    => '← メイン画面へ戻る',
+            'href'    => '/'
+        ]); ?>
     </div>
 </div>
