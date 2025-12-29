@@ -30,8 +30,8 @@ class Database {
                 self::$instance = new PDO($dsn, $user, $pass, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    // ▼ 高速化の鍵：永続接続を有効化
-                    PDO::ATTR_PERSISTENT => true,
+                    // 接続が安定するまで一旦 false に
+                    PDO::ATTR_PERSISTENT => false,
                     // タイムアウト設定（応答がない場合に5秒で切り上げる）
                     PDO::ATTR_TIMEOUT => 5,
                 ]);
