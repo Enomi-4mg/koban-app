@@ -1,0 +1,144 @@
+body {
+    background-color: #010000;
+    color: #1eff1a;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+table {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border: 1px solid #333;
+}
+
+th,
+td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #111;
+}
+
+tr:hover {
+    background-color: #222;
+}
+
+/* 新着ログのアニメーション用 */
+@keyframes flash {
+    0% {
+        background-color: #ffff00;
+        color: #000;
+    }
+
+    100% {
+        background-color: transparent;
+        color: #1eff1a;
+    }
+}
+
+.new-log {
+    animation: flash 2s ease-out;
+}
+
+.search-box {
+    background-color: #1a1a1a;
+    padding: 15px;
+    margin: 20px auto;
+    width: 90%;
+    border: 1px solid #333;
+    border-radius: 8px;
+    text-align: left;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+input,
+select {
+    padding: 6px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+}
+
+.btn-search {
+    background-color: #1eff1a;
+    color: #000;
+}
+
+.btn-csv {
+    background-color: #ffff00;
+    color: #000;
+    margin-left: auto;
+}
+
+.btn-reset {
+    background-color: #555;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 12px;
+    font-size: 12px;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.btn-back {
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid #555;
+    padding: 5px 10px;
+}
+
+.danger {
+    color: #ff4444;
+}
+
+.login {
+    color: #00ccff;
+}
+
+.num-col {
+    text-align: center;
+    color: #888;
+    font-weight: bold;
+}
+
+/* 更新インジケーター */
+#live-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #555;
+    border-radius: 50%;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+#live-indicator.active {
+    background-color: #1eff1a;
+    box-shadow: 0 0 5px #1eff1a;
+}

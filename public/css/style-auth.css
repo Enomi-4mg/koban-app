@@ -1,0 +1,47 @@
+/* スキャンラインのアニメーション */
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(30, 255, 26, 0.2);
+    box-shadow: 0 0 15px var(--cyber-green);
+    animation: scan 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% {
+        top: -5%;
+    }
+
+    100% {
+        top: 105%;
+    }
+}
+
+/* 認証ボックスの強調表示 */
+.auth-box {
+    border: 2px solid var(--cyber-green);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(30, 255, 26, 0.3);
+}
+
+.auth-title {
+    color: var(--cyber-green);
+    text-shadow: 0 0 10px rgba(30, 255, 26, 0.5);
+    text-align: center;
+    margin-top: 0;
+    letter-spacing: 2px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* 入力フィールドのフォーカス演出 */
+.auth-input:focus {
+    outline: none;
+    border-color: var(--cyber-green) !important;
+    box-shadow: 0 0 5px var(--cyber-green);
+}
