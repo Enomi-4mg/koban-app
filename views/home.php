@@ -10,7 +10,6 @@ require __DIR__ . '/layouts/header.php';
                     <span style="color: #1eff1a; font-weight: bold;">GUEST MODE</span>
                     <p style="margin: 0; color: #888; font-size: 0.8em;">データの閲覧が可能です。編集にはサインアップ・ログインが必要です。</p>
                 </div>
-                <span style="color: #666; font-size: 0.8em; font-family: monospace;">ACCESS >></span>
                 <a href="/auth/login" class="btn btn-secondary" style="min-width: 100px; text-align: center;">ログイン</a>
                 <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
             </div>
