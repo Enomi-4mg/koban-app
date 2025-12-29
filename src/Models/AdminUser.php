@@ -119,4 +119,21 @@ class AdminUser
         $sql = "SELECT COUNT(*) FROM admin_users WHERE request_status = 'pending'";
         return (int)$db->query($sql)->fetchColumn();
     }
+
+    /**
+     * 権限申請のステータスと権限を更新する
+     */
+    public function updateRequestStatus($login_id, $action)
+    {
+        $db = Database::connect();
+        if ($action === 'approve') {
+            // 承認：データ権限(perm_data)を1にし、申請ステータスをクリア
+            $sql = "UPDATE admin_users SET perm_data = 1, request_status = NULL, request_message = NULL WHERE login_id = ?";
+        } else {
+            // 却下：ステータスを rejected に変更
+            $sql = "UPDATE admin_users SET request_status = 'rejected' WHERE login_id = ?";
+        }
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([$login_id]);
+    }
 }

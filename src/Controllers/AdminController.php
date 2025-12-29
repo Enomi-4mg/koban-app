@@ -297,30 +297,25 @@ class AdminController
     }
 
     /**
-     * 申請の承認または却下
+     * 申請の承認または却下を実行
      */
     public function handleRequest()
     {
-        $this->requirePermission(PERM_ADMIN);
-        verifyCsrfToken();
+        $this->requirePermission(PERM_ADMIN); // 管理者権限チェック
+        verifyCsrfToken(); // CSRF対策
 
-        $targetId = $_POST['target_admin_id'];
-        $action = $_POST['request_action']; // 'approve' or 'reject'
+        $targetId = $_POST['target_admin_id'] ?? '';
+        $action = $_POST['request_action'] ?? ''; // 'approve' or 'reject'
 
-        $db = \App\Utils\Database::connect();
-
-        if ($action === 'approve') {
-            // 承認：データ管理権限(perm_data)を付与してステータスをクリア
-            $stmt = $db->prepare("UPDATE admin_users SET perm_data = 1, request_status = NULL WHERE login_id = ?");
-            $stmt->execute([$targetId]);
-            logAction($_SESSION['login_id'], '申請承認', "対象: $targetId");
-            $_SESSION['message'] = "ユーザー $targetId の権限を承認しました。";
-        } else {
-            // 却下：ステータスを rejected に変更
-            $stmt = $db->prepare("UPDATE admin_users SET request_status = 'rejected' WHERE login_id = ?");
-            $stmt->execute([$targetId]);
-            logAction($_SESSION['login_id'], '申請却下', "対象: $targetId");
-            $_SESSION['message'] = "ユーザー $targetId の申請を却下しました。";
+        if ($targetId && $action) {
+            $adminModel = new AdminUser();
+            if ($adminModel->updateRequestStatus($targetId, $action)) {
+                $statusMsg = ($action === 'approve') ? '承認' : '却下';
+                logAction($_SESSION['login_id'], "申請{$statusMsg}", "対象: $targetId");
+                $_SESSION['message'] = "ユーザー {$targetId} の申請を{$statusMsg}しました。";
+            } else {
+                $_SESSION['message'] = "エラー：処理に失敗しました。";
+            }
         }
 
         header("Location: /admin/users");

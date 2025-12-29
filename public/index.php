@@ -74,7 +74,6 @@ $routes = [
         '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
         '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
         '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
-        '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
     ],
     'POST' => [
         '/koban/store'  => [KobanController::class, 'store'],
@@ -94,6 +93,7 @@ $routes = [
         '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'], // 権限更新
         '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
         '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
+        '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
     ]
 ];
 
