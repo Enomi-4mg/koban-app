@@ -10,7 +10,7 @@
     --cyber-blue: #00ccff;
     --cyber-gray: #333;
     --cyber-text-dim: #888;
-    
+
     /* 共通設定 */
     --cyber-border: 1px solid var(--cyber-gray);
     --cyber-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
@@ -51,6 +51,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* メニュー内のリンク共通スタイル */
+.text-right a,
+.text-right button {
+    font-family: 'Courier New', monospace;
+    transition: opacity 0.2s;
+}
+
+.text-right a:hover,
+.text-right button:hover {
+    opacity: 0.7;
+    text-shadow: 0 0 5px currentColor;
 }
 
 h1,

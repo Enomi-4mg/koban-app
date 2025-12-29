@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Models\Koban;       // データベース操作担当
 use App\Utils\View;         // 画面表示担当 (さっき作ったやつ)
 use App\Utils\Validator;    // 入力チェック担当
+use App\Models\AdminUser;
 
 class KobanController
 {
@@ -18,6 +19,7 @@ class KobanController
         // 1. モデルの呼び出し
         // 「交番データ」を扱うためのクラスをインスタンス化（実体化）します
         $kobanModel = new Koban();
+        $adminModel = new AdminUser();
 
         $log_detail = "トップ表示";
 
@@ -35,6 +37,11 @@ class KobanController
         if (!empty($_GET['sort'])) {
             // ソート順も記録しておくと分析に役立ちます
             $conditions[] = "順: " . $_GET['sort'];
+        }
+        // 管理者権限がある場合のみ、未承認件数を取得
+        $pendingCount = 0;
+        if (hasPermission(PERM_ADMIN)) {
+            $pendingCount = $adminModel->countPendingRequests();
         }
 
         // 条件がなければ「トップ表示」、あれば連結して記録
@@ -63,6 +70,7 @@ class KobanController
             'total_count' => $total_count,
             'page'        => $page,
             'total_pages' => $total_pages,
+            'pendingCount' => $pendingCount, // ビューに渡す
             'pref_list'   => ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
         ]);
     }

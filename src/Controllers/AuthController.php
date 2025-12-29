@@ -45,11 +45,13 @@ class AuthController
                 session_regenerate_id(true);
                 $_SESSION['logged_in'] = true;
                 $_SESSION['login_id'] = $user['login_id'];
+                $_SESSION['request_status'] = $user['request_status'] ?? null;
                 $_SESSION['permissions'] = [
                     'data'  => $user['perm_data'],
                     'admin' => $user['perm_admin'],
                     'log'   => $user['perm_log'] ?? 0
-                ];
+                ]; // DBに保存されている申請ステータスをセッションに同期
+                $_SESSION['request_status'] = $user['request_status'];
                 $adminModel->resetFailureCount($login_id);
                 logAction($login_id, 'ログイン', '成功');
                 header("Location: /");
@@ -147,7 +149,7 @@ class AuthController
             exit;
         }
 
-        $adminModel = new \App\Models\AdminUser();
+        $adminModel = new AdminUser();
 
         // 2. ID重複チェック
         if ($adminModel->exists($login_id)) {
@@ -204,6 +206,8 @@ class AuthController
         $db = \App\Utils\Database::connect();
         $stmt = $db->prepare("UPDATE admin_users SET request_status = 'pending', request_message = ?, requested_at = ? WHERE login_id = ?");
         $stmt->execute([$message, date('Y-m-d H:i:s'), $userId]);
+
+        $_SESSION['request_status'] = 'pending';
 
         logAction($userId, '権限申請', "理由: $message");
         $_SESSION['message'] = "権限昇格を申請しました。管理者の承認をお待ちください。";

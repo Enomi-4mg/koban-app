@@ -64,9 +64,10 @@ class AdminUser
         $stmt = $db->prepare($sql);
         return $stmt->execute([$login_id, $hash, $p_data, $p_admin, $p_log]);
     }
-    
+
     // ★追加: 全管理者を取得（一覧画面用）
-    public function findAll() {
+    public function findAll()
+    {
         $db = Database::connect();
         // 最終操作ログの日時もサブクエリで取得（元のロジックを継承）
         $sql = "SELECT u.login_id, u.perm_data, u.perm_admin, u.perm_log,
@@ -77,14 +78,16 @@ class AdminUser
     }
 
     // 管理者削除
-    public function delete($login_id) {
+    public function delete($login_id)
+    {
         $db = Database::connect();
         $stmt = $db->prepare("DELETE FROM admin_users WHERE login_id = ?");
         return $stmt->execute([$login_id]);
     }
-    
+
     // ID重複チェック用
-    public function exists($login_id) {
+    public function exists($login_id)
+    {
         $db = Database::connect();
         $stmt = $db->prepare("SELECT COUNT(*) FROM admin_users WHERE login_id = ?");
         $stmt->execute([$login_id]);
@@ -105,5 +108,15 @@ class AdminUser
             $perms['log'],
             $login_id
         ]);
+    }
+
+    /**
+     * 申請中(pending)のユーザー数を取得する
+     */
+    public function countPendingRequests()
+    {
+        $db = Database::connect();
+        $sql = "SELECT COUNT(*) FROM admin_users WHERE request_status = 'pending'";
+        return (int)$db->query($sql)->fetchColumn();
     }
 }

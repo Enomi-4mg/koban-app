@@ -18,6 +18,16 @@ require __DIR__ . '/layouts/header.php';
             <?php if (!hasPermission(PERM_DATA)): ?>
                 <?php \App\Utils\View::component('request_panel'); ?>
             <?php endif; ?>
+            <?php if (hasPermission(PERM_ADMIN)): ?>
+                <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00; position: relative;">
+                    [管理者管理]
+                    <?php if (($pendingCount ?? 0) > 0): ?>
+                        <span style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; box-shadow: 0 0 5px red;">
+                            !
+                        </span>
+                    <?php endif; ?>
+                </a>
+            <?php endif; ?>
             <div style="display: flex; flex-direction: column; gap: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
                     <div style="text-align: left;">
@@ -25,13 +35,13 @@ require __DIR__ . '/layouts/header.php';
                             SYSTEM_USER: <strong style="color: #fff;"><?php echo h($_SESSION['login_id']); ?></strong>
                         </span>
                     </div>
-                    <div style="text-align: right; font-size: 0.9em;">
-                        <a href="/admin/password/change" style="color: #fff; margin-right: 15px;">[PW変更]</a>
-                        <form action="/auth/logout" method="post" style="display:inline;">
-                            <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
-                        </form>
-                    </div>
+                    <form action="/auth/request_permission" method="post" style="display: inline;" onsubmit="return confirm('データ編集権限を申請しますか？');">
+                        <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                        <input type="hidden" name="request_reason" value="システム利用による権限昇格申請">
+                        <button type="submit" style="background: none; border: none; color: var(--cyber-yellow); cursor: pointer; font-size: 1em; padding: 0; margin-right: 15px; text-decoration: underline;">
+                            [権限申請]
+                        </button>
+                    </form>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <?php if (hasPermission(PERM_DATA)): ?>

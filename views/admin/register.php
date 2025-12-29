@@ -16,8 +16,7 @@
                     <th style="width: 60px;">データ</th>
                     <th style="width: 60px;">管理</th>
                     <th style="width: 60px;">ログ</th>
-                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
-                    <th style="padding: 10px; text-align: center; width: 100px;">操作</th>
+                    <th style="padding: 10px; text-align: center; width: 120px;">アクション</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,21 +25,21 @@
                         <td style="padding: 12px 10px;">
                             <?php echo h($admin['login_id']); ?>
                             <?php if ($admin['login_id'] === $_SESSION['login_id']) echo ' <span style="color:#666; font-size:0.8em;">(自分)</span>'; ?>
+
+                            <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
+                                <span style="background: #ffff00; color: #000; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 10px; font-weight: bold; box-shadow: 0 0 8px #ffff00;">
+                                    REQUESTED
+                                </span>
+                            <?php endif; ?>
                         </td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_data'] ? '#1eff1a' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_admin'] ? '#00ccff' : '#333'; ?>;">●</span></td>
                         <td style="text-align: center;"><span style="color: <?php echo $admin['perm_log'] ? '#ff00ff' : '#333'; ?>;">●</span></td>
-                        <td style="padding: 12px 10px;">
-                            <?php echo h($admin['login_id']); ?>
-                            <?php if (($admin['request_status'] ?? '') === 'pending'): ?>
-                                <span style="background: #ffff00; color: #000; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; font-weight: bold;">
-                                    PENDING REQUEST
-                                </span>
-                            <?php endif; ?>
-                        </td>
                         <td style="padding: 10px; text-align: center;">
                             <a href="/admin/users/edit?id=<?php echo h($admin['login_id']); ?>" class="btn-detail"
-                                style="text-decoration: none; padding: 4px 12px; font-size: 0.85em; display: inline-block;">詳細</a>
+                                style="text-decoration: none; border: 1px solid var(--cyber-green); padding: 4px 12px; font-size: 0.85em; display: inline-block; color: var(--cyber-green);">
+                                <?php echo (($admin['request_status'] ?? '') === 'pending') ? '承認審査' : '詳細編集'; ?>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
