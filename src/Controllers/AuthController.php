@@ -51,7 +51,6 @@ class AuthController
                     'admin' => $user['perm_admin'],
                     'log'   => $user['perm_log'] ?? 0
                 ]; // DBに保存されている申請ステータスをセッションに同期
-                $_SESSION['request_status'] = $user['request_status'];
                 $adminModel->resetFailureCount($login_id);
                 logAction($login_id, 'ログイン', '成功');
                 header("Location: /");

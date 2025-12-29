@@ -62,6 +62,14 @@ src/Utils/Database.php
 src/Utils/functions.php
 src/Utils/Validator.php
 src/Utils/View.php
+storage/cache/default__67f10ab4861a09cdce0b40f7a1a1181f.cache
+storage/cache/default__750457e3318ceac0de5c8baf3a1c4b2a.cache
+storage/cache/default__a3f41b43c78613b38e6e755364bb4809.cache
+storage/cache/default__b3ef8d3d5fcb21c105410a32351180d0.cache
+storage/cache/koban_list__4aeef07952e060e30937ecc842eb1b5d.cache
+storage/cache/koban_list__4bd7af8e0082cd55290df76c1fc7c083.cache
+storage/cache/koban_list__c9d02d93579d900e2cb549ad4ea4addf.cache
+storage/cache/koban_list__e7be40ca26cdc57fed35df51a46e6e17.cache
 views/admin/change_password.php
 views/admin/edit_admin.php
 views/admin/log_list.php
@@ -71,6 +79,7 @@ views/admin/user_registration.php
 views/auth/login.php
 views/auth/register.php
 views/components/alert.php
+views/components/button.php
 views/components/request_link.php
 views/home.php
 views/koban/form.php
@@ -183,9 +192,72 @@ docker-compose up -d --build
 このプロジェクトの取り扱いについては、管理者に確認してください。
 </file>
 
+<file path="storage/cache/default__67f10ab4861a09cdce0b40f7a1a1181f.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:7:"default";s:7:"expires";i:1766976221;s:10:"created_at";s:19:"2025-12-29 11:33:41";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";i:12147;}
+</file>
+
+<file path="storage/cache/default__750457e3318ceac0de5c8baf3a1c4b2a.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:7:"default";s:7:"expires";i:1766976542;s:10:"created_at";s:19:"2025-12-29 11:39:02";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";i:689;}
+</file>
+
+<file path="storage/cache/default__a3f41b43c78613b38e6e755364bb4809.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:7:"default";s:7:"expires";i:1766976948;s:10:"created_at";s:19:"2025-12-29 11:45:48";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";i:12147;}
+</file>
+
+<file path="storage/cache/default__b3ef8d3d5fcb21c105410a32351180d0.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:7:"default";s:7:"expires";i:1766976521;s:10:"created_at";s:19:"2025-12-29 11:38:41";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";i:1;}
+</file>
+
+<file path="storage/cache/koban_list__4aeef07952e060e30937ecc842eb1b5d.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:10:"koban_list";s:7:"expires";i:1766976947;s:10:"created_at";s:19:"2025-12-29 11:45:47";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";a:100:{i:0;a:8:{s:2:"id";i:1;s:14:"koban_fullname";s:27:"中央警察署薄野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-5583";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640804";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南4条西3";}i:1;a:8:{s:2:"id";i:2;s:14:"koban_fullname";s:30:"中央警察署豊平橋交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-521-6465";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600055";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南5条東4";}i:2;a:8:{s:2:"id";i:3;s:14:"koban_fullname";s:30:"中央警察署南三条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-221-0761";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600063";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南3条西7";}i:3;a:8:{s:2:"id";i:4;s:14:"koban_fullname";s:27:"中央警察署大通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-221-1078";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600042";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区大通西1";}i:4;a:8:{s:2:"id";i:5;s:14:"koban_fullname";s:33:"中央警察署札幌駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-231-5584";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600005";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市中央区北5条西4-４";}i:5;a:8:{s:2:"id";i:6;s:14:"koban_fullname";s:33:"中央警察署北一条東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-251-5060";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600031";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区北1条東7";}i:6;a:8:{s:2:"id";i:7;s:14:"koban_fullname";s:27:"中央警察署御幸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-251-8354";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600063";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区南3条西14";}i:7;a:8:{s:2:"id";i:8;s:14:"koban_fullname";s:33:"中央警察署北一条西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-8223";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600001";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区北1条西15";}i:8;a:8:{s:2:"id";i:9;s:14:"koban_fullname";s:30:"中央警察署桑園西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-1866";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区北4条西19";}i:9;a:8:{s:2:"id";i:10;s:14:"koban_fullname";s:30:"東警察署北十三条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-6655";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650013";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市東区北13条東1-3-7";}i:10;a:8:{s:2:"id";i:11;s:14:"koban_fullname";s:33:"東警察署北十二条東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-9830";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650012";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北12条東11-1-12";}i:11;a:8:{s:2:"id";i:12;s:14:"koban_fullname";s:24:"東警察署元町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-4221";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650024";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北24条東18-4-39";}i:12;a:8:{s:2:"id";i:13;s:14:"koban_fullname";s:33:"東警察署北二十六条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-711-3787";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"札幌市東区北26条東6";}i:13;a:8:{s:2:"id";i:14;s:14:"koban_fullname";s:24:"東警察署栄東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-704-5392";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北41条東14-2-16";}i:14;a:8:{s:2:"id";i:15;s:14:"koban_fullname";s:24:"東警察署栄西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-9611";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70842";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市東区北42条東4-1-35";}i:15;a:8:{s:2:"id";i:16;s:14:"koban_fullname";s:24:"東警察署札苗交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-791-1141";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70808";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市東区東苗穂8条3-3-17";}i:16;a:8:{s:2:"id";i:17;s:14:"koban_fullname";s:24:"東警察署丘珠交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-6215";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70835";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北35条東26-3-17";}i:17;a:8:{s:2:"id";i:18;s:14:"koban_fullname";s:27:"東警察署東苗穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-6198";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70801";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市東区東苗穂1条3-3-54";}i:18;a:8:{s:2:"id";i:19;s:14:"koban_fullname";s:24:"東警察署苗穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-741-0048";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650006";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市東区北6条東19-1-35";}i:19;a:8:{s:2:"id";i:20;s:14:"koban_fullname";s:24:"西警察署円山交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-0677";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640822";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市中央区北2条西24-26-4";}i:20;a:8:{s:2:"id";i:21;s:14:"koban_fullname";s:27:"西警察署宮の森交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-0687";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640952";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市中央区宮の森2条11-1-1";}i:21;a:8:{s:2:"id";i:22;s:14:"koban_fullname";s:30:"西警察署琴似本通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-1263";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630003";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市西区山の手3条1-3-26";}i:22;a:8:{s:2:"id";i:23;s:14:"koban_fullname";s:30:"西警察署二十四軒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-2006";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630802";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市西区二十四軒2条3-2-26";}i:23;a:8:{s:2:"id";i:24;s:14:"koban_fullname";s:30:"西警察署琴似駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-1766";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630861";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市西区八軒1条東1-5-8";}i:24;a:8:{s:2:"id";i:25;s:14:"koban_fullname";s:24:"西警察署八軒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-642-4621";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630846";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市西区八軒6条西6-1-1";}i:25;a:8:{s:2:"id";i:26;s:14:"koban_fullname";s:24:"西警察署発寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-1811";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630830";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市西区発寒10条3-1-39";}i:26;a:8:{s:2:"id";i:27;s:14:"koban_fullname";s:30:"西警察署鉄工団地交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-663-1102";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630833";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市西区発寒13条5-2-39";}i:27;a:8:{s:2:"id";i:28;s:14:"koban_fullname";s:24:"西警察署西町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-0813";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630061";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市西区西町北6-1-8";}i:28;a:8:{s:2:"id";i:29;s:14:"koban_fullname";s:24:"西警察署西野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-662-1526";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630039";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市西区西野9条4-6-37";}i:29;a:8:{s:2:"id";i:30;s:14:"koban_fullname";s:27:"南警察署南九条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-1062";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:26:"札幌市中央区南9西7";}i:30;a:8:{s:2:"id";i:31;s:14:"koban_fullname";s:24:"南警察署中島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-531-2022";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市中央区中島公園1-25";}i:31;a:8:{s:2:"id";i:32;s:14:"koban_fullname";s:24:"南警察署幌西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-561-3520";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640811";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南11西15";}i:32;a:8:{s:2:"id";i:33;s:14:"koban_fullname";s:24:"南警察署伏見交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-551-5474";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640915";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南15西18";}i:33;a:8:{s:2:"id";i:34;s:14:"koban_fullname";s:24:"南警察署山鼻交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-5979";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640923";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南23西10";}i:34;a:8:{s:2:"id";i:35;s:14:"koban_fullname";s:27:"南警察署行啓通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-1774";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640914";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南14西10";}i:35;a:8:{s:2:"id";i:36;s:14:"koban_fullname";s:27:"南警察署真駒内交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-581-2360";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50018";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市南区真駒内曙町1";}i:36;a:8:{s:2:"id";i:37;s:14:"koban_fullname";s:33:"南警察署真駒内団地交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-581-4661";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50014";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市南区真駒内幸町2";}i:37;a:8:{s:2:"id";i:38;s:14:"koban_fullname";s:24:"南警察署澄川交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-831-3815";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区澄川4-4";}i:38;a:8:{s:2:"id";i:39;s:14:"koban_fullname";s:24:"南警察署藤野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-591-2188";s:10:"group_code";i:11061;s:11:"postal_code";s:6:"612282";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市南区藤野2-6-5-2";}i:39;a:8:{s:2:"id";i:40;s:14:"koban_fullname";s:24:"南警察署石山交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-591-8351";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市南区石山1-3-1-1";}i:40;a:8:{s:2:"id";i:41;s:14:"koban_fullname";s:27:"南警察署北ノ沢交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-571-9520";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50802";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区川沿2-5";}i:41;a:8:{s:2:"id";i:42;s:14:"koban_fullname";s:24:"南警察署藻南交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-571-6134";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区川沿9-1";}i:42;a:8:{s:2:"id";i:43;s:14:"koban_fullname";s:27:"南警察署定山渓交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-598-2151";s:10:"group_code";i:11061;s:11:"postal_code";s:6:"612302";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市南区定山渓温泉東3";}i:43;a:8:{s:2:"id";i:44;s:14:"koban_fullname";s:33:"北警察署札幌駅北口交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-736-9820";s:10:"group_code";i:11029;s:11:"postal_code";s:6:"600807";s:4:"pref";s:9:"北海道";s:5:"addr3";s:26:"札幌市北区北7条西3";}i:44;a:8:{s:2:"id";i:45;s:14:"koban_fullname";s:30:"北警察署北二十条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-746-4361";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10020";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市北区北20条西5-2-45";}i:45;a:8:{s:2:"id";i:46;s:14:"koban_fullname";s:24:"北警察署麻生交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-758-7521";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10039";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市北区北39条西5-335-5";}i:46;a:8:{s:2:"id";i:47;s:14:"koban_fullname";s:30:"北警察署北三十条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-716-3784";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10030";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"札幌市北区北30条西7";}i:47;a:8:{s:2:"id";i:48;s:14:"koban_fullname";s:24:"北警察署新川交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-756-4176";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市北区北26条西17-196-1";}i:48;a:8:{s:2:"id";i:49;s:14:"koban_fullname";s:27:"北警察署新琴似交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-761-4567";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10907";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市北区新琴似8条4-670-1";}i:49;a:8:{s:2:"id";i:50;s:14:"koban_fullname";s:30:"北警察署新琴似西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-763-1101";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10907";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市北区新琴似7条14-743-23";}i:50;a:8:{s:2:"id";i:51;s:14:"koban_fullname";s:24:"北警察署新光交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-762-9442";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10901";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市北区新琴似1条12-6-43";}i:51;a:8:{s:2:"id";i:52;s:14:"koban_fullname";s:24:"北警察署篠路交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-2018";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28024";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市北区篠路4条7-2-47";}i:52;a:8:{s:2:"id";i:53;s:14:"koban_fullname";s:30:"北警察署あいの里交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-778-5420";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28071";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市北区あいの里1条6-1-3";}i:53;a:8:{s:2:"id";i:54;s:14:"koban_fullname";s:26:"北警察署茨??戸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-0100";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28043";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市北区東茨戸46-2";}i:54;a:8:{s:2:"id";i:55;s:14:"koban_fullname";s:24:"北警察署屯田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-2727";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"20854";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市北区屯田4条３ｰ159";}i:55;a:8:{s:2:"id";i:56;s:14:"koban_fullname";s:24:"北警察署太平交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-4888";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28009";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市北区太平9条5-84";}i:56;a:8:{s:2:"id";i:57;s:14:"koban_fullname";s:27:"北警察署花川南交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-73-0110";s:10:"group_code";i:12351;s:11:"postal_code";s:6:"613205";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"石狩市花川南5条2-193";}i:57;a:8:{s:2:"id";i:58;s:14:"koban_fullname";s:27:"北警察署花川北交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-74-5092";s:10:"group_code";i:12351;s:11:"postal_code";s:6:"613213";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"石狩市花川北3条2-198-2";}i:58;a:8:{s:2:"id";i:59;s:14:"koban_fullname";s:24:"北警察署当別交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-23-2151";s:10:"group_code";i:13030;s:11:"postal_code";s:6:"610223";s:4:"pref";s:9:"北海道";s:5:"addr3";s:20:"当別町弥生53-43";}i:59;a:8:{s:2:"id";i:60;s:14:"koban_fullname";s:24:"北警察署太美交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-26-2151";s:10:"group_code";i:13030;s:11:"postal_code";s:6:"613776";s:4:"pref";s:9:"北海道";s:5:"addr3";s:22:"当別町太美町1483";}i:60;a:8:{s:2:"id";i:61;s:14:"koban_fullname";s:30:"白石警察署東札幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-0892";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30044";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市白石区東札幌4条3";}i:61;a:8:{s:2:"id";i:62;s:14:"koban_fullname";s:27:"白石警察署菊水交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-2414";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30803";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区菊水3条1-4-20";}i:62;a:8:{s:2:"id";i:63;s:14:"koban_fullname";s:27:"白石警察署東橋交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-5360";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30811";s:4:"pref";s:9:"北海道";s:5:"addr3";s:38:"札幌市白石区菊水上町1条3-52";}i:63;a:8:{s:2:"id";i:64;s:14:"koban_fullname";s:27:"白石警察署南郷交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-864-3984";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30022";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市白石区南郷通6-南1";}i:64;a:8:{s:2:"id";i:65;s:14:"koban_fullname";s:33:"白石警察署白石中央交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-861-4009";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30027";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市白石区本通2-北7";}i:65;a:8:{s:2:"id";i:66;s:14:"koban_fullname";s:30:"白石警察署東白石交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-861-2970";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区本通16-南4-19";}i:66;a:8:{s:2:"id";i:67;s:14:"koban_fullname";s:27:"白石警察署北郷交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-873-2971";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30833";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区北郷3条5-3-13";}i:67;a:8:{s:2:"id";i:68;s:14:"koban_fullname";s:27:"白石警察署北都交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-871-0793";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30834";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市白石区北郷4条13-3-12";}i:68;a:8:{s:2:"id";i:69;s:14:"koban_fullname";s:33:"白石警察署菊水元町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-871-0110";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30828";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市白石区菊水元町8条2-17-1";}i:69;a:8:{s:2:"id";i:70;s:14:"koban_fullname";s:24:"豊平警察署旭交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-1747";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620902";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市豊平区豊平8条8-2";}i:70;a:8:{s:2:"id";i:71;s:14:"koban_fullname";s:27:"豊平警察署豊平交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-1019";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620903";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市豊平区豊平3条7-2";}i:71;a:8:{s:2:"id";i:72;s:14:"koban_fullname";s:27:"豊平警察署美園交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-1029";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620003";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市豊平区美園3条4";}i:72;a:8:{s:2:"id";i:73;s:14:"koban_fullname";s:27:"豊平警察署平岸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-0472";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620933";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市豊平区平岸3条7";}i:73;a:8:{s:2:"id";i:74;s:14:"koban_fullname";s:30:"豊平警察署中の島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-4454";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620921";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市豊平区中の島1条4";}i:74;a:8:{s:2:"id";i:75;s:14:"koban_fullname";s:30:"豊平警察署南平岸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-0039";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620933";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市豊平区平岸3条13";}i:75;a:8:{s:2:"id";i:76;s:14:"koban_fullname";s:30:"豊平警察署東月寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-851-8061";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620053";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市豊平区月寒東3条17-231-44";}i:76;a:8:{s:2:"id";i:77;s:14:"koban_fullname";s:27:"豊平警察署月寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-851-1026";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620020";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市豊平区月寒中央通7";}i:77;a:8:{s:2:"id";i:78;s:14:"koban_fullname";s:27:"豊平警察署福住交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-856-0110";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620042";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市豊平区福住2条5-4-6";}i:78;a:8:{s:2:"id";i:79;s:14:"koban_fullname";s:27:"豊平警察署西岡交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-853-3484";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620034";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市豊平区西岡4条9-1-16";}i:79;a:8:{s:2:"id";i:80;s:14:"koban_fullname";s:30:"豊平警察署中央通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-882-7140";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40871";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市清田区平岡1条5-4-3";}i:80;a:8:{s:2:"id";i:81;s:14:"koban_fullname";s:30:"豊平警察署緑ケ丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-883-4600";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40805";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市清田区里塚緑ケ丘1-14-26";}i:81;a:8:{s:2:"id";i:82;s:14:"koban_fullname";s:33:"豊平警察署美しが丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-0110";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40813";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市清田区美しが丘3条4-1-33";}i:82;a:8:{s:2:"id";i:83;s:14:"koban_fullname";s:27:"豊平警察署北野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-3583";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40864";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市清田区北野4条5-4-60";}i:83;a:8:{s:2:"id";i:84;s:14:"koban_fullname";s:27:"豊平警察署清田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-2151";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市清田区清田1条4-3-1";}i:84;a:8:{s:2:"id";i:85;s:14:"koban_fullname";s:36:"厚別警察署ひばりが丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-2840";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40052";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市厚別区厚別中央2条2-1-30";}i:85;a:8:{s:2:"id";i:86;s:14:"koban_fullname";s:27:"厚別警察署信濃交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-1527";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40055";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市厚別区厚別中央5条2-5-12";}i:86;a:8:{s:2:"id";i:87;s:14:"koban_fullname";s:33:"厚別警察署森林公園交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-894-5110";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40074";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市厚別区厚別北4条4-16";}i:87;a:8:{s:2:"id";i:88;s:14:"koban_fullname";s:30:"厚別警察署新札幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-0632";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40051";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市厚別区厚別中央1条5-2";}i:88;a:8:{s:2:"id";i:89;s:14:"koban_fullname";s:30:"厚別警察署上野幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-893-5633";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40031";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市厚別区上野幌1条2-6-25";}i:89;a:8:{s:2:"id";i:90;s:14:"koban_fullname";s:33:"厚別警察署もみじ台交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-897-7567";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40013";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市厚別区もみじ台西4-2";}i:90;a:8:{s:2:"id";i:91;s:14:"koban_fullname";s:30:"厚別警察署北広島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-372-3151";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611121";s:4:"pref";s:9:"北海道";s:5:"addr3";s:23:"北広島市中央1-2-1";}i:91;a:8:{s:2:"id";i:92;s:14:"koban_fullname";s:36:"厚別警察署北広島駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-373-6495";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611132";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"北広島市北進町1-2ｰ13";}i:92;a:8:{s:2:"id";i:93;s:14:"koban_fullname";s:27:"厚別警察署大曲交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-377-3047";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611271";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"北広島市大曲中央２-4-2";}i:93;a:8:{s:2:"id";i:94;s:14:"koban_fullname";s:27:"手稲警察署手稲交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-681-2151";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60023";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市手稲区手稲本町3条1-1-16";}i:94;a:8:{s:2:"id";i:95;s:14:"koban_fullname";s:27:"手稲警察署前田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-1488";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60815";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市手稲区前田5条15-8-13";}i:95;a:8:{s:2:"id";i:96;s:14:"koban_fullname";s:33:"手稲警察署手稲山口交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-3713";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60861";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市手稲区明日風1-1-16";}i:96;a:8:{s:2:"id";i:97;s:14:"koban_fullname";s:33:"手稲警察署西宮の沢交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-4411";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:41:"札幌市手稲区西宮の沢4条2-200-1";}i:97;a:8:{s:2:"id";i:98;s:14:"koban_fullname";s:27:"手稲警察署稲積交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-694-3471";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60805";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市手稲区新発寒5条6-2-8";}i:98;a:8:{s:2:"id";i:99;s:14:"koban_fullname";s:27:"手稲警察署稲穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-1488";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60033";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市手稲区稲穂3条7-6-10";}i:99;a:8:{s:2:"id";i:100;s:14:"koban_fullname";s:27:"手稲警察署星置交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-694-0110";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60851";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市手稲区星置1条4-7-1";}}}
+</file>
+
+<file path="storage/cache/koban_list__4bd7af8e0082cd55290df76c1fc7c083.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:10:"koban_list";s:7:"expires";i:1766976521;s:10:"created_at";s:19:"2025-12-29 11:38:41";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";a:1:{i:0;a:8:{s:2:"id";i:1;s:14:"koban_fullname";s:27:"中央警察署薄野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-5583";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640804";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南4条西3";}}}
+</file>
+
+<file path="storage/cache/koban_list__c9d02d93579d900e2cb549ad4ea4addf.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:10:"koban_list";s:7:"expires";i:1766976221;s:10:"created_at";s:19:"2025-12-29 11:33:41";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";a:47:{i:0;a:8:{s:2:"id";i:12101;s:14:"koban_fullname";s:36:"嘉手納警察署瀬名波駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-958-2110";s:10:"group_code";i:473243;s:11:"postal_code";s:7:"9040325";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:26:"読谷村字瀬名波221-4";}i:1;a:8:{s:2:"id";i:12102;s:14:"koban_fullname";s:36:"うるま警察署平安座駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-977-8126";s:10:"group_code";i:472131;s:11:"postal_code";s:7:"9042202";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:36:"うるま市与那城平安座9397-2";}i:2;a:8:{s:2:"id";i:12103;s:14:"koban_fullname";s:33:"石川警察署宜野座駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-968-8502";s:10:"group_code";i:473138;s:11:"postal_code";s:7:"9041302";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:27:"宜野座村宜野座1214-8";}i:3;a:8:{s:2:"id";i:12104;s:14:"koban_fullname";s:30:"石川警察署仲泊駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-964-3265";s:10:"group_code";i:473111;s:11:"postal_code";s:7:"9040415";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:20:"恩納村仲泊756-5";}i:4;a:8:{s:2:"id";i:12105;s:14:"koban_fullname";s:33:"石川警察署名嘉真駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-967-8838";s:10:"group_code";i:473111;s:11:"postal_code";s:7:"9040401";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"恩納村字名嘉真178";}i:5;a:8:{s:2:"id";i:12106;s:14:"koban_fullname";s:30:"名護警察署許田駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472093;s:11:"postal_code";s:7:"9050024";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:21:"名護市字許田255";}i:6;a:8:{s:2:"id";i:12107;s:14:"koban_fullname";s:30:"名護警察署屋部駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472093;s:11:"postal_code";s:7:"9050007";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:23:"名護市字屋部121-1";}i:7;a:8:{s:2:"id";i:12108;s:14:"koban_fullname";s:33:"名護警察署伊差川駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472093;s:11:"postal_code";s:7:"9051152";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"名護市字伊差川134";}i:8;a:8:{s:2:"id";i:12109;s:14:"koban_fullname";s:33:"名護警察署屋我地駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472093;s:11:"postal_code";s:7:"9051632";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"名護市字饒平名134";}i:9;a:8:{s:2:"id";i:12110;s:14:"koban_fullname";s:30:"名護警察署塩屋駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473022;s:11:"postal_code";s:7:"9051311";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"大宜味村字塩屋716";}i:10;a:8:{s:2:"id";i:12111;s:14:"koban_fullname";s:33:"名護警察署喜如嘉駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473022;s:11:"postal_code";s:7:"9051303";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:28:"大宜味村字喜如嘉1140";}i:11;a:8:{s:2:"id";i:12112;s:14:"koban_fullname";s:27:"名護警察署奥駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473014;s:11:"postal_code";s:7:"9051501";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:17:"国頭村字奥55";}i:12;a:8:{s:2:"id";i:12113;s:14:"koban_fullname";s:30:"名護警察署安田駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473014;s:11:"postal_code";s:7:"9051503";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:20:"国頭村字安田66";}i:13;a:8:{s:2:"id";i:12114;s:14:"koban_fullname";s:30:"名護警察署平良駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473031;s:11:"postal_code";s:7:"9051204";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:21:"東村字平良550-14";}i:14;a:8:{s:2:"id";i:12115;s:14:"koban_fullname";s:33:"本部警察署伊豆味駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-047-4201";s:10:"group_code";i:473081;s:11:"postal_code";s:7:"9050221";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:27:"本部町字伊豆味478-11";}i:15;a:8:{s:2:"id";i:12116;s:14:"koban_fullname";s:30:"本部警察署山川駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-048-3259";s:10:"group_code";i:473081;s:11:"postal_code";s:7:"9050205";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:25:"本部町字山川398-３";}i:16;a:8:{s:2:"id";i:12117;s:14:"koban_fullname";s:30:"本部警察署伊江駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-049-2314";s:10:"group_code";i:473154;s:11:"postal_code";s:7:"9050502";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:25:"伊江村字東江前48-2";}i:17;a:8:{s:2:"id";i:12118;s:14:"koban_fullname";s:30:"本部警察署川平駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-049-2313";s:10:"group_code";i:473154;s:11:"postal_code";s:7:"9050503";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:25:"伊江村字川平437-２";}i:18;a:8:{s:2:"id";i:12119;s:14:"koban_fullname";s:33:"本部警察署伊是名駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-045-2034";s:10:"group_code";i:473600;s:11:"postal_code";s:7:"9050603";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:28:"伊是名村字仲田914-１";}i:19;a:8:{s:2:"id";i:12120;s:14:"koban_fullname";s:33:"本部警察署伊平屋駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"098-046-2130";s:10:"group_code";i:473596;s:11:"postal_code";s:7:"9050703";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:31:"伊平屋村字我喜屋314-１";}i:20;a:8:{s:2:"id";i:12121;s:14:"koban_fullname";s:36:"宮古島警察署佐良浜駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060501";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:40:"宮古島市伊良部字前里添643－2";}i:21;a:8:{s:2:"id";i:12122;s:14:"koban_fullname";s:33:"宮古島警察署仲地駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060503";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:35:"宮古島市伊良部字伊良部24";}i:22;a:8:{s:2:"id";i:12123;s:14:"koban_fullname";s:33:"宮古島警察署狩俣駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060002";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:35:"宮古島市平良字狩俣1234－1";}i:23;a:8:{s:2:"id";i:12124;s:14:"koban_fullname";s:33:"宮古島警察署下地駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060304";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:30:"宮古島市下地字上地513";}i:24;a:8:{s:2:"id";i:12125;s:14:"koban_fullname";s:33:"宮古島警察署高田駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060202";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:30:"宮古島市上野字新里523";}i:25;a:8:{s:2:"id";i:12126;s:14:"koban_fullname";s:33:"宮古島警察署長間駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060105";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:35:"宮古島市城辺字長間1420－3";}i:26;a:8:{s:2:"id";i:12127;s:14:"koban_fullname";s:36:"宮古島警察署城辺東駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:472140;s:11:"postal_code";s:7:"9060103";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:31:"宮古島市城辺字福里1095";}i:27;a:8:{s:2:"id";i:12128;s:14:"koban_fullname";s:36:"宮古島警察署多良間駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";N;s:10:"group_code";i:473758;s:11:"postal_code";s:7:"9060601";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"多良間村字塩川161";}i:28;a:8:{s:2:"id";i:12129;s:14:"koban_fullname";s:33:"八重山警察署白保駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-86-7003";s:10:"group_code";i:472077;s:11:"postal_code";s:7:"9070242";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:21:"石垣市字白保178";}i:29;a:8:{s:2:"id";i:12130;s:14:"koban_fullname";s:36:"八重山警察署伊原間駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-89-2110";s:10:"group_code";i:472077;s:11:"postal_code";s:7:"9070332";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:25:"石垣市字伊原間40-4";}i:30;a:8:{s:2:"id";i:12131;s:14:"koban_fullname";s:33:"八重山警察署川平駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-88-2110";s:10:"group_code";i:472077;s:11:"postal_code";s:7:"9070453";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:23:"石垣市字川平907-1";}i:31;a:8:{s:2:"id";i:12132;s:14:"koban_fullname";s:33:"八重山警察署小浜駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-85-3110";s:10:"group_code";i:473812;s:11:"postal_code";s:7:"9071221";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:20:"竹富町字小浜24";}i:32;a:8:{s:2:"id";i:12133;s:14:"koban_fullname";s:36:"八重山警察署波照間駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-85-8110";s:10:"group_code";i:473812;s:11:"postal_code";s:7:"9071751";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"竹富町字波照間129";}i:33;a:8:{s:2:"id";i:12134;s:14:"koban_fullname";s:33:"八重山警察署大原駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-85-5110";s:10:"group_code";i:473812;s:11:"postal_code";s:7:"9071434";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:28:"竹富町字南風見201-147";}i:34;a:8:{s:2:"id";i:12135;s:14:"koban_fullname";s:33:"八重山警察署上原駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-85-6510";s:10:"group_code";i:473812;s:11:"postal_code";s:7:"9071541";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"竹富町字上原397-47";}i:35;a:8:{s:2:"id";i:12136;s:14:"koban_fullname";s:33:"八重山警察署白浜駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-85-6110";s:10:"group_code";i:473812;s:11:"postal_code";s:7:"9071542";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:24:"竹富町字西表1499-8";}i:36;a:8:{s:2:"id";i:12137;s:14:"koban_fullname";s:36:"八重山警察署与那国駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-87-2152";s:10:"group_code";i:473821;s:11:"postal_code";s:7:"9071801";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:28:"与那国町字与那国4841";}i:37;a:8:{s:2:"id";i:12138;s:14:"koban_fullname";s:36:"八重山警察署久部良駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"0980-87-2154";s:10:"group_code";i:473821;s:11:"postal_code";s:7:"9071801";s:4:"pref";s:9:"沖縄県";s:5:"addr3";s:32:"与那国町字与那国4022-199";}i:38;a:8:{s:2:"id";i:12139;s:14:"koban_fullname";s:69:"すっとこどっこい警察署うんとこどっこいしょ交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:11:"123-456-789";s:10:"group_code";i:1234567;s:11:"postal_code";s:7:"9999999";s:4:"pref";s:12:"どめお県";s:5:"addr3";s:46:"どぶどぶ市つんばぬす区東西南北2";}i:39;a:8:{s:2:"id";i:12140;s:14:"koban_fullname";s:36:"中野警察署明治大学前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"03-5343-8012";s:10:"group_code";i:9999999;s:11:"postal_code";s:7:"1648525";s:4:"pref";s:9:"東京都";s:5:"addr3";s:21:"中野区中野4-21-1";}i:40;a:8:{s:2:"id";i:12141;s:14:"koban_fullname";s:39:"よよよよ警察署ゆゆゆゆ交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"44-4444-4444";s:10:"group_code";i:4444444;s:11:"postal_code";s:7:"1660012";s:4:"pref";s:9:"東京都";s:5:"addr3";s:25:"杉並区和田2-123-3131";}i:41;a:8:{s:2:"id";i:12142;s:14:"koban_fullname";s:39:"千鳥警察署かまいたち駐在所";s:4:"type";s:9:"駐在所";s:12:"phone_number";s:12:"22-3333-4444";s:10:"group_code";i:246810;s:11:"postal_code";s:7:"6220201";s:4:"pref";s:9:"京都府";s:5:"addr3";s:36:"船井郡京丹波町下山555-555-5";}i:42;a:8:{s:2:"id";i:12143;s:14:"koban_fullname";s:18:"My name is HIKAKIN";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"11-1111-1111";s:10:"group_code";i:12341234;s:11:"postal_code";s:7:"4420021";s:4:"pref";s:9:"愛知県";s:5:"addr3";s:18:"豊川市小桜町";}i:43;a:8:{s:2:"id";i:12144;s:14:"koban_fullname";s:30:"白魚警察署すりみ交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:13:"345-2939-3939";s:10:"group_code";i:2929240;s:11:"postal_code";s:7:"3340001";s:4:"pref";s:9:"埼玉県";s:5:"addr3";s:15:"川口市桜町";}i:44;a:8:{s:2:"id";i:12145;s:14:"koban_fullname";s:42:"こちら葛飾区亀有公園前派出所";s:4:"type";s:6:"交番";s:12:"phone_number";s:13:"080-8665-2445";s:10:"group_code";i:5258425;s:11:"postal_code";s:7:"6601144";s:4:"pref";s:9:"東京都";s:5:"addr3";s:15:"葛飾区亀有";}i:45;a:8:{s:2:"id";i:12146;s:14:"koban_fullname";s:21:"ハロー彗星交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:15:"000-11111-99999";s:10:"group_code";i:987;s:11:"postal_code";s:7:"1740020";s:4:"pref";s:0:"";s:5:"addr3";s:0:"";}i:46;a:8:{s:2:"id";i:12147;s:14:"koban_fullname";s:9:"テスト";s:4:"type";s:6:"交番";s:12:"phone_number";N;s:10:"group_code";i:12345678;s:11:"postal_code";N;s:4:"pref";s:0:"";s:5:"addr3";s:0:"";}}}
+</file>
+
+<file path="storage/cache/koban_list__e7be40ca26cdc57fed35df51a46e6e17.cache">
+a:2:{s:8:"metadata";a:5:{s:3:"tag";s:10:"koban_list";s:7:"expires";i:1766976541;s:10:"created_at";s:19:"2025-12-29 11:39:01";s:11:"php_version";s:6:"8.2.30";s:6:"server";s:12:"bbe7d6bc03ca";}s:7:"content";a:100:{i:0;a:8:{s:2:"id";i:1;s:14:"koban_fullname";s:27:"中央警察署薄野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-5583";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640804";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南4条西3";}i:1;a:8:{s:2:"id";i:2;s:14:"koban_fullname";s:30:"中央警察署豊平橋交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-521-6465";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600055";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南5条東4";}i:2;a:8:{s:2:"id";i:3;s:14:"koban_fullname";s:30:"中央警察署南三条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-221-0761";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600063";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区南3条西7";}i:3;a:8:{s:2:"id";i:4;s:14:"koban_fullname";s:27:"中央警察署大通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-221-1078";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600042";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区大通西1";}i:4;a:8:{s:2:"id";i:5;s:14:"koban_fullname";s:33:"中央警察署札幌駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-231-5584";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600005";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市中央区北5条西4-４";}i:5;a:8:{s:2:"id";i:6;s:14:"koban_fullname";s:33:"中央警察署北一条東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-251-5060";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600031";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市中央区北1条東7";}i:6;a:8:{s:2:"id";i:7;s:14:"koban_fullname";s:27:"中央警察署御幸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-251-8354";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600063";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区南3条西14";}i:7;a:8:{s:2:"id";i:8;s:14:"koban_fullname";s:33:"中央警察署北一条西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-8223";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600001";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区北1条西15";}i:8;a:8:{s:2:"id";i:9;s:14:"koban_fullname";s:30:"中央警察署桑園西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-1866";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"600004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市中央区北4条西19";}i:9;a:8:{s:2:"id";i:10;s:14:"koban_fullname";s:30:"東警察署北十三条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-6655";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650013";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市東区北13条東1-3-7";}i:10;a:8:{s:2:"id";i:11;s:14:"koban_fullname";s:33:"東警察署北十二条東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-9830";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650012";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北12条東11-1-12";}i:11;a:8:{s:2:"id";i:12;s:14:"koban_fullname";s:24:"東警察署元町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-4221";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650024";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北24条東18-4-39";}i:12;a:8:{s:2:"id";i:13;s:14:"koban_fullname";s:33:"東警察署北二十六条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-711-3787";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"札幌市東区北26条東6";}i:13;a:8:{s:2:"id";i:14;s:14:"koban_fullname";s:24:"東警察署栄東交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-704-5392";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北41条東14-2-16";}i:14;a:8:{s:2:"id";i:15;s:14:"koban_fullname";s:24:"東警察署栄西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-731-9611";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70842";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市東区北42条東4-1-35";}i:15;a:8:{s:2:"id";i:16;s:14:"koban_fullname";s:24:"東警察署札苗交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-791-1141";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70808";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市東区東苗穂8条3-3-17";}i:16;a:8:{s:2:"id";i:17;s:14:"koban_fullname";s:24:"東警察署丘珠交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-6215";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70835";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市東区北35条東26-3-17";}i:17;a:8:{s:2:"id";i:18;s:14:"koban_fullname";s:27:"東警察署東苗穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-781-6198";s:10:"group_code";i:11037;s:11:"postal_code";s:5:"70801";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市東区東苗穂1条3-3-54";}i:18;a:8:{s:2:"id";i:19;s:14:"koban_fullname";s:24:"東警察署苗穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-741-0048";s:10:"group_code";i:11037;s:11:"postal_code";s:6:"650006";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市東区北6条東19-1-35";}i:19;a:8:{s:2:"id";i:20;s:14:"koban_fullname";s:24:"西警察署円山交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-0677";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640822";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市中央区北2条西24-26-4";}i:20;a:8:{s:2:"id";i:21;s:14:"koban_fullname";s:27:"西警察署宮の森交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-0687";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640952";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市中央区宮の森2条11-1-1";}i:21;a:8:{s:2:"id";i:22;s:14:"koban_fullname";s:30:"西警察署琴似本通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-1263";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630003";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市西区山の手3条1-3-26";}i:22;a:8:{s:2:"id";i:23;s:14:"koban_fullname";s:30:"西警察署二十四軒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-621-2006";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630802";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市西区二十四軒2条3-2-26";}i:23;a:8:{s:2:"id";i:24;s:14:"koban_fullname";s:30:"西警察署琴似駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-611-1766";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630861";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市西区八軒1条東1-5-8";}i:24;a:8:{s:2:"id";i:25;s:14:"koban_fullname";s:24:"西警察署八軒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-642-4621";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630846";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市西区八軒6条西6-1-1";}i:25;a:8:{s:2:"id";i:26;s:14:"koban_fullname";s:24:"西警察署発寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-1811";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630830";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市西区発寒10条3-1-39";}i:26;a:8:{s:2:"id";i:27;s:14:"koban_fullname";s:30:"西警察署鉄工団地交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-663-1102";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630833";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市西区発寒13条5-2-39";}i:27;a:8:{s:2:"id";i:28;s:14:"koban_fullname";s:24:"西警察署西町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-0813";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630061";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市西区西町北6-1-8";}i:28;a:8:{s:2:"id";i:29;s:14:"koban_fullname";s:24:"西警察署西野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-662-1526";s:10:"group_code";i:11070;s:11:"postal_code";s:6:"630039";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市西区西野9条4-6-37";}i:29;a:8:{s:2:"id";i:30;s:14:"koban_fullname";s:27:"南警察署南九条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-1062";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:26:"札幌市中央区南9西7";}i:30;a:8:{s:2:"id";i:31;s:14:"koban_fullname";s:24:"南警察署中島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-531-2022";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市中央区中島公園1-25";}i:31;a:8:{s:2:"id";i:32;s:14:"koban_fullname";s:24:"南警察署幌西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-561-3520";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640811";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南11西15";}i:32;a:8:{s:2:"id";i:33;s:14:"koban_fullname";s:24:"南警察署伏見交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-551-5474";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640915";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南15西18";}i:33;a:8:{s:2:"id";i:34;s:14:"koban_fullname";s:24:"南警察署山鼻交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-5979";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640923";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南23西10";}i:34;a:8:{s:2:"id";i:35;s:14:"koban_fullname";s:27:"南警察署行啓通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-511-1774";s:10:"group_code";i:11011;s:11:"postal_code";s:6:"640914";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市中央区南14西10";}i:35;a:8:{s:2:"id";i:36;s:14:"koban_fullname";s:27:"南警察署真駒内交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-581-2360";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50018";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市南区真駒内曙町1";}i:36;a:8:{s:2:"id";i:37;s:14:"koban_fullname";s:33:"南警察署真駒内団地交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-581-4661";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50014";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市南区真駒内幸町2";}i:37;a:8:{s:2:"id";i:38;s:14:"koban_fullname";s:24:"南警察署澄川交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-831-3815";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区澄川4-4";}i:38;a:8:{s:2:"id";i:39;s:14:"koban_fullname";s:24:"南警察署藤野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-591-2188";s:10:"group_code";i:11061;s:11:"postal_code";s:6:"612282";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市南区藤野2-6-5-2";}i:39;a:8:{s:2:"id";i:40;s:14:"koban_fullname";s:24:"南警察署石山交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-591-8351";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市南区石山1-3-1-1";}i:40;a:8:{s:2:"id";i:41;s:14:"koban_fullname";s:27:"南警察署北ノ沢交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-571-9520";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50802";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区川沿2-5";}i:41;a:8:{s:2:"id";i:42;s:14:"koban_fullname";s:24:"南警察署藻南交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-571-6134";s:10:"group_code";i:11061;s:11:"postal_code";s:5:"50809";s:4:"pref";s:9:"北海道";s:5:"addr3";s:24:"札幌市南区川沿9-1";}i:42;a:8:{s:2:"id";i:43;s:14:"koban_fullname";s:27:"南警察署定山渓交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-598-2151";s:10:"group_code";i:11061;s:11:"postal_code";s:6:"612302";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市南区定山渓温泉東3";}i:43;a:8:{s:2:"id";i:44;s:14:"koban_fullname";s:33:"北警察署札幌駅北口交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-736-9820";s:10:"group_code";i:11029;s:11:"postal_code";s:6:"600807";s:4:"pref";s:9:"北海道";s:5:"addr3";s:26:"札幌市北区北7条西3";}i:44;a:8:{s:2:"id";i:45;s:14:"koban_fullname";s:30:"北警察署北二十条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-746-4361";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10020";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市北区北20条西5-2-45";}i:45;a:8:{s:2:"id";i:46;s:14:"koban_fullname";s:24:"北警察署麻生交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-758-7521";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10039";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市北区北39条西5-335-5";}i:46;a:8:{s:2:"id";i:47;s:14:"koban_fullname";s:30:"北警察署北三十条交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-716-3784";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10030";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"札幌市北区北30条西7";}i:47;a:8:{s:2:"id";i:48;s:14:"koban_fullname";s:24:"北警察署新川交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-756-4176";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市北区北26条西17-196-1";}i:48;a:8:{s:2:"id";i:49;s:14:"koban_fullname";s:27:"北警察署新琴似交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-761-4567";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10907";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市北区新琴似8条4-670-1";}i:49;a:8:{s:2:"id";i:50;s:14:"koban_fullname";s:30:"北警察署新琴似西交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-763-1101";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10907";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市北区新琴似7条14-743-23";}i:50;a:8:{s:2:"id";i:51;s:14:"koban_fullname";s:24:"北警察署新光交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-762-9442";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"10901";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市北区新琴似1条12-6-43";}i:51;a:8:{s:2:"id";i:52;s:14:"koban_fullname";s:24:"北警察署篠路交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-2018";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28024";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市北区篠路4条7-2-47";}i:52;a:8:{s:2:"id";i:53;s:14:"koban_fullname";s:30:"北警察署あいの里交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-778-5420";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28071";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市北区あいの里1条6-1-3";}i:53;a:8:{s:2:"id";i:54;s:14:"koban_fullname";s:26:"北警察署茨??戸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-0100";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28043";s:4:"pref";s:9:"北海道";s:5:"addr3";s:28:"札幌市北区東茨戸46-2";}i:54;a:8:{s:2:"id";i:55;s:14:"koban_fullname";s:24:"北警察署屯田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-2727";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"20854";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市北区屯田4条３ｰ159";}i:55;a:8:{s:2:"id";i:56;s:14:"koban_fullname";s:24:"北警察署太平交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-771-4888";s:10:"group_code";i:11029;s:11:"postal_code";s:5:"28009";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市北区太平9条5-84";}i:56;a:8:{s:2:"id";i:57;s:14:"koban_fullname";s:27:"北警察署花川南交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-73-0110";s:10:"group_code";i:12351;s:11:"postal_code";s:6:"613205";s:4:"pref";s:9:"北海道";s:5:"addr3";s:27:"石狩市花川南5条2-193";}i:57;a:8:{s:2:"id";i:58;s:14:"koban_fullname";s:27:"北警察署花川北交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-74-5092";s:10:"group_code";i:12351;s:11:"postal_code";s:6:"613213";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"石狩市花川北3条2-198-2";}i:58;a:8:{s:2:"id";i:59;s:14:"koban_fullname";s:24:"北警察署当別交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-23-2151";s:10:"group_code";i:13030;s:11:"postal_code";s:6:"610223";s:4:"pref";s:9:"北海道";s:5:"addr3";s:20:"当別町弥生53-43";}i:59;a:8:{s:2:"id";i:60;s:14:"koban_fullname";s:24:"北警察署太美交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"0133-26-2151";s:10:"group_code";i:13030;s:11:"postal_code";s:6:"613776";s:4:"pref";s:9:"北海道";s:5:"addr3";s:22:"当別町太美町1483";}i:60;a:8:{s:2:"id";i:61;s:14:"koban_fullname";s:30:"白石警察署東札幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-0892";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30044";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市白石区東札幌4条3";}i:61;a:8:{s:2:"id";i:62;s:14:"koban_fullname";s:27:"白石警察署菊水交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-2414";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30803";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区菊水3条1-4-20";}i:62;a:8:{s:2:"id";i:63;s:14:"koban_fullname";s:27:"白石警察署東橋交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-5360";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30811";s:4:"pref";s:9:"北海道";s:5:"addr3";s:38:"札幌市白石区菊水上町1条3-52";}i:63;a:8:{s:2:"id";i:64;s:14:"koban_fullname";s:27:"白石警察署南郷交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-864-3984";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30022";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市白石区南郷通6-南1";}i:64;a:8:{s:2:"id";i:65;s:14:"koban_fullname";s:33:"白石警察署白石中央交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-861-4009";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30027";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市白石区本通2-北7";}i:65;a:8:{s:2:"id";i:66;s:14:"koban_fullname";s:30:"白石警察署東白石交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-861-2970";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30026";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区本通16-南4-19";}i:66;a:8:{s:2:"id";i:67;s:14:"koban_fullname";s:27:"白石警察署北郷交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-873-2971";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30833";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市白石区北郷3条5-3-13";}i:67;a:8:{s:2:"id";i:68;s:14:"koban_fullname";s:27:"白石警察署北都交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-871-0793";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30834";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市白石区北郷4条13-3-12";}i:68;a:8:{s:2:"id";i:69;s:14:"koban_fullname";s:33:"白石警察署菊水元町交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-871-0110";s:10:"group_code";i:11045;s:11:"postal_code";s:5:"30828";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市白石区菊水元町8条2-17-1";}i:69;a:8:{s:2:"id";i:70;s:14:"koban_fullname";s:24:"豊平警察署旭交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-1747";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620902";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市豊平区豊平8条8-2";}i:70;a:8:{s:2:"id";i:71;s:14:"koban_fullname";s:27:"豊平警察署豊平交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-1019";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620903";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"札幌市豊平区豊平3条7-2";}i:71;a:8:{s:2:"id";i:72;s:14:"koban_fullname";s:27:"豊平警察署美園交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-841-1029";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620003";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市豊平区美園3条4";}i:72;a:8:{s:2:"id";i:73;s:14:"koban_fullname";s:27:"豊平警察署平岸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-0472";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620933";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"札幌市豊平区平岸3条7";}i:73;a:8:{s:2:"id";i:74;s:14:"koban_fullname";s:30:"豊平警察署中の島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-811-4454";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620921";s:4:"pref";s:9:"北海道";s:5:"addr3";s:32:"札幌市豊平区中の島1条4";}i:74;a:8:{s:2:"id";i:75;s:14:"koban_fullname";s:30:"豊平警察署南平岸交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-821-0039";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620933";s:4:"pref";s:9:"北海道";s:5:"addr3";s:30:"札幌市豊平区平岸3条13";}i:75;a:8:{s:2:"id";i:76;s:14:"koban_fullname";s:30:"豊平警察署東月寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-851-8061";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620053";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市豊平区月寒東3条17-231-44";}i:76;a:8:{s:2:"id";i:77;s:14:"koban_fullname";s:27:"豊平警察署月寒交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-851-1026";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620020";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市豊平区月寒中央通7";}i:77;a:8:{s:2:"id";i:78;s:14:"koban_fullname";s:27:"豊平警察署福住交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-856-0110";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620042";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市豊平区福住2条5-4-6";}i:78;a:8:{s:2:"id";i:79;s:14:"koban_fullname";s:27:"豊平警察署西岡交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-853-3484";s:10:"group_code";i:11053;s:11:"postal_code";s:6:"620034";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市豊平区西岡4条9-1-16";}i:79;a:8:{s:2:"id";i:80;s:14:"koban_fullname";s:30:"豊平警察署中央通交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-882-7140";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40871";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市清田区平岡1条5-4-3";}i:80;a:8:{s:2:"id";i:81;s:14:"koban_fullname";s:30:"豊平警察署緑ケ丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-883-4600";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40805";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市清田区里塚緑ケ丘1-14-26";}i:81;a:8:{s:2:"id";i:82;s:14:"koban_fullname";s:33:"豊平警察署美しが丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-0110";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40813";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市清田区美しが丘3条4-1-33";}i:82;a:8:{s:2:"id";i:83;s:14:"koban_fullname";s:27:"豊平警察署北野交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-3583";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40864";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市清田区北野4条5-4-60";}i:83;a:8:{s:2:"id";i:84;s:14:"koban_fullname";s:27:"豊平警察署清田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-881-2151";s:10:"group_code";i:11100;s:11:"postal_code";s:5:"40841";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市清田区清田1条4-3-1";}i:84;a:8:{s:2:"id";i:85;s:14:"koban_fullname";s:36:"厚別警察署ひばりが丘交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-2840";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40052";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市厚別区厚別中央2条2-1-30";}i:85;a:8:{s:2:"id";i:86;s:14:"koban_fullname";s:27:"厚別警察署信濃交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-1527";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40055";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市厚別区厚別中央5条2-5-12";}i:86;a:8:{s:2:"id";i:87;s:14:"koban_fullname";s:33:"厚別警察署森林公園交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-894-5110";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40074";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市厚別区厚別北4条4-16";}i:87;a:8:{s:2:"id";i:88;s:14:"koban_fullname";s:30:"厚別警察署新札幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-891-0632";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40051";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市厚別区厚別中央1条5-2";}i:88;a:8:{s:2:"id";i:89;s:14:"koban_fullname";s:30:"厚別警察署上野幌交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-893-5633";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40031";s:4:"pref";s:9:"北海道";s:5:"addr3";s:37:"札幌市厚別区上野幌1条2-6-25";}i:89;a:8:{s:2:"id";i:90;s:14:"koban_fullname";s:33:"厚別警察署もみじ台交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-897-7567";s:10:"group_code";i:11088;s:11:"postal_code";s:5:"40013";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市厚別区もみじ台西4-2";}i:90;a:8:{s:2:"id";i:91;s:14:"koban_fullname";s:30:"厚別警察署北広島交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-372-3151";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611121";s:4:"pref";s:9:"北海道";s:5:"addr3";s:23:"北広島市中央1-2-1";}i:91;a:8:{s:2:"id";i:92;s:14:"koban_fullname";s:36:"厚別警察署北広島駅前交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-373-6495";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611132";s:4:"pref";s:9:"北海道";s:5:"addr3";s:29:"北広島市北進町1-2ｰ13";}i:92;a:8:{s:2:"id";i:93;s:14:"koban_fullname";s:27:"厚別警察署大曲交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-377-3047";s:10:"group_code";i:12343;s:11:"postal_code";s:6:"611271";s:4:"pref";s:9:"北海道";s:5:"addr3";s:31:"北広島市大曲中央２-4-2";}i:93;a:8:{s:2:"id";i:94;s:14:"koban_fullname";s:27:"手稲警察署手稲交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-681-2151";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60023";s:4:"pref";s:9:"北海道";s:5:"addr3";s:40:"札幌市手稲区手稲本町3条1-1-16";}i:94;a:8:{s:2:"id";i:95;s:14:"koban_fullname";s:27:"手稲警察署前田交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-1488";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60815";s:4:"pref";s:9:"北海道";s:5:"addr3";s:35:"札幌市手稲区前田5条15-8-13";}i:95;a:8:{s:2:"id";i:96;s:14:"koban_fullname";s:33:"手稲警察署手稲山口交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-3713";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60861";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市手稲区明日風1-1-16";}i:96;a:8:{s:2:"id";i:97;s:14:"koban_fullname";s:33:"手稲警察署西宮の沢交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-661-4411";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60004";s:4:"pref";s:9:"北海道";s:5:"addr3";s:41:"札幌市手稲区西宮の沢4条2-200-1";}i:97;a:8:{s:2:"id";i:98;s:14:"koban_fullname";s:27:"手稲警察署稲積交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-694-3471";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60805";s:4:"pref";s:9:"北海道";s:5:"addr3";s:36:"札幌市手稲区新発寒5条6-2-8";}i:98;a:8:{s:2:"id";i:99;s:14:"koban_fullname";s:27:"手稲警察署稲穂交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-682-1488";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60033";s:4:"pref";s:9:"北海道";s:5:"addr3";s:34:"札幌市手稲区稲穂3条7-6-10";}i:99;a:8:{s:2:"id";i:100;s:14:"koban_fullname";s:27:"手稲警察署星置交番";s:4:"type";s:6:"交番";s:12:"phone_number";s:12:"011-694-0110";s:10:"group_code";i:11096;s:11:"postal_code";s:5:"60851";s:4:"pref";s:9:"北海道";s:5:"addr3";s:33:"札幌市手稲区星置1条4-7-1";}}}
+</file>
+
+<file path="views/components/button.php">
+<?php
+
+/**
+ * @var string $type 'submit' | 'link' | 'button'
+ * @var string $variant 'primary' | 'secondary' | 'warning' | 'danger'
+ * @var string $text 表示文字
+ * @var string $href linkの場合の遷移先
+ * @var string $onclick JSイベント
+ * @var string $style 追加のインラインスタイル
+ */
+$variant = $variant ?? 'primary';
+$class = "btn btn-{$variant}";
+$customStyle = $style ?? '';
+?>
+
+<?php if (($type ?? 'submit') === 'link'): ?>
+    <a href="<?php echo h($href ?? '#'); ?>" class="<?php echo $class; ?>" style="<?php echo $customStyle; ?>">
+        [ <?php echo h($text); ?> ]
+    </a>
+<?php else: ?>
+    <button type="<?php echo h($type ?? 'submit'); ?>"
+        class="<?php echo $class; ?>"
+        onclick="<?php echo h($onclick ?? ''); ?>"
+        style="<?php echo $customStyle; ?>">
+        <?php echo h($text); ?>
+    </button>
+<?php endif; ?>
+</file>
+
 <file path=".gitignore">
 # データベースファイル（PostgreSQLへ移行済みのため不要）
 /SQL/opendata.sqlite
+/SQL/backup.sql
 /SQL/log_archives/
 
 # 環境変数（認証情報が含まれるため絶対に公開しない）
@@ -230,16 +302,6 @@ docker-compose up -d --build
         "vlucas/phpdotenv": "^5.6"
     }
 }
-</file>
-
-<file path="docker-compose.yml">
-services:
-  web:
-    build: .
-    ports:
-      - "8080:80"
-    volumes:
-      - .:/var/www/html
 </file>
 
 <file path="index.php">
@@ -1269,10 +1331,8 @@ if ($msgText === '') return;
 
 <file path="public/css/style.css">
 :root {
-    /* カラーパレット */
+    /* カラーパレット：元の色を正確に反映 */
     --cyber-green: #1eff1a;
-    --cyber-green-dim: rgba(30, 255, 26, 0.2);
-    --cyber-green-glow: rgba(30, 255, 26, 0.5);
     --cyber-bg: #010000;
     --cyber-box-bg: #1a1a1a;
     --cyber-red: #ff4444;
@@ -1281,39 +1341,19 @@ if ($msgText === '') return;
     --cyber-gray: #333;
     --cyber-text-dim: #888;
 
-    /* 共通設定 */
-    --cyber-border: 1px solid var(--cyber-gray);
+    /* テーブル専用：元の特徴的な色を維持 */
+    --cyber-table-border: #b0ffd4;
+
+    /* 装飾：控えめな設定 */
+    --cyber-border: 1px solid #333;
     --cyber-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
-    --cyber-glow-shadow: 0 0 10px var(--cyber-green-glow);
-    --transition-speed: 0.3s;
+    --transition-speed: 0.2s;
 }
 
-/* 変数を使用した既存セレクタの更新例 */
+/* 基本スタイル */
 body {
     background-color: var(--cyber-bg);
     color: var(--cyber-green);
-    transition: background-color var(--transition-speed);
-}
-
-.box {
-    background-color: var(--cyber-box-bg);
-    border: var(--cyber-border);
-    box-shadow: var(--cyber-shadow);
-}
-
-.btn-primary {
-    background-color: var(--cyber-green);
-    color: #000;
-    transition: box-shadow var(--transition-speed);
-}
-
-.btn-primary:hover {
-    box-shadow: var(--cyber-glow-shadow);
-}
-
-body {
-    background-color: #010000;
-    color: #1eff1a;
     font-family: sans-serif;
     text-align: center;
     margin: 0;
@@ -1321,19 +1361,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* メニュー内のリンク共通スタイル */
-.text-right a,
-.text-right button {
-    font-family: 'Courier New', monospace;
-    transition: opacity 0.2s;
-}
-
-.text-right a:hover,
-.text-right button:hover {
-    opacity: 0.7;
-    text-shadow: 0 0 5px currentColor;
 }
 
 h1,
@@ -1348,34 +1375,35 @@ h3 {
     margin: 0 auto;
 }
 
-/* フォームやメニューを囲むボックス */
+/* コンポーネント用ボックス */
 .box {
-    background-color: #1a1a1a;
+    background-color: var(--cyber-box-bg);
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    border: var(--cyber-border);
+    box-shadow: var(--cyber-shadow);
     text-align: left;
 }
 
-/* 入力フォームデザイン */
+/* 入力フォーム：元のグレー背景を維持 */
 input[type=text],
 input[type=password],
+input[type=number],
 input[type=tel],
 input[type=date],
 select {
-    background: #333;
+    background: var(--cyber-gray);
     color: #fff;
     border: 1px solid #555;
     padding: 6px;
     border-radius: 4px;
 }
 
-/* ボタンデザイン */
+/* 汎用ボタンコンポーネント対応 */
+.btn,
 input[type=submit],
-button,
-.btn {
+button {
     cursor: pointer;
     font-weight: bold;
     border: none;
@@ -1384,38 +1412,39 @@ button,
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
+    transition: opacity var(--transition-speed);
+}
+
+.btn:hover,
+input[type=submit]:hover {
+    opacity: 0.8;
+    /* 光らせず、透明度でホバーを表現 */
 }
 
 .btn-primary {
-    background-color: #1eff1a;
+    background-color: var(--cyber-green);
     color: #000;
 }
 
 .btn-warning {
-    background-color: #ffff00;
+    background-color: var(--cyber-yellow);
     color: #000;
 }
 
 .btn-danger {
-    background-color: #ff4444;
+    background-color: var(--cyber-red);
     color: #fff;
 }
 
 .btn-secondary {
-    background-color: #333;
+    background-color: var(--cyber-gray);
     color: #fff;
     border: 1px solid #555;
 }
 
-.btn-back {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 5px 10px;
-}
-
+/* リンク */
 a {
-    color: #888;
+    color: var(--cyber-text-dim);
     text-decoration: none;
 }
 
@@ -1423,11 +1452,11 @@ a:hover {
     color: #fff;
 }
 
-/* テーブルデザイン（元ファイルのデザインを復元） */
+/* テーブル：元のボーダー色とデザインを完全復元 */
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #b0ffd4;
+    border: 1px solid var(--cyber-table-border);
     margin-top: 10px;
 }
 
@@ -1435,16 +1464,15 @@ th {
     background-color: #1a1a1aff;
     color: #fff;
     padding: 8px;
-    border: 1px solid #b0ffd4;
+    border: 1px solid var(--cyber-table-border);
     text-align: center;
 }
 
 td {
-    border: 1px solid #b0ffd4;
-    /* 元のボーダー色 */
+    border: 1px solid var(--cyber-table-border);
     padding: 8px;
-    color: #1eff1a;
-    background-color: #010000;
+    color: var(--cyber-green);
+    background-color: var(--cyber-bg);
 }
 
 tr:hover td {
@@ -1460,26 +1488,53 @@ tr:hover td {
 }
 
 .pagination .current {
-    background: #1eff1a;
+    background: var(--cyber-green);
     color: #000;
     font-weight: bold;
 }
 
 .pagination .other {
-    background: #333;
+    background: var(--cyber-gray);
     color: #fff;
 }
 
-/* レイアウト調整用 */
+/* 通知バッジ */
+.notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 5px red;
+}
+
+/* レイアウト・ユーティリティ */
+.u-flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info-bar {
+    border-bottom: 1px solid var(--cyber-gray);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .flex-row {
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-}
-
-.right-align {
-    text-align: right;
 }
 </file>
 
@@ -1552,8 +1607,8 @@ FROM php:8.2-apache
 
 # 2. 必要なライブラリとPostgreSQL/SQLite拡張をインストール
 RUN apt-get update && apt-get install -y \
-    unzip git libsqlite3-dev libpq-dev \
-    && docker-php-ext-install pdo_sqlite pdo_pgsql
+    unzip git libsqlite3-dev libpq-dev postgresql-client\
+    && docker-php-ext-install pdo_sqlite pdo_pgsql 
 
 # 3. Apacheの設定変更 (403対策の肝)
 # ApacheのDocumentRootを /var/www/html に設定し、.htaccessを有効化します
@@ -1584,6 +1639,38 @@ RUN composer install --no-dev --optimize-autoloader
 
 # 10. Apacheの起動
 CMD ["apache2-foreground"]
+</file>
+
+<file path="src/Utils/View.php">
+<?php
+
+namespace App\Utils;
+
+class View
+{
+    public static function render($viewName, $data = [])
+    {
+        extract($data);
+        $filePath = __DIR__ . '/../../views/' . $viewName . '.php';
+        if (file_exists($filePath)) {
+            require $filePath;
+        } else {
+            echo "View file not found: " . htmlspecialchars($viewName);
+        }
+    }
+
+    public static function component($componentName, $props = [])
+    {
+        // 渡された変数を展開。存在しない変数は null として扱う
+        extract($props, EXTR_SKIP);
+
+        $filePath = __DIR__ . '/../../views/components/' . $componentName . '.php';
+
+        if (file_exists($filePath)) {
+            include $filePath;
+        }
+    }
+}
 </file>
 
 <file path="src/Models/AdminUser.php">
@@ -1724,38 +1811,6 @@ class AdminUser
         }
         $stmt = $db->prepare($sql);
         return $stmt->execute([$login_id]);
-    }
-}
-</file>
-
-<file path="src/Utils/View.php">
-<?php
-
-namespace App\Utils;
-
-class View
-{
-    public static function render($viewName, $data = [])
-    {
-        extract($data);
-        $filePath = __DIR__ . '/../../views/' . $viewName . '.php';
-        if (file_exists($filePath)) {
-            require $filePath;
-        } else {
-            echo "View file not found: " . htmlspecialchars($viewName);
-        }
-    }
-
-    public static function component($componentName, $props = [])
-    {
-        // 渡された変数を展開。存在しない変数は null として扱う
-        extract($props, EXTR_SKIP);
-
-        $filePath = __DIR__ . '/../../views/components/' . $componentName . '.php';
-
-        if (file_exists($filePath)) {
-            include $filePath;
-        }
     }
 }
 </file>
@@ -2034,7 +2089,6 @@ class AuthController
                     'admin' => $user['perm_admin'],
                     'log'   => $user['perm_log'] ?? 0
                 ]; // DBに保存されている申請ステータスをセッションに同期
-                $_SESSION['request_status'] = $user['request_status'];
                 $adminModel->resetFailureCount($login_id);
                 logAction($login_id, 'ログイン', '成功');
                 header("Location: /");
@@ -2788,134 +2842,6 @@ class KobanController
 }
 </file>
 
-<file path="public/index.php">
-<?php
-// 1. オートロードの読み込み
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use App\Controllers\KobanController;
-use App\Controllers\AuthController;
-use App\Controllers\AdminController;
-
-// 2. 環境変数の読み込み (.env)
-try {
-    // プロジェクトルート(一つ上の階層)の .env を探す
-    $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-} catch (\Exception $e) {
-    // .envがなくても動作を止めない（本番環境の環境変数を使う場合など）
-}
-
-// 3. セッション開始 (全ページ共通)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
-sendSecurityHeaders();
-
-// 4. ルーティング処理 (修正版)
-$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
-// ▼▼▼ 追加：HEADリクエストをGETとして処理（404対策） ▼▼▼
-if ($method === 'HEAD' && ($requestPath === '/' || $requestPath === '/index.php')) {
-    $method = 'GET';
-}
-// スクリプトが置かれているディレクトリを取得 (例: /public)
-$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
-
-// リクエストパスの先頭にディレクトリパスが含まれていれば削除する
-// これにより /public/koban/edit へのアクセスを /koban/edit として扱えます
-if ($scriptDir !== '/' && strpos($requestPath, $scriptDir) === 0) {
-    $requestPath = substr($requestPath, strlen($scriptDir));
-}
-
-// さらに /index.php が付いていたら削除する
-$path = str_replace('/index.php', '', $requestPath);
-
-// 空文字になった場合はルート(/)とみなす
-if ($path === '') {
-    $path = '/';
-}
-
-// 確認用デバッグ (解決したら消してください)
-// echo "Resolved Path: " . htmlspecialchars($path);
-
-// ルート定義
-$routes = [
-    'GET' => [
-        '/'             => [KobanController::class, 'index'],
-        '/opendata'     => [KobanController::class, 'index'],
-        '/koban/create' => [KobanController::class, 'create'],
-        '/koban/edit'   => [KobanController::class, 'edit'],
-        '/admin/login'  => [AuthController::class, 'showLoginForm'],
-        '/koban/export' => [KobanController::class, 'export'],
-        '/auth/login'   => [AuthController::class, 'showLoginForm'], // 追加
-        '/register' => [App\Controllers\AuthController::class, 'showRegisterForm'],
-
-        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
-        '/admin/logs'            => [AdminController::class, 'logs'],            // ログ一覧
-        '/admin/api/logs'        => [AdminController::class, 'apiLogs'],         // ログAPI (JS用)
-        '/admin/password/change' => [AdminController::class, 'changePassword'],  // PW変更画面
-        '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
-        '/admin/users/export' => [AdminController::class, 'exportAdmins'],
-        '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
-        '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
-        '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
-        '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
-    ],
-    'POST' => [
-        '/koban/store'  => [KobanController::class, 'store'],
-        '/koban/delete' => [KobanController::class, 'delete'],
-        '/auth/login'   => [AuthController::class, 'login'],
-        '/auth/logout'  => [AuthController::class, 'logout'],
-        '/auth/request_permission' => [AuthController::class, 'submitRequest'],
-        '/koban/import' => [KobanController::class, 'importCsv'],
-        '/register' => [AuthController::class, 'register'],
-
-
-        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
-        '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行
-        '/admin/users/store'     => [AdminController::class, 'storeAdmin'],      // 管理者登録・削除
-        '/admin/password/reset'  => [AdminController::class, 'resetPasswordExec'], // PW強制リセット実行
-        '/admin/users/register'  => [AdminController::class, 'registerUser'],    // 新規登録実行
-        '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'], // 権限更新
-        '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
-        '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
-    ]
-];
-
-// 5. ディスパッチ (コントローラー呼び出し)
-if (isset($routes[$method][$path])) {
-    // 対応するコントローラーとメソッドを取り出す
-    [$controllerClass, $action] = $routes[$method][$path];
-
-    // クラスが存在するかチェック
-    if (class_exists($controllerClass)) {
-        $controller = new $controllerClass();
-        if (method_exists($controller, $action)) {
-            // メソッド実行！
-            $controller->$action();
-        } else {
-            http_response_code(500);
-            echo "Error: Method '$action' not found in $controllerClass";
-        }
-    } else {
-        http_response_code(500);
-        echo "Error: Class '$controllerClass' not found";
-    }
-} else {
-    // 定義されていないURLの場合
-    http_response_code(404);
-    echo "<h1>404 Not Found</h1>";
-    echo "<p>ページが見つかりません。</p>";
-    echo "<a href='/'>トップページへ戻る</a>";
-}
-</file>
-
 <file path="src/Utils/functions.php">
 <?php
 // 権限管理用の定数定義
@@ -3134,6 +3060,134 @@ function buildSearchQuery($getParams)
         'params' => $params,
         'log_detail' => empty($log_parts) ? "全データ" : implode(' ', $log_parts)
     ];
+}
+</file>
+
+<file path="public/index.php">
+<?php
+// 1. オートロードの読み込み
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Controllers\KobanController;
+use App\Controllers\AuthController;
+use App\Controllers\AdminController;
+
+// 2. 環境変数の読み込み (.env)
+try {
+    // プロジェクトルート(一つ上の階層)の .env を探す
+    $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+} catch (\Exception $e) {
+    // .envがなくても動作を止めない（本番環境の環境変数を使う場合など）
+}
+
+// 3. セッション開始 (全ページ共通)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+sendSecurityHeaders();
+
+// 4. ルーティング処理 (修正版)
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
+// ▼▼▼ 追加：HEADリクエストをGETとして処理（404対策） ▼▼▼
+if ($method === 'HEAD' && ($requestPath === '/' || $requestPath === '/index.php')) {
+    $method = 'GET';
+}
+// スクリプトが置かれているディレクトリを取得 (例: /public)
+$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+
+// リクエストパスの先頭にディレクトリパスが含まれていれば削除する
+// これにより /public/koban/edit へのアクセスを /koban/edit として扱えます
+if ($scriptDir !== '/' && strpos($requestPath, $scriptDir) === 0) {
+    $requestPath = substr($requestPath, strlen($scriptDir));
+}
+
+// さらに /index.php が付いていたら削除する
+$path = str_replace('/index.php', '', $requestPath);
+
+// 空文字になった場合はルート(/)とみなす
+if ($path === '') {
+    $path = '/';
+}
+
+// 確認用デバッグ (解決したら消してください)
+// echo "Resolved Path: " . htmlspecialchars($path);
+
+// ルート定義
+$routes = [
+    'GET' => [
+        '/'             => [KobanController::class, 'index'],
+        '/opendata'     => [KobanController::class, 'index'],
+        '/koban/create' => [KobanController::class, 'create'],
+        '/koban/edit'   => [KobanController::class, 'edit'],
+        '/admin/login'  => [AuthController::class, 'showLoginForm'],
+        '/koban/export' => [KobanController::class, 'export'],
+        '/auth/login'   => [AuthController::class, 'showLoginForm'], // 追加
+        '/register' => [App\Controllers\AuthController::class, 'showRegisterForm'],
+
+        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
+        '/admin/logs'            => [AdminController::class, 'logs'],            // ログ一覧
+        '/admin/api/logs'        => [AdminController::class, 'apiLogs'],         // ログAPI (JS用)
+        '/admin/password/change' => [AdminController::class, 'changePassword'],  // PW変更画面
+        '/admin/password/reset'  => [AdminController::class, 'resetPasswordForm'], // PW強制リセット
+        '/admin/users/export' => [AdminController::class, 'exportAdmins'],
+        '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
+        '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
+        '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
+    ],
+    'POST' => [
+        '/koban/store'  => [KobanController::class, 'store'],
+        '/koban/delete' => [KobanController::class, 'delete'],
+        '/auth/login'   => [AuthController::class, 'login'],
+        '/auth/logout'  => [AuthController::class, 'logout'],
+        '/auth/request_permission' => [AuthController::class, 'submitRequest'],
+        '/koban/import' => [KobanController::class, 'importCsv'],
+        '/register' => [AuthController::class, 'register'],
+
+
+        // ▼▼▼ 管理者用ルート (追加) ▼▼▼
+        '/admin/password/update' => [AdminController::class, 'updatePassword'],  // PW変更実行
+        '/admin/users/store'     => [AdminController::class, 'storeAdmin'],      // 管理者登録・削除
+        '/admin/password/reset'  => [AdminController::class, 'resetPasswordExec'], // PW強制リセット実行
+        '/admin/users/register'  => [AdminController::class, 'registerUser'],    // 新規登録実行
+        '/admin/users/update_perms' => [AdminController::class, 'updateAdminPerms'], // 権限更新
+        '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
+        '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
+        '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
+    ]
+];
+
+// 5. ディスパッチ (コントローラー呼び出し)
+if (isset($routes[$method][$path])) {
+    // 対応するコントローラーとメソッドを取り出す
+    [$controllerClass, $action] = $routes[$method][$path];
+
+    // クラスが存在するかチェック
+    if (class_exists($controllerClass)) {
+        $controller = new $controllerClass();
+        if (method_exists($controller, $action)) {
+            // メソッド実行！
+            $controller->$action();
+        } else {
+            http_response_code(500);
+            echo "Error: Method '$action' not found in $controllerClass";
+        }
+    } else {
+        http_response_code(500);
+        echo "Error: Class '$controllerClass' not found";
+    }
+} else {
+    // 定義されていないURLの場合
+    http_response_code(404);
+    echo "<h1>404 Not Found</h1>";
+    echo "<p>ページが見つかりません。</p>";
+    echo "<a href='/'>トップページへ戻る</a>";
 }
 </file>
 
@@ -3719,10 +3773,10 @@ require __DIR__ . '/layouts/header.php';
                 <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
             </div>
         <?php else: ?>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
+            <div class="u-flex-column" style="gap: 15px;">
+                <div class="user-info-bar u-flex-between">
                     <div style="text-align: left;">
-                        <span style="color: #1eff1a; font-family: monospace; font-size: 1.1em;">
+                        <span style="color: var(--cyber-green); font-family: monospace; font-size: 1.1em;">
                             SYSTEM_USER: <strong style="color: #fff;"><?php echo h($_SESSION['login_id']); ?></strong>
                         </span>
                     </div>
@@ -3734,34 +3788,55 @@ require __DIR__ . '/layouts/header.php';
 
                         <form action="/auth/logout" method="post" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
+                            <?php \App\Utils\View::component('button', [
+                                'type' => 'submit',
+                                'variant' => 'secondary',
+                                'text' => 'LOGOUT',
+                                'style' => 'background:none; border:none; color:var(--cyber-text-dim); text-decoration:underline; padding:0;'
+                            ]); ?>
                         </form>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="u-flex-between">
                     <?php if (hasPermission(PERM_DATA)): ?>
-                        <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px;">＋ 新規データ追加</a>
+                        <?php \App\Utils\View::component('button', [
+                            'type' => 'link',
+                            'variant' => 'primary',
+                            'text' => '＋ 新規データ追加',
+                            'href' => '/koban/create',
+                            'style' => 'padding: 10px 25px;'
+                        ]); ?>
                     <?php else: ?>
-                        <div style="color: #888; font-size: 0.9em;">
+                        <div style="color: var(--cyber-text-dim); font-size: 0.9em;">
                             <span style="color: var(--cyber-yellow);">[!]</span> 閲覧専用モード
                         </div>
                     <?php endif; ?>
 
                     <div style="display: flex; gap: 10px;">
                         <?php if (hasPermission(PERM_LOG)): ?>
-                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff;">[ログ監査]</a>
+                            <?php \App\Utils\View::component('button', [
+                                'type' => 'link',
+                                'variant' => 'secondary',
+                                'text' => 'ログ監査',
+                                'href' => '/admin/logs',
+                                'style' => 'color: var(--cyber-blue); border-color: var(--cyber-blue);'
+                            ]); ?>
                         <?php endif; ?>
 
                         <?php if (hasPermission(PERM_ADMIN)): ?>
-                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00; position: relative;">
-                                [管理者管理]
+                            <div class="badge-wrapper">
+                                <?php \App\Utils\View::component('button', [
+                                    'type' => 'link',
+                                    'variant' => 'secondary',
+                                    'text' => '管理者管理',
+                                    'href' => '/admin/users',
+                                    'style' => 'color: var(--cyber-yellow); border-color: var(--cyber-yellow);'
+                                ]); ?>
                                 <?php if (($pendingCount ?? 0) > 0): ?>
-                                    <span style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; box-shadow: 0 0 5px red;">
-                                        !
-                                    </span>
+                                    <span class="notification-badge">!</span>
                                 <?php endif; ?>
-                            </a>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>

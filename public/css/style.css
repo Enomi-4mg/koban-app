@@ -1,8 +1,6 @@
 :root {
-    /* カラーパレット */
+    /* カラーパレット：元の色を正確に反映 */
     --cyber-green: #1eff1a;
-    --cyber-green-dim: rgba(30, 255, 26, 0.2);
-    --cyber-green-glow: rgba(30, 255, 26, 0.5);
     --cyber-bg: #010000;
     --cyber-box-bg: #1a1a1a;
     --cyber-red: #ff4444;
@@ -11,39 +9,19 @@
     --cyber-gray: #333;
     --cyber-text-dim: #888;
 
-    /* 共通設定 */
-    --cyber-border: 1px solid var(--cyber-gray);
+    /* テーブル専用：元の特徴的な色を維持 */
+    --cyber-table-border: #b0ffd4;
+
+    /* 装飾：控えめな設定 */
+    --cyber-border: 1px solid #333;
     --cyber-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
-    --cyber-glow-shadow: 0 0 10px var(--cyber-green-glow);
-    --transition-speed: 0.3s;
+    --transition-speed: 0.2s;
 }
 
-/* 変数を使用した既存セレクタの更新例 */
+/* 基本スタイル */
 body {
     background-color: var(--cyber-bg);
     color: var(--cyber-green);
-    transition: background-color var(--transition-speed);
-}
-
-.box {
-    background-color: var(--cyber-box-bg);
-    border: var(--cyber-border);
-    box-shadow: var(--cyber-shadow);
-}
-
-.btn-primary {
-    background-color: var(--cyber-green);
-    color: #000;
-    transition: box-shadow var(--transition-speed);
-}
-
-.btn-primary:hover {
-    box-shadow: var(--cyber-glow-shadow);
-}
-
-body {
-    background-color: #010000;
-    color: #1eff1a;
     font-family: sans-serif;
     text-align: center;
     margin: 0;
@@ -51,19 +29,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* メニュー内のリンク共通スタイル */
-.text-right a,
-.text-right button {
-    font-family: 'Courier New', monospace;
-    transition: opacity 0.2s;
-}
-
-.text-right a:hover,
-.text-right button:hover {
-    opacity: 0.7;
-    text-shadow: 0 0 5px currentColor;
 }
 
 h1,
@@ -78,34 +43,35 @@ h3 {
     margin: 0 auto;
 }
 
-/* フォームやメニューを囲むボックス */
+/* コンポーネント用ボックス */
 .box {
-    background-color: #1a1a1a;
+    background-color: var(--cyber-box-bg);
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0px 0px 20px rgba(40, 40, 40, 0.4);
+    border: var(--cyber-border);
+    box-shadow: var(--cyber-shadow);
     text-align: left;
 }
 
-/* 入力フォームデザイン */
+/* 入力フォーム：元のグレー背景を維持 */
 input[type=text],
 input[type=password],
+input[type=number],
 input[type=tel],
 input[type=date],
 select {
-    background: #333;
+    background: var(--cyber-gray);
     color: #fff;
     border: 1px solid #555;
     padding: 6px;
     border-radius: 4px;
 }
 
-/* ボタンデザイン */
+/* 汎用ボタンコンポーネント対応 */
+.btn,
 input[type=submit],
-button,
-.btn {
+button {
     cursor: pointer;
     font-weight: bold;
     border: none;
@@ -114,38 +80,39 @@ button,
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
+    transition: opacity var(--transition-speed);
+}
+
+.btn:hover,
+input[type=submit]:hover {
+    opacity: 0.8;
+    /* 光らせず、透明度でホバーを表現 */
 }
 
 .btn-primary {
-    background-color: #1eff1a;
+    background-color: var(--cyber-green);
     color: #000;
 }
 
 .btn-warning {
-    background-color: #ffff00;
+    background-color: var(--cyber-yellow);
     color: #000;
 }
 
 .btn-danger {
-    background-color: #ff4444;
+    background-color: var(--cyber-red);
     color: #fff;
 }
 
 .btn-secondary {
-    background-color: #333;
+    background-color: var(--cyber-gray);
     color: #fff;
     border: 1px solid #555;
 }
 
-.btn-back {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 5px 10px;
-}
-
+/* リンク */
 a {
-    color: #888;
+    color: var(--cyber-text-dim);
     text-decoration: none;
 }
 
@@ -153,11 +120,11 @@ a:hover {
     color: #fff;
 }
 
-/* テーブルデザイン（元ファイルのデザインを復元） */
+/* テーブル：元のボーダー色とデザインを完全復元 */
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #b0ffd4;
+    border: 1px solid var(--cyber-table-border);
     margin-top: 10px;
 }
 
@@ -165,16 +132,15 @@ th {
     background-color: #1a1a1aff;
     color: #fff;
     padding: 8px;
-    border: 1px solid #b0ffd4;
+    border: 1px solid var(--cyber-table-border);
     text-align: center;
 }
 
 td {
-    border: 1px solid #b0ffd4;
-    /* 元のボーダー色 */
+    border: 1px solid var(--cyber-table-border);
     padding: 8px;
-    color: #1eff1a;
-    background-color: #010000;
+    color: var(--cyber-green);
+    background-color: var(--cyber-bg);
 }
 
 tr:hover td {
@@ -190,24 +156,51 @@ tr:hover td {
 }
 
 .pagination .current {
-    background: #1eff1a;
+    background: var(--cyber-green);
     color: #000;
     font-weight: bold;
 }
 
 .pagination .other {
-    background: #333;
+    background: var(--cyber-gray);
     color: #fff;
 }
 
-/* レイアウト調整用 */
+/* 通知バッジ */
+.notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 5px red;
+}
+
+/* レイアウト・ユーティリティ */
+.u-flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info-bar {
+    border-bottom: 1px solid var(--cyber-gray);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .flex-row {
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-}
-
-.right-align {
-    text-align: right;
 }

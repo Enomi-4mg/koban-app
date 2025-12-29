@@ -15,10 +15,10 @@ require __DIR__ . '/layouts/header.php';
                 <a href="/register" class="btn btn-primary" style="min-width: 100px; text-align: center;">サインアップ</a>
             </div>
         <?php else: ?>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
+            <div class="u-flex-column" style="gap: 15px;">
+                <div class="user-info-bar u-flex-between">
                     <div style="text-align: left;">
-                        <span style="color: #1eff1a; font-family: monospace; font-size: 1.1em;">
+                        <span style="color: var(--cyber-green); font-family: monospace; font-size: 1.1em;">
                             SYSTEM_USER: <strong style="color: #fff;"><?php echo h($_SESSION['login_id']); ?></strong>
                         </span>
                     </div>
@@ -30,34 +30,55 @@ require __DIR__ . '/layouts/header.php';
 
                         <form action="/auth/logout" method="post" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
-                            <button type="submit" style="background:none; border:none; color:#888; text-decoration:underline; cursor:pointer;">LOGOUT</button>
+                            <?php \App\Utils\View::component('button', [
+                                'type' => 'submit',
+                                'variant' => 'secondary',
+                                'text' => 'LOGOUT',
+                                'style' => 'background:none; border:none; color:var(--cyber-text-dim); text-decoration:underline; padding:0;'
+                            ]); ?>
                         </form>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="u-flex-between">
                     <?php if (hasPermission(PERM_DATA)): ?>
-                        <a href="/koban/create" class="btn btn-primary" style="padding: 10px 25px;">＋ 新規データ追加</a>
+                        <?php \App\Utils\View::component('button', [
+                            'type' => 'link',
+                            'variant' => 'primary',
+                            'text' => '＋ 新規データ追加',
+                            'href' => '/koban/create',
+                            'style' => 'padding: 10px 25px;'
+                        ]); ?>
                     <?php else: ?>
-                        <div style="color: #888; font-size: 0.9em;">
+                        <div style="color: var(--cyber-text-dim); font-size: 0.9em;">
                             <span style="color: var(--cyber-yellow);">[!]</span> 閲覧専用モード
                         </div>
                     <?php endif; ?>
 
                     <div style="display: flex; gap: 10px;">
                         <?php if (hasPermission(PERM_LOG)): ?>
-                            <a href="/admin/logs" class="btn btn-secondary" style="color: #00ccff; border-color: #00ccff;">[ログ監査]</a>
+                            <?php \App\Utils\View::component('button', [
+                                'type' => 'link',
+                                'variant' => 'secondary',
+                                'text' => 'ログ監査',
+                                'href' => '/admin/logs',
+                                'style' => 'color: var(--cyber-blue); border-color: var(--cyber-blue);'
+                            ]); ?>
                         <?php endif; ?>
 
                         <?php if (hasPermission(PERM_ADMIN)): ?>
-                            <a href="/admin/users" class="btn btn-secondary" style="color: #ffff00; border-color: #ffff00; position: relative;">
-                                [管理者管理]
+                            <div class="badge-wrapper">
+                                <?php \App\Utils\View::component('button', [
+                                    'type' => 'link',
+                                    'variant' => 'secondary',
+                                    'text' => '管理者管理',
+                                    'href' => '/admin/users',
+                                    'style' => 'color: var(--cyber-yellow); border-color: var(--cyber-yellow);'
+                                ]); ?>
                                 <?php if (($pendingCount ?? 0) > 0): ?>
-                                    <span style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; box-shadow: 0 0 5px red;">
-                                        !
-                                    </span>
+                                    <span class="notification-badge">!</span>
                                 <?php endif; ?>
-                            </a>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>

@@ -3,8 +3,8 @@ FROM php:8.2-apache
 
 # 2. 必要なライブラリとPostgreSQL/SQLite拡張をインストール
 RUN apt-get update && apt-get install -y \
-    unzip git libsqlite3-dev libpq-dev \
-    && docker-php-ext-install pdo_sqlite pdo_pgsql
+    unzip git libsqlite3-dev libpq-dev postgresql-client\
+    && docker-php-ext-install pdo_sqlite pdo_pgsql 
 
 # 3. Apacheの設定変更 (403対策の肝)
 # ApacheのDocumentRootを /var/www/html に設定し、.htaccessを有効化します
