@@ -74,6 +74,7 @@ $routes = [
         '/admin/users'          => [AdminController::class, 'admins'],           // 一覧
         '/admin/users/create'   => [AdminController::class, 'showRegisterForm'], // 登録画面
         '/admin/users/edit'     => [AdminController::class, 'editAdmin'],       // 詳細・編集画面
+        '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
     ],
     'POST' => [
         '/koban/store'  => [KobanController::class, 'store'],
