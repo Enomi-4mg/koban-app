@@ -83,9 +83,10 @@ class Koban
     {
         Cache::clearByTag('koban_list');
         $db = Database::connect();
-        $sql = "INSERT INTO koban (koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         return $stmt->execute([
+            $data['id'],
             $data['koban_fullname'],
             $data['type'],
             $data['phone_number'],
@@ -126,12 +127,12 @@ class Koban
 
             // ★修正後 (PostgreSQL / SQLite 両対応の書き方)
             // idが重複した際に更新（UPSERT）する構文に変更します
-            $sql = "INSERT INTO koban (id, pref, type, koban_fullname, phone_number, postal_code, group_code, addr3) 
+            $sql = "INSERT INTO koban (id, koban_fullname, type, phone_number, group_code, postal_code, pref, addr3) 
                 VALUES (?,?,?,?,?,?,?,?) 
                 ON CONFLICT (id) DO UPDATE SET 
-                pref=EXCLUDED.pref, type=EXCLUDED.type, koban_fullname=EXCLUDED.koban_fullname, 
-                phone_number=EXCLUDED.phone_number, postal_code=EXCLUDED.postal_code, 
-                group_code=EXCLUDED.group_code, addr3=EXCLUDED.addr3";
+                koban_fullname=EXCLUDED.koban_fullname, type=EXCLUDED.type, phone_number=EXCLUDED.phone_number,
+                group_code=EXCLUDED.group_code, postal_code=EXCLUDED.postal_code, 
+                pref=EXCLUDED.pref, addr3=EXCLUDED.addr3";
 
             $stmt = $db->prepare($sql);
             foreach ($rows as $row) {
@@ -152,7 +153,16 @@ class Koban
                     }
                 }
 
-                $stmt->execute($params);
+                $stmt->execute([
+                    $row[0], // id
+                    $row[1], // koban_fullname (koban_ful)
+                    $row[2], // type
+                    $row[3], // phone_number (phone_nu)
+                    $row[4], // group_code (group_coc)
+                    $row[5], // postal_code (postal_co)
+                    $row[6], // pref
+                    $row[7]  // addr3
+                ]);
             }
 
             Cache::clearByTag('koban_list');

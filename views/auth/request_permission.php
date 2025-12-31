@@ -54,14 +54,6 @@
                         ● データ管理権限 <?php if (!empty($myPerms['data'])) echo '<small style="color:#666;">(取得済み)</small>'; ?>
                     </span>
                 </label>
-
-                <label class="cyber-checkbox-label">
-                    <input type="checkbox" name="req_admin" value="1" <?php if (!empty($myPerms['admin'])) echo 'disabled'; ?>>
-                    <span class="cyber-panel">
-                        ● 管理者管理権限 <?php if (!empty($myPerms['admin'])) echo '<small style="color:#666;">(取得済み)</small>'; ?>
-                    </span>
-                </label>
-
                 <label class="cyber-checkbox-label">
                     <input type="checkbox" name="req_log" value="1" <?php if (!empty($myPerms['log'])) echo 'disabled'; ?>>
                     <span class="cyber-panel">

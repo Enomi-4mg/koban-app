@@ -261,3 +261,13 @@ function buildSearchQuery($getParams)
         'log_detail' => empty($log_parts) ? "全データ" : implode(' ', $log_parts)
     ];
 }
+
+/**
+ * ユーザーIDをハッシュ化して難読化する (サイバーパンクな匿名ID生成)
+ *
+ */
+function maskUserId($id) {
+    if ($id === 'system_monitor' || $id === 'guest') return $id;
+    // SHA256ハッシュの先頭8文字を抽出。同一IDなら常に同じハッシュになる
+    return 'OP_' . substr(hash('sha256', $id), 0, 8);
+}

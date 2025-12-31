@@ -94,6 +94,54 @@ class AdminUser
         return $stmt->fetchColumn() > 0;
     }
 
+    public function bulkInsert($rows)
+    {
+        $db = Database::connect();
+        try {
+            $db->beginTransaction();
+
+            // login_id が重複した際に情報を更新する UPSERT 構文
+            // SQLite と PostgreSQL 両方で動作するよう考慮
+            $sql = "INSERT INTO admin_users (
+                login_id, password_hash, role, 
+                perm_data, perm_admin, perm_log, 
+                failure_count, locked_until
+                ) VALUES (?,?,?,?,?,?,?,?) 
+                ON CONFLICT (login_id) DO UPDATE SET 
+                password_hash=EXCLUDED.password_hash,
+                role=EXCLUDED.role,
+                perm_data=EXCLUDED.perm_data,
+                perm_admin=EXCLUDED.perm_admin,
+                perm_log=EXCLUDED.perm_log,
+                failure_count=EXCLUDED.failure_count,
+                locked_until=EXCLUDED.locked_until";
+
+            $stmt = $db->prepare($sql);
+            foreach ($rows as $row) {
+                // ヘッダー行や空行のスキップ
+                if (empty($row[0]) || $row[0] === 'login_id') continue;
+
+                // CSVの列：login_id, password_hash, role, failure_count, locked_until, perm_data, perm_admin, perm_log
+                // 必要に応じてデータのクレンジングを行う
+                $stmt->execute([
+                    $row[0], // login_id
+                    $row[1], // password_hash
+                    (int)($row[2] ?? 1), // role
+                    (int)($row[3] ?? 0), // perm_data (画像4列目)
+                    (int)($row[4] ?? 0), // perm_admin (画像5列目)
+                    (int)($row[5] ?? 0), // perm_log (画像6列目)
+                    (int)($row[6] ?? 0), // failure_count (画像7列目)
+                    (!empty($row[7])) ? $row[7] : null // locked_until (画像8列目)
+                ]);
+            }
+            $db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $db->rollBack();
+            throw $e;
+        }
+    }
+
     /**
      * 特定の管理者の権限フラグのみを更新する
      */

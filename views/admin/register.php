@@ -86,6 +86,26 @@
         凡例: <span style="color: #1eff1a;">●</span>データ管理 / <span style="color: #00ccff;">●</span>管理者管理 / <span style="color: #ff00ff;">●</span>ログ閲覧
     </p>
 
+    <?php if (isCurrentSuperAdmin()): ?>
+        <div class="box" style="margin-top: 30px; border: 1px dashed var(--cyber-yellow);">
+            <h3 style="margin-top: 0; color: var(--cyber-yellow);">[ 🛠️ 管理者一括同期 (CSV) ]</h3>
+            <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
+                ※既存のIDは上書き更新（UPSERT）されます。パスワードはハッシュ化された状態で入力してください。
+            </p>
+
+            <form method="post" action="/admin/users/import" enctype="multipart/form-data" style="display: flex; gap: 15px; align-items: center;">
+                <input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>">
+                <input type="file" name="admin_csv" accept=".csv" required style="color: #fff; font-size: 0.9em;">
+
+                <?php \App\Utils\View::component('button', [
+                    'type'    => 'submit',
+                    'variant' => 'warning',
+                    'text'    => '一括インポート実行'
+                ]); ?>
+            </form>
+        </div>
+    <?php endif; ?>
+
     <div style="margin-top: 20px;">
         <?php \App\Utils\View::component('button', [
             'type'    => 'link',

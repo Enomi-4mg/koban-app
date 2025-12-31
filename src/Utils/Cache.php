@@ -36,6 +36,7 @@ class Cache
      */
     public static function set($key, $content, $tag = 'default', $ttl = null)
     {
+        return;
         if (!is_dir(self::$cacheDir)) mkdir(self::$cacheDir, 0755, true);
 
         $ttl = $ttl ?? self::$defaultTtl;

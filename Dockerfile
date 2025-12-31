@@ -25,13 +25,18 @@ WORKDIR /var/www/html
 COPY . .
 
 # 8. 権限の設定
-# キャッシュディレクトリを作成し、所有者を www-data に変更
-RUN mkdir -p /var/www/html/storage/cache \
-    && chown -R www-data:www-data /var/www/html/storage \
-    && chmod -R 775 /var/www/html/storage
+# storage と SQL フォルダを作成し、所有者と権限をセットします
+RUN mkdir -p /var/www/html/storage/cache /var/www/html/SQL \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/SQL \
+    && chmod -R 775 /var/www/html/storage /var/www/html/SQL \
+    && chmod -R 777 storage/ SQL/
 
 # 9. 依存関係のインストール
 RUN composer install --no-dev --optimize-autoloader
 
 # 10. Apacheの起動
 CMD ["apache2-foreground"]
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]

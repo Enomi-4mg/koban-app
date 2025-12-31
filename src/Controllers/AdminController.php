@@ -35,10 +35,19 @@ class AdminController
             $this->downloadLogsCsv($logModel);
             return;
         }
-
         // 画面表示用データ
         $types = $logModel->getActionTypes();
         $logs = $logModel->search($_GET, 500);
+
+
+        $shouldMask = !hasPermission(PERM_ADMIN);
+        foreach ($logs as &$log) {
+            if ($shouldMask) {
+                $log['user_id'] = maskUserId($log['user_id']);
+            }
+        }
+        unset($log);
+
         $latest_id = count($logs) > 0 ? $logs[0]['id'] : 0;
 
         return View::render('admin/log_list', [
@@ -76,6 +85,45 @@ class AdminController
         fclose($output);
         exit;
     }
+    
+    public function importAdmins()
+    {
+        // 最高管理者のみに制限
+        if (!isCurrentSuperAdmin()) {
+            $_SESSION['message'] = "SECURITY_ERROR: 最高管理者権限が必要です。";
+            logAction($_SESSION['login_id'], "不正アクセス拒否", "管理者CSVインポートの試行");
+            header("Location: /admin/users");
+            exit;
+        }
+
+        verifyCsrfToken();
+
+        if (isset($_FILES['admin_csv']) && $_FILES['admin_csv']['error'] == 0) {
+            try {
+                $handle = fopen($_FILES['admin_csv']['tmp_name'], "r");
+                if ($handle) {
+                    // BOM（UTF-8）の処理とヘッダースキップ
+                    fgetcsv($handle);
+                    $rows = [];
+                    while (($data = fgetcsv($handle)) !== FALSE) {
+                        $rows[] = $data;
+                    }
+                    fclose($handle);
+
+                    $adminModel = new AdminUser();
+                    $adminModel->bulkInsert($rows);
+
+                    $count = count($rows);
+                    $_SESSION['message'] = "ADMIN_IMPORT_SUCCESS: {$count}件のアカウントを同期しました。";
+                    logAction($_SESSION['login_id'], "管理者一括インポート", "件数: {$count}");
+                }
+            } catch (\Exception $e) {
+                $_SESSION['message'] = "IMPORT_FAILED: " . $e->getMessage();
+            }
+        }
+        header("Location: /admin/users");
+        exit;
+    }
 
     /**
      * ログAPI (旧 api_get_logs.php)
@@ -94,12 +142,14 @@ class AdminController
         $last_id = isset($_GET['last_id']) ? (int)$_GET['last_id'] : 0;
         $newLogs = $logModel->getNewLogs($last_id, $_GET);
 
+        $shouldMask = !hasPermission(PERM_ADMIN);
+
         // XSS対策をしてJSONで返す
-        $clean_logs = array_map(function ($log) {
+        $clean_logs = array_map(function ($log) use ($shouldMask) {
             return [
                 'id' => h($log['id']),
                 'action_time' => h($log['action_time']),
-                'user_id' => h($log['user_id']),
+                'user_id' => $shouldMask ? h(maskUserId($log['user_id'])) : h($log['user_id']),
                 'action_type' => h($log['action_type']),
                 'details' => h($log['details']),
                 'ip_address' => h($log['ip_address']),
@@ -268,7 +318,7 @@ class AdminController
             exit;
         }
 
-        $adminModel = new \App\Models\AdminUser();
+        $adminModel = new AdminUser();
 
         // 重複チェック
         if ($adminModel->exists($login_id)) {
@@ -307,6 +357,13 @@ class AdminController
         $targetId = $_POST['target_admin_id'] ?? '';
         $action = $_POST['request_action'] ?? '';
 
+        if ($targetId === $_SESSION['login_id']) {
+            $_SESSION['message'] = "SECURITY ALERT: 自己申請の承認/却下は禁止されています。";
+            logAction($_SESSION['login_id'], "不正操作試行", "自己申請の承認を試みました（拒否されました）");
+            header("Location: /admin/users");
+            exit;
+        }
+
         $adminModel = new AdminUser();
 
         // 1. 対象ユーザーの「現在の権限状態」を取得
@@ -320,7 +377,7 @@ class AdminController
         if ($targetId && $action === 'approve') {
             $perms = [
                 'perm_data'  => ($currentUser['perm_data']  || isset($_POST['grant_data']))  ? 1 : 0,
-                'perm_admin' => ($currentUser['perm_admin'] || isset($_POST['grant_admin'])) ? 1 : 0,
+                'perm_admin' => ($currentUser['perm_admin'] || (isset($_POST['grant_admin']) && isCurrentSuperAdmin())) ? 1 : 0,
                 'perm_log'   => ($currentUser['perm_log']   || isset($_POST['grant_log']))   ? 1 : 0
             ];
 
@@ -492,6 +549,13 @@ class AdminController
         verifyCsrfToken();
         $login_id = $_POST['target_admin_id'] ?? '';
 
+        // 1. 自己変更の禁止ガード
+        if ($login_id === $_SESSION['login_id']) {
+            $_SESSION['message'] = "セキュリティ違反：自分自身の権限は変更できません。";
+            header("Location: /admin/users");
+            exit;
+        }
+
         // 特権アカウントの権限変更をブロック
         if (isProtectedAdmin($login_id)) {
             $_SESSION['message'] = "エラー：システム管理者の権限は変更できません。";
@@ -501,7 +565,7 @@ class AdminController
 
         $perms = [
             'data'  => isset($_POST['perm_data']) ? 1 : 0,
-            'admin' => isset($_POST['perm_admin']) ? 1 : 0,
+            'admin' => (isset($_POST['perm_admin']) && isCurrentSuperAdmin()) ? 1 : 0,
             'log'   => isset($_POST['perm_log']) ? 1 : 0
         ];
 

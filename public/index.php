@@ -95,6 +95,7 @@ $routes = [
         '/admin/users/reset_pw'  => [AdminController::class, 'resetPassword'],    // PWリセット実行
         '/admin/users/delete'    => [AdminController::class, 'deleteAdmin'],      // 削除実行
         '/admin/users/handle_request' => [AdminController::class, 'handleRequest'],
+        '/admin/users/import' => [AdminController::class, 'importAdmins'],
     ]
 ];
 
