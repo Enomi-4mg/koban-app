@@ -13,7 +13,8 @@ init_sqlite.php
 # PHP依存パッケージ（サーバー側で composer install するため不要）
 /vendor/
 
-/storage/cache
+/storage/cache/
+/..bfg-report/
 
 # OSやエディタのキャッシュファイル
 .DS_Store
